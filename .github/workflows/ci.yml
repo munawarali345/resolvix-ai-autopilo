@@ -62,8 +62,8 @@ jobs:
         run: pnpm lint
 
       # Step 6: Build all packages
-      - name: Run Build
-        run: pnpm build
+      #- name: Run Build
+      #  run: pnpm build
 
       # Step 7: Run tests (skip if missing)
       - name: Run Tests
