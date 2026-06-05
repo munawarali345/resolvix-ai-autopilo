@@ -67,7 +67,7 @@ jobs:
 
       # Step 7: Run tests (skip if missing)
       - name: Run Tests
-        run: pnpm -r test --if-present
+        run: pnpm -r run test
 
       # Step 8: Generate success summary in GitHub Actions UI
       - name: Generate Build Summary
