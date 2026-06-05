@@ -36,13 +36,22 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
 
-      # Step 3: Install pnpm package manager
+      # Step 3: Setup PNPM package manager
       - name: Setup PNPM
         uses: pnpm/action-setup@v4
         with:
           version: ${{ env.PNPM_VERSION }}
+
+      # ADDED (required fix - pnpm cache stability)
+      - name: Get PNPM store path
+        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_ENV
+
+      - name: Setup PNPM Cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
 
       # Step 4: Install all workspace dependencies
       - name: Install Dependencies
