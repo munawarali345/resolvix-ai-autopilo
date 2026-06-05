@@ -1,0 +1,80 @@
+# Resolvix AI CI Pipeline - GitHub Actions workflow
+name: Resolvix AI CI
+
+# Workflow triggers - runs on push and pull request
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+      - '.github/workflows/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'docker-compose.yml'
+  pull_request:
+    branches: [main, develop]
+
+# Environment variables for all jobs
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '10'
+
+# Job definitions
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout repository code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      # Step 3: Install pnpm package manager
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      # Step 4: Install all workspace dependencies
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Step 5: Run ESLint across all packages
+      - name: Run Lint
+        run: pnpm lint
+
+      # Step 6: Build all packages
+      - name: Run Build
+        run: pnpm build
+
+      # Step 7: Run tests (skip if missing)
+      - name: Run Tests
+        run: pnpm -r test --if-present
+
+      # Step 8: Generate success summary in GitHub Actions UI
+      - name: Generate Build Summary
+        if: success()
+        run: |
+          echo "# Resolvix AI CI Passed" >> $GITHUB_STEP_SUMMARY
+          echo "- Frontend Validation Passed" >> $GITHUB_STEP_SUMMARY
+          echo "- Backend Validation Passed" >> $GITHUB_STEP_SUMMARY
+          echo "- Lint Passed" >> $GITHUB_STEP_SUMMARY
+          echo "- Build Passed" >> $GITHUB_STEP_SUMMARY
+          echo "- Tests Passed" >> $GITHUB_STEP_SUMMARY
+
+      # Step 9: Generate failure summary in GitHub Actions UI
+      - name: Generate Failure Summary
+        if: failure()
+        run: |
+          echo "# Resolvix AI CI Failed" >> $GITHUB_STEP_SUMMARY
+          echo "- One or more validation steps failed." >> $GITHUB_STEP_SUMMARY
+          echo "- Check logs above for detailed error information." >> $GITHUB_STEP_SUMMARY

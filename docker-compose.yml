@@ -1,0 +1,41 @@
+﻿version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: resolvix-mongodb
+    environment:
+      MONGO_INITDB_DATABASE: resolvix-ai
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb_data:/data/db
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: resolvix-backend
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      MONGODB_URI: mongodb://mongodb:27017/resolvix-ai
+    ports:
+      - '3001:3001'
+    depends_on:
+      - mongodb
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: resolvix-frontend
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:3001/api
+    ports:
+      - '3000:3000'
+    depends_on:
+      - backend
+
+volumes:
+  mongodb_data:

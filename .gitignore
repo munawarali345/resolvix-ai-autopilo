@@ -1,0 +1,49 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+*.tsbuildinfo
+
+# Environment
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+
+# IDE
+.vscode/
+.idea/
+.history/
+*.swp
+
+# Build
+dist/
+build/
+.next/
+out/
+
+# Cache
+.cache/
+.turbo/
+
+# Testing
+coverage/
+
+# Logs
+*.log
+logs/
+
+# Docker
+*.pid
+
+# Husky internal files
+.husky/_
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+tmp/
+temp/

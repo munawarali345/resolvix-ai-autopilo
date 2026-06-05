@@ -1,0 +1,8 @@
+# pnpm workspace configuration for monorepo setup
+# Defines which directories contain package projects
+packages:
+  # Frontend Next.js application
+  - 'frontend'
+  # Backend Express API
+  - 'backend'
+  - 'packages/*'
