@@ -8,19 +8,6 @@ The project follows a structured monorepo architecture with a dedicated frontend
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PNPM](https://img.shields.io/badge/pnpm-10.x-orange)](https://pnpm.io/)
 
-## Overview
-
-Resolvix AI is designed to serve as a reusable development foundation that can be extended into:
-
-* AI Agent Platforms
-* Incident Response Systems
-* SaaS Applications
-* Internal Business Tools
-* Enterprise Dashboards
-* Full-Stack Web Applications
-* Hackathon MVPs
-
-## Current Features
 
 ### Monorepo Architecture
 
