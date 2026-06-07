@@ -4,7 +4,8 @@
 
 import "dotenv/config";
 import app from "./app.js";
-import { connectDB } from "./config/db.js"; // or correct path
+import { connectDB } from "./config/db.js";
+
 
 // server listening port
 const Port = process.env.PORT || 5000;
@@ -14,7 +15,8 @@ const Port = process.env.PORT || 5000;
 // =====================================================
 const startServer = async () => {
   try {
-    // Step 1: Connect Database FIRST
+    
+    // Step 1: Connect Database
     await connectDB();
 
     // Step 2: Start Express server AFTER DB connection
