@@ -6,8 +6,9 @@ export type User = {
   email: string;
   name: string;
   role: UserRole;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: string;
+  updatedAt?: string;
+  refreshToken?: string | null;
 };
 
 // Backend only (with password)

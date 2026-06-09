@@ -36,12 +36,16 @@ const userSchema = new Schema<UserDocument>(
     },
     role: {
       type: String,
-      enum: ["admin", "viewer"],                    // Sirf ye dono roles
-      default: "viewer",                            // Default role viewer
+      enum: ["admin", "viewer"],
+      default: "viewer",
+    },
+    refreshToken: {
+      type: String,
+      default: null,
     },
   },
   {
-    timestamps: true,                              // createdAt, updatedAt automatically
+    timestamps: true,
   }
 );
 

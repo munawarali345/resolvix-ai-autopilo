@@ -18,16 +18,24 @@ import logger from '../lib/logger.js';
 
 // Define what environment variables we need
 const envSchema = z.object({
+    // NODE_ENV for environment detection (development/production)
+    NODE_ENV: z.enum(["development", "production"]),
+
     // MONGO_URI must be a non-empty string
     MONGO_URI: z.string().nonempty("MONGO_URI is required"),
 
+    JWT_SECRET: z.string()
+      .nonempty("JWT_SECRET is required"),
+
     // PORT is optional
-    // Agar .env me na ho to server.ts me default use kar lenge
     PORT: z.string().optional(),
 
     // LOG_LEVEL is optional
-    // Logger info/warn/error/debug level control karega
     LOG_LEVEL: z.string().optional(),
+
+    ACCESS_TOKEN_EXPIRY: z.string().default("1h"),
+    
+    REFRESH_TOKEN_EXPIRY: z.string().default("7d"),
 });
 
 // Validate all environment variables at once

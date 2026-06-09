@@ -11,6 +11,8 @@ import { env } from "../config/validateEnv.js";
 // Import logger for structured logging
 import logger from "../lib/logger.js";
 
+import { initRateLimiters } from "../config/rateLimiter.js";
+
 // ================================================================
 // MongoDB Connection Event Listeners
 // ================================================================
@@ -54,6 +56,9 @@ export const connectDB = async () => {
             // env validation env se validate hua he
             serverSelectionTimeoutMS: 5000,
         });
+
+        // Initialize MongoDB Rate Limiters
+        initRateLimiters(mongoose.connection);
 
         // Step 3: Connection successful
         // Log for monitoring / development purposes

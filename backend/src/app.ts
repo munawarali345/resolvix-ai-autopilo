@@ -1,28 +1,39 @@
 // =====================================================
 // APP.TS - Main Express Application Setup
-// This file sets up the basic Express server structure
 // =====================================================
 
 import express, { Express } from 'express';
 import cors from 'cors';
+import cookieParser from "cookie-parser";
+import { notFound, errorHandler } from './middlewares/error.middleware.js';
+import { authRoutes } from './routes/index.js';
 
-// Express app initialize
 const app: Express = express();
 
 // Middleware configuration
-// Enable CORS for cross-origin requests
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // frontend URL
+    credentials: true,
+  })
+);
 
-// Parse JSON bodies
+app.use(cookieParser());
+
 app.use(express.json());
 
-// Parse URL-encoded bodies
 app.use(express.urlencoded({ extended: true }));
 
-// Basic health check endpoint
+// Health check endpoint
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', message: 'Resolvix AI Backend is running' });
 });
 
-// Export app to be used in server.ts
+// Routes
+app.use('/api/auth', authRoutes);
+
+// Error handling
+app.use(notFound);
+app.use(errorHandler);
+
 export default app;
