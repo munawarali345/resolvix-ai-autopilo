@@ -2,12 +2,18 @@
 import jwt from "jsonwebtoken";
 import { JWTPayload } from "../types/auth.type.js";
 import { env } from "../config/validateEnv.js";
+import crypto from "crypto";
+
 /**
  * ========================
  * TOKEN SERVICE (UTILITY LAYER)
  * ========================
  * Sirf JWT related kaam yahan hoga
  */
+
+if (!env.JWT_SECRET) {
+  throw new Error("JWT_SECRET is missing in environment variables");
+}
 
 const jwtSecret = env.JWT_SECRET;
 
@@ -29,7 +35,7 @@ export const generateTokensService = (
     jwtSecret,
 
     {
-      expiresIn: env.ACCESS_TOKEN_EXPIRY as any,
+      expiresIn: Number(env.ACCESS_TOKEN_EXPIRY),
       issuer: "resolvix-ai",
     }
 
@@ -43,7 +49,7 @@ export const generateTokensService = (
     jwtSecret,
 
     {
-      expiresIn: env.REFRESH_TOKEN_EXPIRY as any,
+      expiresIn: Number(env.REFRESH_TOKEN_EXPIRY),
       issuer: "resolvix-ai",
     }
 
@@ -95,4 +101,13 @@ export const isTokenExpiredService = (token: string): boolean => {
 
   return decoded.exp < now;
   
+};
+
+// ========================
+// 6. Generate Email Verification Token
+// ========================
+export const generateEmailVerificationToken = (): string => {
+
+  return crypto.randomBytes(32).toString("hex");
+
 };

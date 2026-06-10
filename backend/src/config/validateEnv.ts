@@ -36,6 +36,12 @@ const envSchema = z.object({
     ACCESS_TOKEN_EXPIRY: z.string().default("1h"),
     
     REFRESH_TOKEN_EXPIRY: z.string().default("7d"),
+
+    EMAIL_USER: z.string().email(),
+
+    EMAIL_PASS: z.string().min(1),
+
+    CLIENT_URL: z.string().url(),
 });
 
 // Validate all environment variables at once

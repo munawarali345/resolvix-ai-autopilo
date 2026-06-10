@@ -18,3 +18,13 @@ export type JWTPayload = {
   email: string;
   role: "admin" | "viewer";
 };
+
+export type RegisterResponse = {
+  user: {
+    email: string;
+    name: string;
+    role: "admin" | "viewer";
+    isVerified: boolean;
+  };
+  message: string;
+};

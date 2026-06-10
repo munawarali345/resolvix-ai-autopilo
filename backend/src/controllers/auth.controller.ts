@@ -3,7 +3,14 @@
 // ================================================================================
 
 import { Request, Response, NextFunction } from "express";
-import { registerUserService, loginUserService, refreshTokensService, logoutUserService } from "../services/auth.service.js";
+import { registerUserService, 
+        loginUserService,
+        refreshTokensService, 
+        logoutUserService,
+        verifyEmailService,
+        forgotPasswordService,
+        resetPasswordService
+} from "../services/auth.service.js";
 
 // =====================================================
 // REGISTER CONTROLLER
@@ -23,24 +30,24 @@ export const register = async (
     // =========================
     // SET HTTP ONLY COOKIES
     // =========================
-    res.cookie("accessToken", result.accessToken, {
-      httpOnly: true,
-      secure: false, // production me true (HTTPS)
-      sameSite: "lax",
-      maxAge: 60 * 60 * 1000, // 1 hour
-    });
+    // res.cookie("accessToken", result.accessToken, {
+    //   httpOnly: true,
+    //   secure: false, // production me true (HTTPS)
+    //   sameSite: "lax",
+    //   maxAge: 60 * 60 * 1000, // 1 hour
+    // });
 
-    res.cookie("refreshToken", result.refreshToken, {
-      httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    });
+    // res.cookie("refreshToken", result.refreshToken, {
+    //   httpOnly: true,
+    //   secure: false,
+    //   sameSite: "lax",
+    //   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    // });
 
     res.status(201).json({
 
       success: true,
-      message: "User registered successfully",
+      message: result.message || "Verification email sent",
       data: {
                 user: result.user
           }
@@ -190,3 +197,111 @@ export const logout = async (
 };
 
 
+// =====================================================
+// VERIFY EMAIL CONTROLLER
+// ye controller kia karega user email me click krega
+// GET /api/auth/verify-email?token=abc123
+// =====================================================
+export const verifyEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+
+  try {
+
+    const { token } = req.query; // query se token nikalenge
+
+    if (!token || typeof token !== "string") {
+
+      res.status(400).json({
+
+        success: false,
+
+        message: "Verification token is required",
+
+      });
+
+      return;
+
+    }
+
+    await verifyEmailService(token); // service ko token de ker call ki service 
+
+    res.status(200).json({
+
+      success: true,
+
+      message: "Email verified successfully",
+
+    });
+
+  } catch (error) {
+
+    next(error);
+
+  }
+
+};
+
+
+// =====================================================
+// FORGOT PASSWORD CONTROLLER
+// =====================================================
+export const forgotPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+
+  try {
+
+    const { email } = req.body;
+
+    await forgotPasswordService(email);
+
+    res.status(200).json({
+
+      success: true,
+      message: "If email exists, reset link has been sent",
+
+    });
+
+  } catch (error) {
+
+    next(error);
+
+  }
+
+};
+
+
+// =====================================================
+// RESET PASSWORD CONTROLLER
+// =====================================================
+export const resetPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+
+  try {
+
+    const { token, password } = req.body;
+
+    await resetPasswordService(token, password);
+
+    res.status(200).json({
+
+      success: true,
+      message: "Password reset successfully",
+      
+    });
+
+  } catch (error) {
+
+    next(error);
+
+  }
+
+};

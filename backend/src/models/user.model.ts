@@ -43,10 +43,48 @@ const userSchema = new Schema<UserDocument>(
       type: String,
       default: null,
     },
+
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+
+    verificationToken: {
+      type: String,
+      default: null,
+    },
+
+    verificationTokenExpires: {
+      type: Date,
+      default: null,
+    },
+    
+    resetPasswordToken: {
+      type: String,
+      default: null,
+   },
+
+    resetPasswordExpires: {
+      type: Date,
+      default: null,
+   },
+
+   loginAttempts: {
+      type: Number,
+      default: 0,
+    },
+
+   lockUntil: {
+      type: Date,
+      default: null,
+   },
+
   },
+
   {
     timestamps: true,
   }
+
 );
 
 // Index for faster queries

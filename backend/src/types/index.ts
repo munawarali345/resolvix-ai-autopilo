@@ -16,3 +16,6 @@ export * from "./report.type.js";
 
 // API
 export * from "./api.type.js";
+
+// Audit
+export * from "./audit.type.js"
