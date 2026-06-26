@@ -1,11 +1,10 @@
-
 // src/models/audit.model.ts
 // ========================
 // Audit Log Model - Database Schema
 // ========================
 
-import mongoose, { Schema, Document } from "mongoose";
-import { AuditLog, AuditAction  } from "../types/audit.type.js";
+import mongoose, { Schema, Document } from 'mongoose';
+import { AuditLog, AuditAction } from '../types/audit.type.js';
 
 // Audit document type - Mongoose ke liye
 type AuditLogDocument = AuditLog & Document;
@@ -18,11 +17,11 @@ const auditLogSchema = new Schema<AuditLogDocument>(
       default: null,
     },
 
-   action: {
-  type: String,
-  enum: Object.values(AuditAction),
-  required: [true, "Action zaroori hai"],
-},
+    action: {
+      type: String,
+      enum: Object.values(AuditAction),
+      required: [true, 'Action zaroori hai'],
+    },
 
     ipAddress: {
       type: String,
@@ -42,7 +41,7 @@ const auditLogSchema = new Schema<AuditLogDocument>(
 
   {
     timestamps: true,
-  }
+  },
 );
 
 // Index for faster queries
@@ -54,6 +53,6 @@ auditLogSchema.index({ createdAt: -1 }); // Latest logs pehle dikhao
 
 // Audit model create karo
 export const AuditLogModel = mongoose.model<AuditLogDocument>(
-  "AuditLog",
-  auditLogSchema
+  'AuditLog',
+  auditLogSchema,
 );

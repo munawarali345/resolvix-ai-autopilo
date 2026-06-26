@@ -18,30 +18,36 @@ import logger from '../lib/logger.js';
 
 // Define what environment variables we need
 const envSchema = z.object({
-    // NODE_ENV for environment detection (development/production)
-    NODE_ENV: z.enum(["development", "production"]),
+  // NODE_ENV for environment detection (development/production)
+  NODE_ENV: z.enum(['development', 'production']),
 
-    // MONGO_URI must be a non-empty string
-    MONGO_URI: z.string().nonempty("MONGO_URI is required"),
+  // MONGO_URI must be a non-empty string
+  MONGO_URI: z.string().nonempty('MONGO_URI is required'),
 
-    JWT_SECRET: z.string()
-      .nonempty("JWT_SECRET is required"),
+  JWT_SECRET: z.string().nonempty('JWT_SECRET is required'),
 
-    // PORT is optional
-    PORT: z.string().optional(),
+  // PORT is optional
+  PORT: z.string().optional(),
 
-    // LOG_LEVEL is optional
-    LOG_LEVEL: z.string().optional(),
+  // LOG_LEVEL is optional
+  LOG_LEVEL: z.string().optional(),
 
-    ACCESS_TOKEN_EXPIRY: z.string().default("1h"),
-    
-    REFRESH_TOKEN_EXPIRY: z.string().default("7d"),
+  ACCESS_TOKEN_EXPIRY: z.string().default('1h'),
 
-    EMAIL_USER: z.string().email(),
+  REFRESH_TOKEN_EXPIRY: z.string().default('7d'),
 
-    EMAIL_PASS: z.string().min(1),
+  EMAIL_USER: z.string().email(),
 
-    CLIENT_URL: z.string().url(),
+  EMAIL_PASS: z.string().min(1),
+
+  CLIENT_URL: z.string().url(),
+
+  // ========================
+  // Qwen Cloud
+  // ========================
+  DASHSCOPE_API_KEY: z.string().startsWith('sk-', 'Invalid DashScope API Key'),
+
+  QWEN_MODEL: z.string().nonempty('QWEN_MODEL is required'),
 });
 
 // Validate all environment variables at once
@@ -50,14 +56,14 @@ const parsedEnv = envSchema.safeParse(process.env);
 
 // If validation failed, print error and stop server
 if (!parsedEnv.success) {
-    // Print main error message
-    logger.error('Environment validation failed:');
+  // Print main error message
+  logger.error('Environment validation failed:');
 
-    // Print detailed error (Zod formats it automatically)
-    logger.error(parsedEnv.error.format());
+  // Print detailed error (Zod formats it automatically)
+  logger.error(parsedEnv.error.format());
 
-    // Stop the server - don't start with invalid config
-    process.exit(1);
+  // Stop the server - don't start with invalid config
+  process.exit(1);
 }
 
 // If validation passed, export the validated data
@@ -66,5 +72,5 @@ export const env = parsedEnv.data;
 
 // Simple function to get validated environment
 export function validateEnv() {
-    return env;
+  return env;
 }

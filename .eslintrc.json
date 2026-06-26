@@ -8,10 +8,5 @@
     "no-console": "off",
     "no-unused-vars": "warn"
   },
-  "ignorePatterns": [
-    "node_modules",
-    "dist",
-    "build",
-    ".next"
-  ]
+  "ignorePatterns": ["node_modules", "dist", "build", ".next"]
 }

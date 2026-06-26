@@ -4,11 +4,11 @@
 // Purpose: Protect routes by verifying JWT access tokens
 // Middleware chain me use hoga: req => verify token => attach user => next()
 
-import { Request, Response, NextFunction } from "express";
-import { verifyAccessTokenService } from "../services/token.service.js";
-import { JWTPayload } from "../types/auth.type.js";
-import { UserRole } from "../types/user.type.js";
-import logger from "../lib/logger.js";
+import { Request, Response, NextFunction } from 'express';
+import { verifyAccessTokenService } from '../services/token.service.js';
+import { JWTPayload } from '../types/auth.type.js';
+import { UserRole } from '../types/user.type.js';
+import logger from '../lib/logger.js';
 
 // Extend Request type to include user property
 declare global {
@@ -25,9 +25,8 @@ declare global {
 export const authMiddleware = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void => {
-
   // // Step 1: Extract Authorization header
   // const authHeader = req.headers.authorization;
 
@@ -89,62 +88,47 @@ export const authMiddleware = (
 
   // Step 2: Fallback to Authorization Header agar cookie se token ni mila to ye chalega
   if (!token) {
-
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-
-      logger.warn("Missing authentication token");
+      logger.warn('Missing authentication token');
 
       res.status(401).json({
-
         success: false,
 
-        message: "Authentication token missing",
-
+        message: 'Authentication token missing',
       });
 
       return;
-
     }
 
-    if (!authHeader.startsWith("Bearer ")) {
-
-      logger.warn("Invalid Authorization header format");
+    if (!authHeader.startsWith('Bearer ')) {
+      logger.warn('Invalid Authorization header format');
 
       res.status(401).json({
-
         success: false,
 
-        message: "Invalid Authorization header format",
-
+        message: 'Invalid Authorization header format',
       });
 
       return;
-
     }
 
     token = authHeader.substring(7);
-
   }
 
   // Step 3: Final token validation
   if (!token) {
-
-    logger.warn("Empty authentication token");
+    logger.warn('Empty authentication token');
 
     res.status(401).json({
-
       success: false,
 
-      message: "Authentication token missing",
-
+      message: 'Authentication token missing',
     });
 
     return;
-
   }
-
 
   try {
     // Step 5: Verify JWT token
@@ -155,19 +139,15 @@ export const authMiddleware = (
 
     // Step 7: Continue to next handler
     next();
-
   } catch (error) {
-
     // Step 8: Token verification failed
 
-    logger.warn("Invalid token attempt", { error });
+    logger.warn('Invalid token attempt', { error });
 
     res.status(401).json({
-
       success: false,
 
-      message: "Invalid or expired token",
-
+      message: 'Invalid or expired token',
     });
   }
 };
@@ -176,43 +156,32 @@ export const authMiddleware = (
 // Role-Based Access Control Middleware
 // ================================================================================
 export const authorize = (...allowedRoles: UserRole[]) => {
-
   return (req: Request, res: Response, next: NextFunction): void => {
-
     if (!req.user) {
-
       res.status(401).json({
-
         success: false,
 
-        message: "User not authenticated",
-
+        message: 'User not authenticated',
       });
 
       return;
-
     }
 
     if (!allowedRoles.includes(req.user.role)) {
-
-      logger.warn("Unauthorized access attempt", { 
-
+      logger.warn('Unauthorized access attempt', {
         userId: req.user.userId,
 
         role: req.user.role,
 
-        requiredRoles: allowedRoles 
-
+        requiredRoles: allowedRoles,
       });
 
       res.status(403).json({
-
         success: false,
 
-        message: "Access denied - insufficient permissions",
-
+        message: 'Access denied - insufficient permissions',
       });
-      
+
       return;
     }
 

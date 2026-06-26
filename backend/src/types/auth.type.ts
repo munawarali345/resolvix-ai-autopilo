@@ -1,5 +1,4 @@
-
-import { User } from "./user.type.js";
+import { User } from './user.type.js';
 
 export type AuthRequest = {
   email: string;
@@ -8,7 +7,7 @@ export type AuthRequest = {
 };
 
 export type AuthResponse = {
-  user: Omit<User, "_id">;
+  user: Omit<User, '_id'>;
   accessToken: string;
   refreshToken: string;
 };
@@ -16,14 +15,14 @@ export type AuthResponse = {
 export type JWTPayload = {
   userId: string;
   email: string;
-  role: "admin" | "viewer";
+  role: 'admin' | 'viewer';
 };
 
 export type RegisterResponse = {
   user: {
     email: string;
     name: string;
-    role: "admin" | "viewer";
+    role: 'admin' | 'viewer';
     isVerified: boolean;
   };
   message: string;

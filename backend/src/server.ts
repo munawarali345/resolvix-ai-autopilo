@@ -2,10 +2,9 @@
  * Resolvix AI Backend Server Entry Point
  */
 
-import "dotenv/config";
-import app from "./app.js";
-import { connectDB } from "./config/db.js";
-
+import 'dotenv/config';
+import app from './app.js';
+import { connectDB } from './config/db.js';
 
 // server listening port
 const Port = process.env.PORT || 5000;
@@ -15,7 +14,6 @@ const Port = process.env.PORT || 5000;
 // =====================================================
 const startServer = async () => {
   try {
-    
     // Step 1: Connect Database
     await connectDB();
 
@@ -23,9 +21,8 @@ const startServer = async () => {
     app.listen(Port, () => {
       console.log(`server is Running on Port ${Port}`);
     });
-
   } catch (error) {
-    console.error("Failed to start server:", error);
+    console.error('Failed to start server:', error);
     process.exit(1);
   }
 };

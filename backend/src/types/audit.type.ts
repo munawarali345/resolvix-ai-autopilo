@@ -1,15 +1,13 @@
-
 export enum AuditAction {
-  LOGIN = "LOGIN",
-  LOGOUT = "LOGOUT",
-  EMAIL_VERIFIED = "EMAIL_VERIFIED",
-  FORGOT_PASSWORD = "FORGOT_PASSWORD",
-  RESET_PASSWORD = "RESET_PASSWORD",
-  ACCOUNT_LOCKED = "ACCOUNT_LOCKED",
+  LOGIN = 'LOGIN',
+  LOGOUT = 'LOGOUT',
+  EMAIL_VERIFIED = 'EMAIL_VERIFIED',
+  FORGOT_PASSWORD = 'FORGOT_PASSWORD',
+  RESET_PASSWORD = 'RESET_PASSWORD',
+  ACCOUNT_LOCKED = 'ACCOUNT_LOCKED',
 }
 
 export interface AuditLog {
-
   userId?: string;
 
   action: AuditAction;
@@ -21,5 +19,4 @@ export interface AuditLog {
   metadata?: Record<string, any>;
 
   createdAt?: Date;
-
 }

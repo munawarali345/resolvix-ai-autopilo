@@ -1,12 +1,11 @@
-
 // ================================================================
 // MongoDB Rate Limiter Configuration
 // ================================================================
 // Purpose: Protect APIs from abuse using MongoDB storage
 // Library: rate-limiter-flexible
 
-import { Connection } from "mongoose";
-import { RateLimiterMongo } from "rate-limiter-flexible";
+import { Connection } from 'mongoose';
+import { RateLimiterMongo } from 'rate-limiter-flexible';
 
 // ================================================================
 // Rate Limiter Instances
@@ -23,10 +22,7 @@ export let lenientRateLimiter: RateLimiterMongo | null = null;
 // ================================================================
 // Call after MongoDB connection is established
 
-export const initRateLimiters = (
-  mongooseConnection: Connection
-): void => {
-
+export const initRateLimiters = (mongooseConnection: Connection): void => {
   // ============================================================
   // Strict Limiter
   // Auth Routes
@@ -34,13 +30,11 @@ export const initRateLimiters = (
   // ============================================================
 
   strictRateLimiter = new RateLimiterMongo({
-
     storeClient: mongooseConnection,
 
     points: 5,
 
     duration: 15 * 60,
-
   });
 
   // ============================================================
@@ -49,13 +43,11 @@ export const initRateLimiters = (
   // ============================================================
 
   standardRateLimiter = new RateLimiterMongo({
-
     storeClient: mongooseConnection,
 
     points: 100,
 
     duration: 60,
-
   });
 
   // ============================================================
@@ -64,13 +56,10 @@ export const initRateLimiters = (
   // ============================================================
 
   lenientRateLimiter = new RateLimiterMongo({
-
     storeClient: mongooseConnection,
 
     points: 300,
 
     duration: 60,
-
   });
-
 };

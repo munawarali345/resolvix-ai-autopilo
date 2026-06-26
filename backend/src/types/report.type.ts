@@ -1,4 +1,3 @@
-
 export type ReportTimeline = {
   timestamp: Date;
   event: string;
@@ -20,5 +19,5 @@ export type Report = {
   timeline: ReportTimeline[];
   metrics: ReportMetrics;
   createdAt?: Date;
-  updatedAt?: Date
+  updatedAt?: Date;
 };

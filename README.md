@@ -8,41 +8,40 @@ The project follows a structured monorepo architecture with a dedicated frontend
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PNPM](https://img.shields.io/badge/pnpm-10.x-orange)](https://pnpm.io/)
 
-
 ### Monorepo Architecture
 
-* PNPM Workspace Configuration
-* Frontend & Backend Separation
-* Shared Dependency Management
-* Scalable Folder Structure
+- PNPM Workspace Configuration
+- Frontend & Backend Separation
+- Shared Dependency Management
+- Scalable Folder Structure
 
 ### Frontend Setup
 
-* Next.js 15 (App Router)
-* TypeScript
-* Tailwind CSS
-* shadcn/ui Components
-* Zustand State Management
-* TanStack Query
-* Recharts Integration
+- Next.js 15 (App Router)
+- TypeScript
+- Tailwind CSS
+- shadcn/ui Components
+- Zustand State Management
+- TanStack Query
+- Recharts Integration
 
 ### Backend Setup
 
-* Express.js
-* TypeScript (ESM)
-* MongoDB (Mongoose)
-* JWT Authentication Support
-* bcryptjs Password Hashing
-* Winston Logging
+- Express.js
+- TypeScript (ESM)
+- MongoDB (Mongoose)
+- JWT Authentication Support
+- bcryptjs Password Hashing
+- Winston Logging
 
 ### Development Tooling
 
-* PNPM Package Manager
-* ESLint Configuration
-* Prettier Formatting
-* Husky Git Hooks
-* GitHub Actions CI Pipeline
-* Build Validation Workflow
+- PNPM Package Manager
+- ESLint Configuration
+- Prettier Formatting
+- Husky Git Hooks
+- GitHub Actions CI Pipeline
+- Build Validation Workflow
 
 ## Project Structure
 
@@ -150,10 +149,10 @@ Add required environment variables according to your project requirements.
 
 GitHub Actions automatically validates:
 
-* Dependency Installation
-* Build Process
-* Linting
-* Test Execution
+- Dependency Installation
+- Build Process
+- Linting
+- Test Execution
 
 Every push and pull request triggers automated checks.
 
@@ -161,20 +160,20 @@ Every push and pull request triggers automated checks.
 
 ### Completed
 
-* Monorepo Setup
-* PNPM Workspace
-* Frontend Foundation
-* Backend Foundation
-* TypeScript Configuration
-* ESLint Configuration
-* Husky Setup
-* GitHub Actions CI Workflow
+- Monorepo Setup
+- PNPM Workspace
+- Frontend Foundation
+- Backend Foundation
+- TypeScript Configuration
+- ESLint Configuration
+- Husky Setup
+- GitHub Actions CI Workflow
 
 ### In Progress
 
-* API Development
-* AI Agent Architecture
-* Monitoring & Logging Enhancements
+- API Development
+- AI Agent Architecture
+- Monitoring & Logging Enhancements
 
 ## License
 

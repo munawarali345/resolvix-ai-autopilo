@@ -2,8 +2,8 @@
 // Error Handling Middleware - Global Error Handler
 // ================================================================================
 
-import { Request, Response } from "express";
-import logger from "../lib/logger.js";
+import { Request, Response } from 'express';
+import logger from '../lib/logger.js';
 
 // Custom error type for application errors
 export interface AppError extends Error {
@@ -19,48 +19,37 @@ export const errorHandler = (
   _req: Request,
   res: Response,
 ): void => {
-
   const statusCode = err.statusCode || 500;
-  const message = err.message || "Internal Server Error";
+  const message = err.message || 'Internal Server Error';
 
   // Log error with Winston
-  logger.error("Application error", { 
+  logger.error('Application error', {
+    error: err.name,
 
-    error: err.name, 
+    message,
 
-    message, 
-
-    stack: err.stack 
-
+    stack: err.stack,
   });
 
   res.status(statusCode).json({
-
     success: false,
 
     message,
 
     // Development me stack bhi bhejo
-    ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
-
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
   });
 };
 
 // ================================================================================
 // 404 Not Found Handler
 // ================================================================================
-export const notFound = (
-  _req: Request,
-  res: Response
-): void => {
-
-  logger.warn("Route not found - 404");
+export const notFound = (_req: Request, res: Response): void => {
+  logger.warn('Route not found - 404');
 
   res.status(404).json({
-
     success: false,
 
-    message: "Route not found",
-    
+    message: 'Route not found',
   });
 };

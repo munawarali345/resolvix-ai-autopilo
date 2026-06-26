@@ -4,18 +4,18 @@
 
 import express, { Express } from 'express';
 import cors from 'cors';
-import cookieParser from "cookie-parser";
+import cookieParser from 'cookie-parser';
 import { notFound, errorHandler } from './middlewares/error.middleware.js';
-import { authRoutes } from './routes/index.js';
+import { authRoutes, incidentSimulationRoutes } from './routes/index.js';
 
 const app: Express = express();
 
 // Middleware configuration
 app.use(
   cors({
-    origin: "http://localhost:3000", // frontend URL
+    origin: 'http://localhost:3000', // frontend URL
     credentials: true,
-  })
+  }),
 );
 
 app.use(cookieParser());
@@ -30,7 +30,9 @@ app.get('/health', (_req, res) => {
 });
 
 // Routes
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authRoutes); // auth routes
+
+app.use('/api/simulate', incidentSimulationRoutes);
 
 // Error handling
 app.use(notFound);

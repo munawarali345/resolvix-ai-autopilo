@@ -1,10 +1,9 @@
-
 // ================================================================
 // User Service - Business Logic Layer
 // ================================================================
 
-import { User } from "../models/model.index.js";
-import type { User as UserType } from "../types/user.type.js";
+import { User } from '../models/index.js';
+import type { User as UserType } from '../types/user.type.js';
 
 /**
  * ========================
@@ -12,7 +11,7 @@ import type { User as UserType } from "../types/user.type.js";
  * ========================
  */
 export const getUserByIdService = async (
-  userId: string
+  userId: string,
 ): Promise<UserType | null> => {
   const user = await User.findById(userId);
 
@@ -53,13 +52,9 @@ export const getAllUsersService = async (): Promise<UserType[]> => {
  */
 export const updateUserRoleService = async (
   userId: string,
-  role: "admin" | "viewer"
+  role: 'admin' | 'viewer',
 ): Promise<UserType | null> => {
-  const user = await User.findByIdAndUpdate(
-    userId,
-    { role },
-    { new: true }
-  );
+  const user = await User.findByIdAndUpdate(userId, { role }, { new: true });
 
   if (!user) return null;
 
@@ -79,7 +74,6 @@ export const updateUserRoleService = async (
  * ========================
  */
 export const deleteUserService = async (userId: string): Promise<boolean> => {
-    
   const result = await User.findByIdAndDelete(userId);
   return !!result;
 };

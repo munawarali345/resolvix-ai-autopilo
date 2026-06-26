@@ -1,8 +1,6 @@
-
-export type UserRole = "admin" | "viewer";
+export type UserRole = 'admin' | 'viewer';
 
 export type User = {
-
   _id?: string;
   email: string;
   name: string;
@@ -18,7 +16,7 @@ export type User = {
 
   resetPasswordToken?: string | null;
   resetPasswordExpires?: Date | null;
-  
+
   loginAttempts?: number;
   lockUntil?: Date | null;
 };
