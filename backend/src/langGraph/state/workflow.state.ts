@@ -40,4 +40,10 @@ export const WorkflowGraphState = Annotation.Root({
 
   // Log Analyzer result.
   logAnalysisResult: Annotation<WorkflowState['logAnalysisResult']>(),
+
+  // Log Analysis tool outputs.
+  logAnalysisArtifacts: Annotation<WorkflowState['logAnalysisArtifacts']>(),
+
+  // Root Cause Analysis result.
+  rootCauseResult: Annotation<WorkflowState['rootCauseResult']>(),
 });

@@ -2,7 +2,10 @@
 // LOG ANALYSIS NODE
 // ================================================================
 
-import { updateWorkflowStep } from '../../utils/workflowState.util.js';
+import {
+  updateWorkflowStep,
+  setLogAnalysisExecution,
+} from '../../utils/workflowState.util.js';
 
 import { WorkflowGraphState } from '../state/workflow.state.js';
 
@@ -29,9 +32,5 @@ export const logAnalysisNode = async (
   // ================================================================
   // STEP 3: Save result into state
   // ================================================================
-  return {
-    ...updatedState,
-
-    logAnalysisResult: result,
-  };
+  return setLogAnalysisExecution(updatedState, result);
 };

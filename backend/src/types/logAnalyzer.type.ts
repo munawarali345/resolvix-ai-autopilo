@@ -72,7 +72,7 @@ export interface GroupedLog {
   count: number;
 }
 
-export interface LogAnalyzerSkillOutput {
+export interface LogAnalysisArtifacts {
   // ERROR level logs
   errors: Log[];
 
@@ -82,10 +82,10 @@ export interface LogAnalyzerSkillOutput {
   // Grouped repeated log messages
   groupedLogs: GroupedLog[];
 
-  // Incident timeline
+  // Incident timeline ordered chronologically.
   timeline: TimelineItem[];
 
-  // Service dependency graph
+  // Service dependency relationships inferred from logs.
   dependencyMap: DependencyMap[];
 }
 
@@ -109,4 +109,19 @@ export interface LogAnalyzerAgentOutput {
 
   // Suggestions for Root Cause Agent.
   investigationHints: string[];
+}
+
+// ================================================================
+// LOG ANALYZER EXECUTION RESULT
+// ================================================================
+// Agent returns both:
+// 1. AI analysis
+// 2. Tool outputs (artifacts)
+// ================================================================
+export interface LogAnalyzerExecutionResult {
+  // AI generated analysis.
+  analysis: LogAnalyzerAgentOutput;
+
+  // Outputs collected from tool execution.
+  artifacts: LogAnalysisArtifacts;
 }

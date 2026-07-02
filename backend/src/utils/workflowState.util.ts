@@ -9,7 +9,8 @@
 import {
   OrchestratorAgentOutput,
   WorkflowStep,
-  LogAnalyzerAgentOutput,
+  RootCauseExecutionResult,
+  LogAnalyzerExecutionResult,
 } from '../types/index.js';
 import { WorkflowGraphState } from '../langGraph/state/workflow.state.js';
 
@@ -59,16 +60,36 @@ export const setOrchestratorDecision = (
 };
 
 // ================================================================
-// Store LogAnalysisResult
+// Store complete Log Analysis execution
 // ================================================================
-export const setLogAnalysisResult = (
+export const setLogAnalysisExecution = (
   state: GraphState,
-
-  result: LogAnalyzerAgentOutput,
+  result: LogAnalyzerExecutionResult,
 ): GraphState => {
   return {
     ...state,
 
-    logAnalysisResult: result,
+    // Save AI analysis
+    logAnalysisResult: result.analysis,
+
+    // Save tool outputs
+    logAnalysisArtifacts: result.artifacts,
+  };
+};
+
+export const setRootCauseExecution = (
+  state: GraphState,
+  result: RootCauseExecutionResult,
+): GraphState => {
+  return {
+    ...state,
+
+    rootCauseResult: result.analysis,
+
+    incident: {
+      ...state.incident!,
+
+      rootCause: result.analysis.rootCause,
+    },
   };
 };

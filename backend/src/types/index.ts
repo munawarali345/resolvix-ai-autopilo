@@ -42,3 +42,6 @@ export * from './orchestrationAgent.type.js';
 
 // loganalyzer types
 export * from './logAnalyzer.type.js';
+
+// root Couse types
+export * from './rootCouseAgent.types.js';

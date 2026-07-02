@@ -17,30 +17,6 @@ import { riskValidationNode } from '../nodes/riskValidator.node.js';
 import { executionNode } from '../nodes/executor.node.js';
 import { reportingNode } from '../nodes/reporter.node.js';
 
-// ye hum graph type bana rah ehe jo LangGraph ka real inferred type use ho raha hai
-type GraphState = typeof WorkflowGraphState.State;
-
-// ================================================================
-// ROUTING LOGIC
-// ================================================================
-const routeAfterOrchestrator = (state: GraphState) => {
-  const decision = state.orchestratorDecision;
-
-  if (!decision) {
-    return 'logAnalysisNode';
-  }
-
-  if (decision.runParallel) {
-    return ['logAnalysisNode', 'rootCauseNode'];
-  }
-
-  if (decision.nextStep === 'root-cause') {
-    return 'rootCauseNode';
-  }
-
-  return 'logAnalysisNode';
-};
-
 // ================================================================
 // GRAPH BUILD
 // ================================================================
@@ -58,14 +34,10 @@ const graph = new StateGraph(WorkflowGraphState)
   // ---------------- START FLOW ----------------
   .addEdge(START, 'orchestratorNode')
 
-  // ---------------- PARALLEL ----------------
-  // Orchestrator → logs + root cause (parallel)
-  .addConditionalEdges('orchestratorNode', routeAfterOrchestrator)
-
   // ---------------- SEQUENTIAL FLOW ----------------
-  .addEdge('logAnalysisNode', 'fixNode')
+  .addEdge('orchestratorNode', 'logAnalysisNode')
+  .addEdge('logAnalysisNode', 'rootCauseNode')
   .addEdge('rootCauseNode', 'fixNode')
-
   .addEdge('fixNode', 'riskValidationNode')
   .addEdge('riskValidationNode', 'executionNode')
   .addEdge('executionNode', 'reportingNode')

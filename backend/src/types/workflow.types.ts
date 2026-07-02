@@ -11,6 +11,8 @@ import {
   DetectionServiceOutput,
   OrchestratorAgentOutput,
   LogAnalyzerAgentOutput,
+  LogAnalysisArtifacts,
+  RootCauseAgentOutput,
 } from './index.js';
 
 // ================================================================
@@ -55,6 +57,10 @@ export interface WorkflowState {
   orchestratorDecision: OrchestratorAgentOutput | null;
 
   logAnalysisResult: LogAnalyzerAgentOutput | null;
+
+  rootCauseResult: RootCauseAgentOutput | null;
+
+  logAnalysisArtifacts: LogAnalysisArtifacts | null;
 
   // Current workflow stage
   currentStep: WorkflowStep;

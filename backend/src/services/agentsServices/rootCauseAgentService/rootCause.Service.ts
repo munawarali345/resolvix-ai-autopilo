@@ -1,72 +1,105 @@
 // ================================================================
-// LOG ANALYSIS SERVICE
+// ROOT CAUSE SERVICE
 // ================================================================
 //
 // Purpose:
-// Ye service Log Analysis Agent ko call karti hai.
+// Ye service Root Cause Agent ko call karti hai.
 //
 // Flow:
-// 1. Input build
-// 2. Agent call
-// 3. Execution log save
-// 4. Result return
+// 1. Validate required workflow data
+// 2. Build agent input
+// 3. Call Root Cause Agent
+// 4. Save execution log
+// 5. Return analysis
 // ================================================================
 
 import {
-  LogAnalyzerAgentInput,
-  LogAnalyzerExecutionResult,
+  RootCauseAgentInput,
+  RootCauseExecutionResult,
   WorkflowState,
 } from '../../../types/index.js';
 
-import { logAnalyzerAgent } from '../../../agents/log-analysisAgent/logAnalysis.agent.js';
+import { rootCauseAgent } from '../../../agents/root-causeAgent/rootCouse.agnte.js';
 
 import { AgentExecutionModel } from '../../../models/agentExecution.model.js';
 
+import { IncidentModel } from '../../../models/incident.model.js';
+
 // ================================================================
-// LOG ANALYSIS SERVICE
+// ROOT CAUSE SERVICE
 // ================================================================
-export const logAnalysisService = async (
+
+export const rootCauseService = async (
   state: WorkflowState,
-): Promise<LogAnalyzerExecutionResult> => {
+): Promise<RootCauseExecutionResult> => {
   // ------------------------------------------------
-  // STEP 1: Start timer
+  // STEP 1
+  // Start execution timer
   // ------------------------------------------------
+
   const startTime = Date.now();
 
   // ------------------------------------------------
-  // STEP 2: Required data validate
+  // STEP 2
+  // Validate required workflow data
   // ------------------------------------------------
-  if (!state.incident || !state.detectionResult) {
+
+  if (
+    !state.incident ||
+    !state.detectionResult ||
+    !state.logAnalysisResult ||
+    !state.logAnalysisArtifacts
+  ) {
     throw new Error(
-      'Log Analysis Service requires incident and detection result.',
+      'Root Cause Service requires incident, detection result, log analysis result, and log analysis artifacts.',
     );
   }
 
   // ------------------------------------------------
-  // STEP 3: Build Agent Input
+  // STEP 3
+  // Build Agent Input
   // ------------------------------------------------
-  const agentInput: LogAnalyzerAgentInput = {
+
+  const agentInput: RootCauseAgentInput = {
     incident: state.incident,
 
     logs: state.logs,
 
     detectionResult: state.detectionResult,
 
+    logAnalysisResult: state.logAnalysisResult,
+
+    logAnalysisArtifacts: state.logAnalysisArtifacts,
+
     currentStep: state.currentStep,
   };
 
   // ------------------------------------------------
-  // STEP 4: Call Log Analyzer Agent
+  // STEP 4
+  // Call Root Cause Agent
   // ------------------------------------------------
-  const aiResponse = await logAnalyzerAgent(agentInput);
+
+  const aiResponse = await rootCauseAgent(agentInput);
+
+  await IncidentModel.findByIdAndUpdate(
+    state.incident._id,
+
+    {
+      rootCause: aiResponse.analysis.rootCause,
+
+      updatedAt: new Date(),
+    },
+  );
 
   // ------------------------------------------------
-  // STEP 5: Save execution log
+  // STEP 5
+  // Save execution log
   // ------------------------------------------------
+
   await AgentExecutionModel.create({
     incidentId: state.incident._id?.toString(),
 
-    agentName: 'log-analysis',
+    agentName: 'root-cause',
 
     status: 'success',
 
@@ -82,7 +115,9 @@ export const logAnalysisService = async (
   });
 
   // ------------------------------------------------
-  // STEP 6: Return result
+  // STEP 6
+  // Return result
   // ------------------------------------------------
+
   return aiResponse;
 };

@@ -31,9 +31,6 @@ export interface OrchestratorAgentOutput {
   // Next workflow step.
   nextStep: NextWorkflowStep;
 
-  // Parallel agents chalane hain ya nahi.
-  runParallel: boolean;
-
   // Workflow continue hoga ya nahi.
   continueWorkflow: boolean;
 

@@ -12,7 +12,12 @@
 
 import { WorkflowState } from '../../types/index.js';
 
-import { updateWorkflowStep } from '../../utils/workflowState.util.js';
+import {
+  updateWorkflowStep,
+  setRootCauseExecution,
+} from '../../utils/workflowState.util.js';
+
+import { rootCauseService } from '../../services/agentsServices/rootCauseAgentService/rootCause.Service.js';
 
 // ================================================================
 // ROOT CAUSE NODE
@@ -20,16 +25,18 @@ import { updateWorkflowStep } from '../../utils/workflowState.util.js';
 export const rootCauseNode = async (
   state: WorkflowState,
 ): Promise<WorkflowState> => {
-  // Workflow step ko "root-cause" par set karo
-  const updatedState = updateWorkflowStep(
-    state,
+  // ================================================================
+  // STEP 1: Update workflow step
+  // ================================================================
+  const updatedState = updateWorkflowStep(state, 'root-cause');
 
-    'root-cause',
-  );
+  // ================================================================
+  // STEP 2: Call root couse Service
+  // ================================================================
+  const result = await rootCauseService(updatedState);
 
-  // TODO:
-  // Yahan future me rootCauseAgent(updatedState)
-  // call hoga
-
-  return updatedState;
+  // ================================================================
+  // STEP 3: Save result into state
+  // ================================================================
+  return setRootCauseExecution(updatedState, result);
 };

@@ -34,7 +34,8 @@ import { dependencyMapperTool } from '../../tools/logAnalyzerAgentTools/dependen
 
 import {
   LogAnalyzerAgentInput,
-  LogAnalyzerAgentOutput,
+  LogAnalysisArtifacts,
+  LogAnalyzerExecutionResult,
 } from '../../types/index.js';
 
 // parser
@@ -51,9 +52,13 @@ const qwenModel = createQwenLangChainModel();
 
 const model = qwenModel.bindTools([
   extractErrorsTool,
+
   buildTimelineTool,
+
   groupLogsTool,
+
   extractAffectedServicesTool,
+
   dependencyMapperTool,
 ]);
 
@@ -62,11 +67,15 @@ const model = qwenModel.bindTools([
 // ================================================================
 
 const toolRegistry = {
-  extractErrorsTool,
-  buildTimelineTool,
-  groupLogsTool,
-  extractAffectedServicesTool,
-  dependencyMapperTool,
+  extract_errors: extractErrorsTool,
+
+  build_timeline: buildTimelineTool,
+
+  group_logs: groupLogsTool,
+
+  extract_affected_services: extractAffectedServicesTool,
+
+  dependency_mapper: dependencyMapperTool,
 };
 
 // ================================================================
@@ -75,7 +84,7 @@ const toolRegistry = {
 
 export const logAnalyzerAgent = async (
   agentInput: LogAnalyzerAgentInput,
-): Promise<LogAnalyzerAgentOutput> => {
+): Promise<LogAnalyzerExecutionResult> => {
   // Load Skill
   const skill = await loadSkill(
     'logAnalysisSkills',
@@ -118,6 +127,22 @@ Analyze the incident by following your assigned skill and use tools whenever req
 
 `;
 
+  // ================================================================
+  // Tool Artifacts
+  // Stores outputs produced by Log Analysis tools.
+  // ================================================================
+  const artifacts: LogAnalysisArtifacts = {
+    errors: [],
+
+    affectedServices: [],
+
+    groupedLogs: [],
+
+    timeline: [],
+
+    dependencyMap: [],
+  };
+
   const messages: BaseMessage[] = [
     new SystemMessage(systemPrompt),
 
@@ -142,7 +167,11 @@ Analyze the incident by following your assigned skill and use tools whenever req
 
       const validatedOutput = validateLogAnalyzerOutput(parsedOutput);
 
-      return validatedOutput;
+      return {
+        analysis: validatedOutput,
+
+        artifacts,
+      };
     }
 
     // --------------------------------------------------------
@@ -157,6 +186,58 @@ Analyze the incident by following your assigned skill and use tools whenever req
       }
 
       const result = await tool.invoke(toolCall);
+
+      // --------------------------------------------------------
+      // Skip ToolMessage and only store actual tool output.
+      // --------------------------------------------------------
+      if (result instanceof ToolMessage) {
+        throw new Error('Tool returned ToolMessage instead of actual output.');
+      }
+
+      // =========================================================
+      // Save the executed tool output into artifacts.
+      //
+      // Every tool produces a different type of output.
+      // We save that output so future agents can reuse it
+      // without executing the same tool again.
+      // =========================================================
+
+      // ---------------------------------------------------------
+      // Save extracted ERROR logs.
+      // ---------------------------------------------------------
+      if (toolCall.name === 'extract_errors') {
+        artifacts.errors = result as LogAnalysisArtifacts['errors'];
+      }
+
+      // ---------------------------------------------------------
+      // Save affected services discovered from logs.
+      // ---------------------------------------------------------
+      if (toolCall.name === 'extract_affected_services') {
+        artifacts.affectedServices =
+          result as LogAnalysisArtifacts['affectedServices'];
+      }
+
+      // ---------------------------------------------------------
+      // Save grouped repeated log messages.
+      // ---------------------------------------------------------
+      if (toolCall.name === 'group_logs') {
+        artifacts.groupedLogs = result as LogAnalysisArtifacts['groupedLogs'];
+      }
+
+      // ---------------------------------------------------------
+      // Save generated incident timeline.
+      // ---------------------------------------------------------
+      if (toolCall.name === 'build_timeline') {
+        artifacts.timeline = result as LogAnalysisArtifacts['timeline'];
+      }
+
+      // ---------------------------------------------------------
+      // Save inferred service dependency graph.
+      // ---------------------------------------------------------
+      if (toolCall.name === 'dependency_mapper') {
+        artifacts.dependencyMap =
+          result as LogAnalysisArtifacts['dependencyMap'];
+      }
 
       if (!toolCall.id) {
         throw new Error('Tool call id is missing.');
@@ -175,3 +256,53 @@ Analyze the incident by following your assigned skill and use tools whenever req
     'Log Analyzer Agent terminated without producing a final response.',
   );
 };
+
+// High Level Archtecture
+
+//                    logAnalyzerAgent()
+
+//                          │
+//                          ▼
+
+//                Load System Prompt
+//                          │
+//                          ▼
+
+//                  Load Skill.md
+//                          │
+//                          ▼
+
+//                Bind Available Tools
+//                            │
+//                            ▼
+
+//            Create Initial Messages Array
+
+//       [SystemMessage, HumanMessage]
+//                            │
+//                            ▼
+
+//           model.invoke(messages)
+
+//                            │
+
+//           ┌────────────────┴───────────────┐
+//           │                                │
+//           ▼                                ▼
+
+//     Tool Call Requested             Final Response
+
+//           │                                │
+//           ▼                                ▼
+
+//  Execute JS Tool                  Parse Output
+
+//           │                                │
+//           ▼                                ▼
+
+//  Add ToolMessage                Validate Output
+
+//           │                                │
+//           ▼                                ▼
+
+//  model.invoke(messages)          Return
