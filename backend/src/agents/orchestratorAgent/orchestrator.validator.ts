@@ -59,14 +59,6 @@ export const validateOrchestratorOutput = (
 
   // ------------------------------------------------
   // Step 4
-  // runParallel boolean hona chahiye
-  // ------------------------------------------------
-  if (typeof output.runParallel !== 'boolean') {
-    throw new Error('Orchestrator Agent: Invalid runParallel');
-  }
-
-  // ------------------------------------------------
-  // Step 5
   // continueWorkflow boolean hona chahiye
   // ------------------------------------------------
   if (typeof output.continueWorkflow !== 'boolean') {
@@ -74,7 +66,7 @@ export const validateOrchestratorOutput = (
   }
 
   // ------------------------------------------------
-  // Step 6
+  // Step 5
   // reasoning required hai
   // ------------------------------------------------
   if (typeof output.reasoning !== 'string' || output.reasoning.trim() === '') {
@@ -82,7 +74,7 @@ export const validateOrchestratorOutput = (
   }
 
   // ------------------------------------------------
-  // Step 7
+  // Step 6
   // Safe validated object return karo
   // ------------------------------------------------
   return output;

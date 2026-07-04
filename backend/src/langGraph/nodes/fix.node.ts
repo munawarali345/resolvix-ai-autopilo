@@ -6,28 +6,36 @@
 // Ye node Fix Agent ko represent karta hai.
 //
 // Is node ka kaam:
-// 1. Workflow step update karna
+// 1. Workflow step update karna 
 // 2. Future me Fix Agent ko call karna
 // ================================================================
 
-import { WorkflowState } from '../../types/index.js';
+import { WorkflowGraphState } from '../state/workflow.state.js';
 
-import { updateWorkflowStep } from '../../utils/workflowState.util.js';
+import { updateWorkflowStep, setFixExecution } from '../../utils/workflowState.util.js';
+
+import { fixAgentService } from '../../services/agentsServices/fixAgentService/fixAgent.service.js';
+
+
+type GraphState = typeof WorkflowGraphState.State;
 
 // ================================================================
 // FIX NODE
 // ================================================================
-export const fixNode = async (state: WorkflowState): Promise<WorkflowState> => {
+export const fixNode = async (state: GraphState ): Promise<GraphState> => {
+
   // Workflow step ko "fix" par set karo
-  const updatedState = updateWorkflowStep(
-    state,
+  const updatedState = updateWorkflowStep( state, 'fix' );
 
-    'fix',
-  );
+  // ================================================================
+    // STEP 2: Call root couse Service
+    // ================================================================
+    const result = await fixAgentService(updatedState);
+  
 
-  // TODO:
-  // Yahan future me fixAgent(updatedState)
-  // call hoga
+    // ================================================================
+    // STEP 3: Save result into state
+    // ================================================================
+    return setFixExecution(updatedState, result);
 
-  return updatedState;
 };

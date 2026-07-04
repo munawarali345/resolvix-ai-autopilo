@@ -11,6 +11,7 @@ import {
   WorkflowStep,
   RootCauseExecutionResult,
   LogAnalyzerExecutionResult,
+  FixAgentExecutionResult,
 } from '../types/index.js';
 import { WorkflowGraphState } from '../langGraph/state/workflow.state.js';
 
@@ -84,12 +85,36 @@ export const setRootCauseExecution = (
   return {
     ...state,
 
+    // Save AI analysis
     rootCauseResult: result.analysis,
 
     incident: {
+
       ...state.incident!,
 
       rootCause: result.analysis.rootCause,
+
     },
+
+  };
+};
+
+
+export const setFixExecution = (
+  state: GraphState,
+  result: FixAgentExecutionResult,
+): GraphState => {
+
+  return {
+
+    ...state,
+
+    // Save AI analysis
+    fixAgentResult: result.analysis,
+
+    // Save tool outputs
+    fixAgentArtifacts: result.artifacts,
+
+
   };
 };

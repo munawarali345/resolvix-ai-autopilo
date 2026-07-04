@@ -22,6 +22,7 @@ export const getUserByIdService = async (
     email: user.email,
     name: user.name,
     role: user.role,
+    isVerified: user.isVerified || false,
     createdAt: user.createdAt?.toString(),
     updatedAt: user.updatedAt?.toString(),
   };
@@ -40,6 +41,7 @@ export const getAllUsersService = async (): Promise<UserType[]> => {
     email: user.email,
     name: user.name,
     role: user.role,
+    isVerified: user.isVerified || false,
     createdAt: user.createdAt?.toString(),
     updatedAt: user.updatedAt?.toString(),
   }));
@@ -63,6 +65,7 @@ export const updateUserRoleService = async (
     email: user.email,
     name: user.name,
     role: user.role,
+    isVerified: user.isVerified || false,
     createdAt: user.createdAt?.toString(),
     updatedAt: user.updatedAt?.toString(),
   };

@@ -13,6 +13,8 @@ import {
   LogAnalyzerAgentOutput,
   LogAnalysisArtifacts,
   RootCauseAgentOutput,
+  FixAgentArtifacts,
+  FixAgentOutput,
 } from './index.js';
 
 // ================================================================
@@ -58,9 +60,13 @@ export interface WorkflowState {
 
   logAnalysisResult: LogAnalyzerAgentOutput | null;
 
+  logAnalysisArtifacts: LogAnalysisArtifacts | null;
+
   rootCauseResult: RootCauseAgentOutput | null;
 
-  logAnalysisArtifacts: LogAnalysisArtifacts | null;
+  fixAgentResult:  FixAgentOutput | null;
+
+  fixAgentArtifacts: FixAgentArtifacts;
 
   // Current workflow stage
   currentStep: WorkflowStep;

@@ -66,7 +66,7 @@ export const rootCauseAgent = async (
   // ==============================================================
 
   const skill = await loadSkill(
-    'rootCauseSkills',
+    'rootCauseAgentSkills',
 
     'traceDepandencySkill.md',
   );
@@ -119,7 +119,7 @@ export const rootCauseAgent = async (
      Raw Logs (Reference Only):
       ${JSON.stringify(agentInput.logs, null, 2)}
 
-     Identify the most probable root cause by following your assigned skill.
+     Identify the most probable root cause by following your assigned skill and prompt.
 
  `;
 

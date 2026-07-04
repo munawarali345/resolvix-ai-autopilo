@@ -45,3 +45,24 @@ export * from './logAnalyzer.type.js';
 
 // root Couse types
 export * from './rootCouseAgent.types.js';
+
+// fix agent types
+export * from './fixAgent.types.js';
+
+// fix agent tool types
+export * from './fixAgentTools.type.js';
+
+// playbook tool types
+export * from './playbookTool.types.js';
+
+// runbook types
+export * from './runbook.types.js';
+
+// configuration tool types
+export * from './configurationTool.type.js';
+
+// configuration diff types
+export * from './configDiff.type.js';
+
+// service inventory types
+export * from './serviceInventory.type.js';

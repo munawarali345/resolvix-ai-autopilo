@@ -46,4 +46,11 @@ export const WorkflowGraphState = Annotation.Root({
 
   // Root Cause Analysis result.
   rootCauseResult: Annotation<WorkflowState['rootCauseResult']>(),
+
+  // fix Agent result.
+  fixAgentResult: Annotation<WorkflowState['fixAgentResult']>(),
+
+   // Log Analysis tool outputs.
+  fixAgentArtifacts: Annotation<WorkflowState['fixAgentArtifacts']>(),
+
 });
