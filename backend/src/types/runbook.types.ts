@@ -1,5 +1,4 @@
-
- // ================================================================
+// ================================================================
 // RUNBOOK TYPES
 // ================================================================
 //
@@ -13,15 +12,13 @@
 //
 // ================================================================
 
-import { logService } from "./log.type.js";
-
+import { logService } from './log.type.js';
 
 // ================================================================
 // RUNBOOK STEP
 // ================================================================
 
 export interface RunbookStep {
-
   // Step execution order
   order: number;
 
@@ -35,24 +32,21 @@ export interface RunbookStep {
   expectedResult: string;
 }
 
-
 // ================================================================
 // RUNBOOK ESTIMATED TIME
 // ================================================================
 
 export type RunbookEstimatedTime =
-  | "5-10 minutes"
-  | "10-15 minutes"
-  | "15-30 minutes"
-  | "20-40 minutes";
-
+  | '5-10 minutes'
+  | '10-15 minutes'
+  | '15-30 minutes'
+  | '20-40 minutes';
 
 // ================================================================
 // MAIN RUNBOOK TYPE
 // ================================================================
 
 export type Runbook = {
-
   // Unique runbook ID
   id: string;
 
@@ -61,14 +55,14 @@ export type Runbook = {
 
   // Scenario mapping (VERY IMPORTANT)
   scenario:
-    | "db-failure"
-    | "memory-leak"
-    | "api-500-error"
-    | "deployment-failure"
-    | "cpu-spike";
+    | 'db-failure'
+    | 'memory-leak'
+    | 'api-500-error'
+    | 'deployment-failure'
+    | 'cpu-spike';
 
   // Category grouping
-  category: "Database" | "API" | "Performance" | "Deployment" | "System";
+  category: 'Database' | 'API' | 'Performance' | 'Deployment' | 'System';
 
   // Services impacted
   service: logService[];
@@ -79,13 +73,12 @@ export type Runbook = {
   // Step-by-step execution plan
   steps: RunbookStep[];
 
-// Execution type
-   automationLevel: "manual" | "semi-automated" | "automated";
+  // Execution type
+  automationLevel: 'manual' | 'semi-automated' | 'automated';
 
-   // Severity applicability
-   severity: "critical" | "high" | "medium" | "low";
+  // Severity applicability
+  severity: 'critical' | 'high' | 'medium' | 'low';
 
-   // Estimated remediation time
-   estimatedTime: RunbookEstimatedTime;
-
+  // Estimated remediation time
+  estimatedTime: RunbookEstimatedTime;
 };

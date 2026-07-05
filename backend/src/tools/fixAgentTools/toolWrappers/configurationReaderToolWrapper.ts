@@ -11,12 +11,12 @@
 //
 // ================================================================
 
-import { tool } from "@langchain/core/tools";
-import { z } from "zod";
+import { tool } from '@langchain/core/tools';
+import { z } from 'zod';
 
-import { configurationReader } from "../toolExecutors/configurationReader.function.js";
+import { configurationReader } from '../toolExecutors/configurationReader.function.js';
 
-import { LOG_SERVICES } from "../../../types/index.js";
+import { LOG_SERVICES } from '../../../types/index.js';
 
 // ================================================================
 // TOOL INPUT SCHEMA
@@ -26,13 +26,7 @@ import { LOG_SERVICES } from "../../../types/index.js";
 // Incident/root cause context is not required for configuration lookup.
 
 const ConfigurationReaderToolSchema = z.object({
-
-  affectedServices: z.array(
-
-    z.enum(LOG_SERVICES),
-
-  ),
-
+  affectedServices: z.array(z.enum(LOG_SERVICES)),
 });
 
 // ================================================================
@@ -42,10 +36,9 @@ const ConfigurationReaderToolSchema = z.object({
 // Tool metadata used by the LLM.
 
 const metadata = {
-
   // Tool name.
 
-  name: "configuration_reader",
+  name: 'configuration_reader',
 
   // Tool description.
 
@@ -84,7 +77,6 @@ Do NOT use this tool for:
   // Input schema.
 
   schema: ConfigurationReaderToolSchema,
-
 };
 
 // ================================================================
@@ -94,17 +86,13 @@ Do NOT use this tool for:
 // Expose the business logic as a LangChain Tool.
 
 export const configurationReaderTool = tool(
-
   // Execute tool.
 
   async (input) => {
-
     return configurationReader(input);
-
   },
 
   // Tool metadata.
 
   metadata,
-
 );

@@ -1,83 +1,60 @@
-
 // ================================================================
 // CONFIGURATION READER FUNCTION
 // ================================================================
 
-import { CONFIGURATIONS } from "../../../data/playbookData/configuration.data.js";
+import { CONFIGURATIONS } from '../../../data/playbookData/configuration.data.js';
 
 import {
   AffectedServicesToolInput,
   ConfigurationReaderOutput,
-} from "../../../types/index.js";
+} from '../../../types/index.js';
 
 // ================================================================
 // Configuration Reader
 // ================================================================
 
 export function configurationReader(
-
   input: AffectedServicesToolInput,
-
 ): ConfigurationReaderOutput {
-
   // No affected services.
 
   if (!input.affectedServices.length) {
-
     return {
-
       configurations: [],
-
     };
-
   }
 
   // Match affected service configurations.
 
-  const configurations = CONFIGURATIONS.filter(
-
-    (configuration) => input.affectedServices.includes(
-
-        configuration.service,
-
-      ),
-
+  const configurations = CONFIGURATIONS.filter((configuration) =>
+    input.affectedServices.includes(configuration.service),
   );
 
   // Return matched configurations.
 
   return {
+    configurations: configurations.map((configuration) => ({
+      service: configuration.service,
 
-    configurations: configurations.map(
+      version: configuration.version,
 
-      (configuration) => ({
+      environment: configuration.environment,
 
-        service: configuration.service,
+      image: configuration.image,
 
-        version: configuration.version,
+      replicas: configuration.replicas,
 
-        environment: configuration.environment,
+      cpuLimit: configuration.cpuLimit,
 
-        image: configuration.image,
+      memoryLimit: configuration.memoryLimit,
 
-        replicas: configuration.replicas,
+      connectionPool: configuration.connectionPool,
 
-        cpuLimit: configuration.cpuLimit,
+      requestTimeout: configuration.requestTimeout,
 
-        memoryLimit: configuration.memoryLimit,
+      autoScaling: configuration.autoScaling,
 
-        connectionPool: configuration.connectionPool,
-
-        requestTimeout: configuration.requestTimeout,
-
-        autoScaling: configuration.autoScaling,
-
-        configurationVersion: configuration.configurationVersion,
-
-      }),
-
-    ),
-
+      configurationVersion: configuration.configurationVersion,
+    })),
   };
-
 }

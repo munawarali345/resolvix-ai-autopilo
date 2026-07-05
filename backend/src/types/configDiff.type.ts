@@ -1,4 +1,3 @@
-
 // ================================================================
 // CONFIGURATION DIFF TYPES
 // ================================================================
@@ -17,14 +16,13 @@
 //
 // ================================================================
 
-import { logService } from "./index.js";
+import { logService } from './index.js';
 
 // ================================================================
 // CONFIGURATION CHANGE
 // ================================================================
 
 export interface ConfigurationChange {
-
   // Unique change id.
   id: string;
 
@@ -51,5 +49,4 @@ export interface ConfigurationChange {
 
   // Change timestamp.
   changedAt: Date;
-
 }

@@ -11,12 +11,12 @@
 //
 // ================================================================
 
-import { tool } from "@langchain/core/tools";
-import { z } from "zod";
+import { tool } from '@langchain/core/tools';
+import { z } from 'zod';
 
-import { searchRunbook } from "../toolExecutors/searchRunbook.function.js";
+import { searchRunbook } from '../toolExecutors/searchRunbook.function.js';
 
-import { LOG_SERVICES } from "../../../types/index.js";
+import { LOG_SERVICES } from '../../../types/index.js';
 
 // ================================================================
 // TOOL INPUT SCHEMA
@@ -25,35 +25,17 @@ import { LOG_SERVICES } from "../../../types/index.js";
 // Validate tool input.
 
 const SearchRunbookToolSchema = z.object({
-
   incident: z.object({
-
     title: z.string(),
 
     description: z.string(),
 
-    severity: z.enum([
-
-      "critical",
-
-      "high",
-
-      "medium",
-
-      "low",
-
-    ]),
+    severity: z.enum(['critical', 'high', 'medium', 'low']),
 
     rootCause: z.string(),
-
   }),
 
-  affectedServices: z.array(
-
-    z.enum(LOG_SERVICES),
-
-  ),
-
+  affectedServices: z.array(z.enum(LOG_SERVICES)),
 });
 
 // ================================================================
@@ -63,10 +45,9 @@ const SearchRunbookToolSchema = z.object({
 // Tool metadata used by the LLM.
 
 const metadata = {
-
   // Tool name.
 
-  name: "search_runbook",
+  name: 'search_runbook',
 
   // Tool description.
 
@@ -103,7 +84,6 @@ Do NOT use this tool for:
   // Input schema.
 
   schema: SearchRunbookToolSchema,
-
 };
 
 // ================================================================
@@ -113,17 +93,13 @@ Do NOT use this tool for:
 // Expose the business logic as a LangChain Tool.
 
 export const searchRunbookTool = tool(
-
   // Execute tool.
 
   async (input) => {
-
     return searchRunbook(input);
-
   },
 
   // Tool metadata.
 
   metadata,
-
 );

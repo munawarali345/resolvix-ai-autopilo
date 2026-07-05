@@ -29,7 +29,7 @@ import { AgentExecutionModel } from '../../../models/agentExecution.model.js';
 
 import { DetectionServiceOutput } from '../../../types/detectionService.type.js';
 
-import { appWorkflow } from '../../../langGraph/graph/workflow.graph.js';
+import { getWorkflow } from '../../../langGraph/graph/workflow.graph.js';
 
 // ================================================================
 // DETECTION SERVICE FUNCTION
@@ -37,10 +37,16 @@ import { appWorkflow } from '../../../langGraph/graph/workflow.graph.js';
 export const detectionService = async (
   logs: Log[],
 ): Promise<DetectionServiceOutput> => {
+
+
   // ------------------------------------------------
   // STEP 0: Execution start time (performance tracking)
   // ------------------------------------------------
   const startTime = Date.now();
+
+
+  const workflow = getWorkflow();
+  
 
   // ================================================================
   // STEP 1: LOG ANALYSIS (Metrics generate karna)
@@ -156,14 +162,38 @@ export const detectionService = async (
 
     // ------------------------------------------------
     // STEP 2: Start LangGraph workflow
+    //
+    // Each workflow is assigned a unique thread_id.
+    //
+    // The thread_id allows LangGraph to:
+    //
+    // • persist workflow state using the configured checkpointer
+    // • resume execution after interrupt()
+    // • support Human-in-the-Loop approvals
+    // • recover long-running workflows
+    //
     // ------------------------------------------------
-    await appWorkflow.invoke(workflowState);
+    await workflow.invoke(
+
+         workflowState,
+
+           {
+             configurable: {
+
+               thread_id: savedIncident._id.toString(),
+
+              },
+
+           },
+        );
+
   }
 
   // ================================================================
   // STEP 5: FINAL RESPONSE RETURN
   // ================================================================
   return {
+
     incidentDetected: aiResponse.isIncident,
 
     incident: savedIncident,
@@ -171,5 +201,7 @@ export const detectionService = async (
     confidence: aiResponse.confidence,
 
     signals: aiResponse.signals,
+
   };
+
 };

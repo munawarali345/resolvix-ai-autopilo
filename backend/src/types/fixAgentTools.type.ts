@@ -1,4 +1,3 @@
-
 // ================================================================
 // FIX AGENT TOOL TYPES
 // ================================================================
@@ -11,18 +10,17 @@
 //
 // ================================================================
 
-import { Environment } from "./configurationTool.type.js";
-import { IncidentSeverity } from "./incident.type.js";
-import { logService } from "./log.type.js";
-import { RunbookStep } from "./runbook.types.js";
-import { RunbookEstimatedTime } from "./runbook.types.js";
+import { Environment } from './configurationTool.type.js';
+import { IncidentSeverity } from './incident.type.js';
+import { logService } from './log.type.js';
+import { RunbookStep } from './runbook.types.js';
+import { RunbookEstimatedTime } from './runbook.types.js';
 
 // ================================================================
 // Shared Input
 // ================================================================
 
 export interface FixToolIncidentContext {
-
   title: string;
 
   description: string;
@@ -30,21 +28,16 @@ export interface FixToolIncidentContext {
   severity: IncidentSeverity;
 
   rootCause: string;
-
 }
 
 export interface FixToolInput {
-
   incident: FixToolIncidentContext;
 
   affectedServices: logService[];
-
 }
 
 export interface AffectedServicesToolInput {
-
   affectedServices: logService[];
-
 }
 
 // ================================================================
@@ -52,19 +45,15 @@ export interface AffectedServicesToolInput {
 // ================================================================
 
 export interface SearchFixPlaybookOutput {
+  playbooks: {
+    id: string;
 
-   playbooks: {
+    title: string;
 
-     id: string;
+    summary: string;
 
-     title: string;
-
-     summary: string;
-
-     relevanceScore: number;
-
-   }[];
-
+    relevanceScore: number;
+  }[];
 }
 
 // ================================================================
@@ -72,9 +61,7 @@ export interface SearchFixPlaybookOutput {
 // ================================================================
 
 export interface SearchRunbookOutput {
-
   runbooks: {
-
     id: string;
 
     title: string;
@@ -85,14 +72,12 @@ export interface SearchRunbookOutput {
 
     estimatedTime: RunbookEstimatedTime;
 
-    automationLevel: "manual" | "semi-automated" | "automated";
+    automationLevel: 'manual' | 'semi-automated' | 'automated';
 
     steps: RunbookStep[];
 
     relevanceScore: number;
-
   }[];
-
 }
 
 // ================================================================
@@ -100,9 +85,7 @@ export interface SearchRunbookOutput {
 // ================================================================
 
 export interface ConfigurationReaderOutput {
-
   configurations: {
-
     service: logService;
 
     version: string;
@@ -124,9 +107,7 @@ export interface ConfigurationReaderOutput {
     autoScaling: boolean;
 
     configurationVersion: string;
-
   }[];
-
 }
 
 // ================================================================
@@ -134,13 +115,11 @@ export interface ConfigurationReaderOutput {
 // ================================================================
 
 export interface ConfigurationDiffOutput {
-
   changes: {
-
     id: string;
 
     service: logService;
-    
+
     field: string;
 
     previousValue: string;
@@ -152,11 +131,9 @@ export interface ConfigurationDiffOutput {
     currentConfigurationVersion: string;
 
     reason: string;
-    
+
     changedAt: Date;
-
   }[];
-
 }
 
 // ================================================================
@@ -164,9 +141,7 @@ export interface ConfigurationDiffOutput {
 // ================================================================
 
 export interface ServiceInventoryOutput {
-
   services: {
-
     id: string;
 
     name: logService;
@@ -184,7 +159,5 @@ export interface ServiceInventoryOutput {
     repository: string;
 
     criticality: IncidentSeverity;
-
   }[];
-
 }

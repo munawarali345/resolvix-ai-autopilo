@@ -62,6 +62,7 @@ export const connectDB = async () => {
     // Step 3: Connection successful
     // Log for monitoring / development purposes
     logger.info('MongoDB connected successfully');
+    
   } catch (err) {
     // Step 4: Connection failed
     // Log actual error for debugging

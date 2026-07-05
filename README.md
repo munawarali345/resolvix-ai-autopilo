@@ -1,179 +1,252 @@
-# Resolvix AI
-
-Resolvix AI is a production-ready monorepo foundation for building autonomous AI platforms, scalable web applications, SaaS products, hackathon projects, and modern full-stack systems.
-
-The project follows a structured monorepo architecture with a dedicated frontend, backend, shared tooling, automated CI validation, and modern development workflows.
+# Resolvix AI Ops - Autonomous DevOps Platform
 
 [![CI](https://github.com/munawarali345/resolvix-ai-autopilo/actions/workflows/ci.yml/badge.svg)](https://github.com/munawarali345/resolvix-ai-autopilo/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PNPM](https://img.shields.io/badge/pnpm-10.x-orange)](https://pnpm.io/)
 
-### Monorepo Architecture
+## Overview
 
-- PNPM Workspace Configuration
-- Frontend & Backend Separation
-- Shared Dependency Management
-- Scalable Folder Structure
+Resolvix AI Ops AI is an autonomous multi-agent DevOps platform that autonomously monitors 
+application health, detects incidents, diagnoses root causes, proposes remediation strategies, 
+validates risk, and executes recovery actions with minimal human intervention.
 
-### Frontend Setup
+## Architecture
 
-- Next.js 15 (App Router)
-- TypeScript
-- Tailwind CSS
-- shadcn/ui Components
-- Zustand State Management
-- TanStack Query
-- Recharts Integration
+```mermaid
+graph TD
+    A[Orchestrator] --> B[Log Analysis]
+    B --> C[Root Cause]
+    C --> D[Fix Agent]
+    D --> E[Risk Validator]
+    E --> F[Executor]
+    F --> G[Reporter]
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#e8f5e8
+    style D fill:#fff3e0
+    style E fill:#ffebee
+    style F fill:#f1f8e9
+    style G fill:#fce4ec
+```
 
-### Backend Setup
+## Multi-Agent Workflow
 
-- Express.js
-- TypeScript (ESM)
-- MongoDB (Mongoose)
-- JWT Authentication Support
-- bcryptjs Password Hashing
-- Winston Logging
-
-### Development Tooling
-
-- PNPM Package Manager
-- ESLint Configuration
-- Prettier Formatting
-- Husky Git Hooks
-- GitHub Actions CI Pipeline
-- Build Validation Workflow
+| Agent | Purpose | Skills | Tools |
+|-------|---------|--------|-------|
+| **Orchestrator** | Workflow coordination | - | - |
+| **Log Analysis** | Extract errors, build timeline, identify patterns | Log Analysis Skill | extractErrors, buildTimeline, groupLogs, extractAffectedServices, dependencyMapper |
+| **Root Cause** | Identify probable root cause | Trace Dependencies Skill | - |
+| **Fix Agent** | Generate remediation recommendations | Fix Recommendation Skill | searchFixPlaybook, searchRunbook, configurationReader, configurationDiff, serviceInventory |
+| **Risk Validator** | Validate remediation safety | Validate Risk Skill | approvalPolicy, maintenanceWindow, impactAssessment, missingValidation |
 
 ## Project Structure
 
-```text
+```
 resolvix-ai/
 ├── backend/
 │   ├── src/
-│   │   ├── agents/
-│   │   ├── config/
-│   │   ├── controllers/
-│   │   ├── middlewares/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   ├── services/
-│   │   ├── types/
-│   │   ├── utils/
+│   │   ├── ai/qwen/                    # Qwen Cloud integration
+│   │   ├── agents/                     # AI Agents with skills
+│   │   │   ├── detectionAgent/
+│   │   │   ├── log-analysisAgent/
+│   │   │   ├── orchestratorAgent/
+│   │   │   ├── risk-validatorAgent/
+│   │   │   ├── fixAgent/
+│   │   │   └── root-causeAgent/
+│   │   ├── config/                     # Configuration files
+│   │   ├── controllers/                # Request handlers
+│   │   ├── data/playbookData/          # Knowledge base (playbooks, runbooks)
+│   │   ├── langGraph/                  # Workflow graph & nodes
+│   │   │   ├── graph/workflow.graph.ts
+│   │   │   ├── nodes/
+│   │   │   └── state/workflow.state.ts
+│   │   ├── lib/                        # Utilities
+│   │   ├── middlewares/                # Express middlewares
+│   │   ├── models/                     # Database schemas
+│   │   ├── routes/                     # API routes
+│   │   ├── services/                   # Business logic
+│   │   │   ├── agentsServices/
+│   │   │   ├── incidentSimulatorServices/
+│   │   │   └── agentExecutionServices/
+│   │   ├── skills/                     # Agent operational procedures
+│   │   │   ├── fixAgentSkills/
+│   │   │   ├── riskValidationSkill/
+│   │   │   ├── logAnalysisSkills/
+│   │   │   └── rootCauseAgentSkills/
+│   │   ├── tools/                      # Tool wrappers & executors
+│   │   │   ├── fixAgentTools/
+│   │   │   ├── logAnalyzerAgentTools/
+│   │   │   └── riskValidatorTools/
+│   │   ├── types/                      # TypeScript interfaces
+│   │   ├── utils/                      # Helper functions
 │   │   ├── app.ts
 │   │   └── server.ts
-│   ├── package.json
-│   └── tsconfig.json
-│
+│   └── package.json
 ├── frontend/
-│   ├── src/
-│   │   ├── app/
-│   │   ├── components/
-│   │   ├── components/ui/
-│   │   ├── lib/
-│   │   └── types/
-│   ├── package.json
-│   ├── tailwind.config.js
-│   └── tsconfig.json
-│
+│   └── src/
+│       ├── app/
+│       ├── components/
+│       ├── lib/
+│       └── types/
+├── docs/
+│   ├── ARCHITECTURE.md
+│   └── PROJECT_STATUS.md
 ├── .github/
-│   └── workflows/
-│       └── ci.yml
-│
-├── package.json
-├── pnpm-workspace.yaml
-├── pnpm-lock.yaml
 └── README.md
 ```
+
+## Skill-Based Agent Framework
+
+Each agent follows a structured operational procedure defined in markdown skill files:
+
+```
+src/skills/
+├── fixAgentSkills/fixRecommendationSkill.md
+├── riskValidationSkill/validateRiskSkill.md
+├── logAnalysisSkills/logAnalysisSkill.md
+└── rootCauseAgentSkills/traceDepandencySkill.md
+```
+
+Skills enforce:
+- Evidence-based reasoning
+- Tool selection strategy
+- Safety constraints
+- Output validation requirements
+
+## Tool Architecture
+
+### Wrapper Pattern
+
+```
+src/tools/
+├── fixAgentTools/
+│   ├── toolWrappers/     # 5 tools
+│   └── toolExecutors/    # Business logic
+├── logAnalyzerAgentTools/
+│   ├── toolWrappers/     # 5 tools
+│   └── toolExecutors/    # Business logic
+└── riskValidatorTools/
+    ├── toolWrappers/     # 4 tools
+    └── toolExecutors/    # Business logic
+```
+
+### Scoring Algorithm
+
+Playbook matching uses weighted scoring:
+- Root Cause Match: 60 points
+- Service Match: 15 points per service (max 30)
+- Severity Match: 10 points
+
+## Knowledge Base
+
+### Playbooks (56 Ready-to-Use)
+Located in `src/data/playbookData/playbooks.data.ts`
+
+Categories:
+- Database Failures (15 playbooks)
+- Memory Leaks (10 playbooks)
+- API 500 Errors (11 playbooks)
+- Deployment Failures (10 playbooks)
+- CPU Spikes (10 playbooks)
+
+### Runbooks
+Located in `src/data/playbookData/runbook.data.ts`
+
+### Service Inventory
+Located in `src/data/playbookData/serviceInventoryData.ts`
+
+## AI Integration
+
+### Qwen Cloud APIs
+- **Direct Client**: `src/ai/qwen/qwen.client.ts` - Raw API communication
+- **LangChain Model**: `src/ai/qwen/qwen.langchain.ts` - Tool-calling model wrapper
+
+### Configuration (`src/ai/qwen/qwen.config.ts`)
+```typescript
+QWEN_CONFIG = {
+  baseUrl: 'https://dashscope-intl.aliyuncs.com/compatible-mode/v1',
+  model: env.QWEN_MODEL,
+  temperature: 0,
+  maxTokens: 1000
+}
+```
+
+## Incident Simulation
+
+API endpoints in `src/routes/incident-simulation.routes.ts`:
+
+```bash
+# Database Failure
+POST /api/simulate/db-failure
+
+# Memory Leak
+POST /api/simulate/memory-leak
+
+# API 500 Error
+POST /api/simulate/api-500
+
+# Deployment Failure
+POST /api/simulate/deployment-failure
+
+# CPU Spike
+POST /api/simulate/cpu-spike
+```
+
+## Tech Stack
+
+### Backend
+- **Framework**: Express.js + TypeScript (ESM)
+- **AI Framework**: LangChain + LangGraph
+- **Database**: MongoDB (Mongoose)
+- **Authentication**: JWT
+- **Logging**: Winston
+
+### Frontend
+- **Framework**: Next.js 15 (App Router)
+- **State Management**: Zustand
+- **UI Library**: shadcn/ui
+- **Charts**: Recharts
 
 ## Quick Start
 
 ### Install Dependencies
-
 ```bash
 pnpm install
 ```
 
-### Start Frontend
-
-```bash
-pnpm dev:frontend
-```
-
-Frontend runs at `http://localhost:3000`
-
 ### Start Backend
-
 ```bash
 pnpm dev:backend
+# Server runs at http://localhost:5000
 ```
 
-Backend runs at `http://localhost:5000`
-
-## Available Scripts
-
-### Development
-
+### Start Frontend
 ```bash
 pnpm dev:frontend
-pnpm dev:backend
-pnpm lint
-pnpm format
+# App runs at http://localhost:3000
 ```
 
-### Production
+## Demo Flow
 
-```bash
-pnpm build
-pnpm start
+```
+┌─────────────────┐
+│   Sample API    │ POST /api/simulate/db-failure
+└───────┬─────────┘
+        ▼
+┌─────────────────┐
+│  LangGraph      │ Workflow Execution
+└───────┬─────────┘
+        ▼
+┌─────────────────┐
+│ Orchestrator → Log Analysis → Root Cause → Fix Agent → Risk Validator
+└─────────────────┘
 ```
 
-## Environment Configuration
+## Documentation
 
-### Frontend
-
-Create `frontend/.env.local`
-
-Example:
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:5000/api
-NEXT_PUBLIC_BASE_URL=http://localhost:3000
-```
-
-### Backend
-
-Create `backend/.env`
-
-Add required environment variables according to your project requirements.
-
-## CI/CD
-
-GitHub Actions automatically validates:
-
-- Dependency Installation
-- Build Process
-- Linting
-- Test Execution
-
-Every push and pull request triggers automated checks.
-
-## Current Status
-
-### Completed
-
-- Monorepo Setup
-- PNPM Workspace
-- Frontend Foundation
-- Backend Foundation
-- TypeScript Configuration
-- ESLint Configuration
-- Husky Setup
-- GitHub Actions CI Workflow
-
-### In Progress
-
-- API Development
-- AI Agent Architecture
-- Monitoring & Logging Enhancements
+- `ARCHITECTURE.md` - System diagrams and flow
+- `PROJECT_STATUS.md` - Feature status and demo guide
 
 ## License
 

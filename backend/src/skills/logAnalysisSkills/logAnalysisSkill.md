@@ -1,6 +1,4 @@
-
 ---
-
 name: log-analysis-skill
 
 description: Standard operating procedure for the Log Analyzer Agent to perform structured incident log investigation using available tools and produce evidence-based analysis for downstream agents.
@@ -10,7 +8,6 @@ version: 1.0.0
 owner: Resolvix AI Ops
 
 agent: Log Analyzer Agent
-
 ---
 
 # Analyze Logs Skill

@@ -1,4 +1,3 @@
-
 // ================================================================
 // PLAYBOOK TYPE
 // ================================================================
@@ -16,14 +15,13 @@
 // without changing the Fix Agent logic.
 // ================================================================
 
-import { IncidentSeverity, logService } from "./index.js";
+import { IncidentSeverity, logService } from './index.js';
 
 // ================================================================
 // PLAYBOOK
 // ================================================================
 
 export interface Playbook {
-
   // Unique playbook identifier.
   id: string;
 
@@ -42,7 +40,6 @@ export interface Playbook {
   // Supported incident severities.
   severity: IncidentSeverity[];
 
-// Short remediation overview.
-   summary: string;
-
+  // Short remediation overview.
+  summary: string;
 }

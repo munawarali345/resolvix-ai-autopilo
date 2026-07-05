@@ -1,4 +1,3 @@
-
 // ================================================================
 // SERVICE INVENTORY LANGCHAIN TOOL
 // ================================================================
@@ -13,12 +12,12 @@
 //
 // ================================================================
 
-import { tool } from "@langchain/core/tools";
-import { z } from "zod";
+import { tool } from '@langchain/core/tools';
+import { z } from 'zod';
 
-import { serviceInventory } from "../toolExecutors/serviceInventory.function.js";
+import { serviceInventory } from '../toolExecutors/serviceInventory.function.js';
 
-import { LOG_SERVICES } from "../../../types/index.js";
+import { LOG_SERVICES } from '../../../types/index.js';
 
 // ================================================================
 // TOOL INPUT SCHEMA
@@ -27,13 +26,7 @@ import { LOG_SERVICES } from "../../../types/index.js";
 // Validate tool input.
 
 const ServiceInventoryToolSchema = z.object({
-
-  affectedServices: z.array(
-
-    z.enum(LOG_SERVICES),
-
-  ),
-
+  affectedServices: z.array(z.enum(LOG_SERVICES)),
 });
 
 // ================================================================
@@ -43,10 +36,9 @@ const ServiceInventoryToolSchema = z.object({
 // Tool metadata used by the LLM.
 
 const metadata = {
-
   // Tool name.
 
-  name: "service_inventory",
+  name: 'service_inventory',
 
   // Tool description.
 
@@ -84,7 +76,6 @@ Do NOT use this tool for:
   // Input schema.
 
   schema: ServiceInventoryToolSchema,
-
 };
 
 // ================================================================
@@ -94,17 +85,13 @@ Do NOT use this tool for:
 // Expose the business logic as a LangChain Tool.
 
 export const serviceInventoryTool = tool(
-
   // Execute tool.
 
   async (input) => {
-
     return serviceInventory(input);
-
   },
 
   // Tool metadata.
 
   metadata,
-
 );

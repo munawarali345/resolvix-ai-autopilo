@@ -1,4 +1,3 @@
-
 // ================================================================
 // CONFIGURATION DIFF DATA
 // ================================================================
@@ -22,75 +21,74 @@
 //
 // ================================================================
 
-import { ConfigurationChange } from "../../types/configDiff.type.js";
+import { ConfigurationChange } from '../../types/configDiff.type.js';
 
 export const CONFIGURATION_CHANGES: ConfigurationChange[] = [
-
   // ============================================================
   // API GATEWAY
   // ============================================================
 
   {
-    id: "CHG-001",
+    id: 'CHG-001',
 
-    service: "api-gateway",
+    service: 'api-gateway',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-001",
+    currentConfigurationVersion: 'CFG-001',
 
-    field: "replicas",
+    field: 'replicas',
 
-    previousValue: "2",
+    previousValue: '2',
 
-    currentValue: "3",
+    currentValue: '3',
 
     reason:
-      "Traffic increased after production release. Replica count was increased to improve availability.",
+      'Traffic increased after production release. Replica count was increased to improve availability.',
 
-    changedAt: new Date("2026-01-08T09:20:00Z"),
+    changedAt: new Date('2026-01-08T09:20:00Z'),
   },
 
   {
-    id: "CHG-002",
+    id: 'CHG-002',
 
-    service: "api-gateway",
+    service: 'api-gateway',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-001",
+    currentConfigurationVersion: 'CFG-001',
 
-    field: "requestTimeout",
+    field: 'requestTimeout',
 
-    previousValue: "20",
+    previousValue: '20',
 
-    currentValue: "30",
+    currentValue: '30',
 
     reason:
-      "Timeout increased to reduce unnecessary request failures during peak traffic.",
+      'Timeout increased to reduce unnecessary request failures during peak traffic.',
 
-    changedAt: new Date("2026-01-08T09:22:00Z"),
+    changedAt: new Date('2026-01-08T09:22:00Z'),
   },
 
   {
-    id: "CHG-003",
+    id: 'CHG-003',
 
-    service: "api-gateway",
+    service: 'api-gateway',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-001",
+    currentConfigurationVersion: 'CFG-001',
 
-    field: "cpuLimit",
+    field: 'cpuLimit',
 
-    previousValue: "250m",
+    previousValue: '250m',
 
-    currentValue: "500m",
+    currentValue: '500m',
 
     reason:
-      "CPU resources increased after sustained high utilization observed in monitoring.",
+      'CPU resources increased after sustained high utilization observed in monitoring.',
 
-    changedAt: new Date("2026-01-08T09:25:00Z"),
+    changedAt: new Date('2026-01-08T09:25:00Z'),
   },
 
   // ============================================================
@@ -98,70 +96,70 @@ export const CONFIGURATION_CHANGES: ConfigurationChange[] = [
   // ============================================================
 
   {
-    id: "CHG-004",
+    id: 'CHG-004',
 
-    service: "database",
+    service: 'database',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-002",
+    currentConfigurationVersion: 'CFG-002',
 
-    field: "connectionPool",
+    field: 'connectionPool',
 
-    previousValue: "50",
+    previousValue: '50',
 
-    currentValue: "100",
+    currentValue: '100',
 
     reason:
-      "Connection pool size increased to support higher concurrent application traffic.",
+      'Connection pool size increased to support higher concurrent application traffic.',
 
-    changedAt: new Date("2026-01-07T14:10:00Z"),
+    changedAt: new Date('2026-01-07T14:10:00Z'),
   },
 
   {
-    id: "CHG-005",
+    id: 'CHG-005',
 
-    service: "database",
+    service: 'database',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-002",
+    currentConfigurationVersion: 'CFG-002',
 
-    field: "memoryLimit",
+    field: 'memoryLimit',
 
-    previousValue: "2Gi",
+    previousValue: '2Gi',
 
-    currentValue: "4Gi",
+    currentValue: '4Gi',
 
     reason:
-      "Memory allocation increased after repeated database memory pressure alerts.",
+      'Memory allocation increased after repeated database memory pressure alerts.',
 
-    changedAt: new Date("2026-01-07T14:18:00Z"),
+    changedAt: new Date('2026-01-07T14:18:00Z'),
   },
 
-    // ============================================================
+  // ============================================================
   // DATABASE
   // ============================================================
 
   {
-    id: "CHG-006",
+    id: 'CHG-006',
 
-    service: "database",
+    service: 'database',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-002",
+    currentConfigurationVersion: 'CFG-002',
 
-    field: "cpuLimit",
+    field: 'cpuLimit',
 
-    previousValue: "1000m",
+    previousValue: '1000m',
 
-    currentValue: "2000m",
+    currentValue: '2000m',
 
     reason:
-      "CPU allocation increased after repeated database CPU saturation alerts during peak workload.",
+      'CPU allocation increased after repeated database CPU saturation alerts during peak workload.',
 
-    changedAt: new Date("2026-01-07T14:30:00Z"),
+    changedAt: new Date('2026-01-07T14:30:00Z'),
   },
 
   // ============================================================
@@ -169,45 +167,45 @@ export const CONFIGURATION_CHANGES: ConfigurationChange[] = [
   // ============================================================
 
   {
-    id: "CHG-007",
+    id: 'CHG-007',
 
-    service: "user-service",
+    service: 'user-service',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-003",
+    currentConfigurationVersion: 'CFG-003',
 
-    field: "replicas",
+    field: 'replicas',
 
-    previousValue: "1",
+    previousValue: '1',
 
-    currentValue: "2",
+    currentValue: '2',
 
     reason:
-      "Replica count increased to improve user authentication and profile request availability.",
+      'Replica count increased to improve user authentication and profile request availability.',
 
-    changedAt: new Date("2026-01-10T08:10:00Z"),
+    changedAt: new Date('2026-01-10T08:10:00Z'),
   },
 
   {
-    id: "CHG-008",
+    id: 'CHG-008',
 
-    service: "user-service",
+    service: 'user-service',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-003",
+    currentConfigurationVersion: 'CFG-003',
 
-    field: "requestTimeout",
+    field: 'requestTimeout',
 
-    previousValue: "15",
+    previousValue: '15',
 
-    currentValue: "25",
+    currentValue: '25',
 
     reason:
-      "Request timeout increased to reduce unnecessary failures caused by slow downstream responses.",
+      'Request timeout increased to reduce unnecessary failures caused by slow downstream responses.',
 
-    changedAt: new Date("2026-01-10T08:18:00Z"),
+    changedAt: new Date('2026-01-10T08:18:00Z'),
   },
 
   // ============================================================
@@ -215,91 +213,91 @@ export const CONFIGURATION_CHANGES: ConfigurationChange[] = [
   // ============================================================
 
   {
-    id: "CHG-009",
+    id: 'CHG-009',
 
-    service: "order-service",
+    service: 'order-service',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-004",
+    currentConfigurationVersion: 'CFG-004',
 
-    field: "replicas",
+    field: 'replicas',
 
-    previousValue: "2",
+    previousValue: '2',
 
-    currentValue: "3",
+    currentValue: '3',
 
     reason:
-      "Replica count increased to handle growing order processing traffic during business hours.",
+      'Replica count increased to handle growing order processing traffic during business hours.',
 
-    changedAt: new Date("2026-01-09T15:25:00Z"),
+    changedAt: new Date('2026-01-09T15:25:00Z'),
   },
 
   {
-    id: "CHG-010",
+    id: 'CHG-010',
 
-    service: "order-service",
+    service: 'order-service',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-004",
+    currentConfigurationVersion: 'CFG-004',
 
-    field: "requestTimeout",
+    field: 'requestTimeout',
 
-    previousValue: "30",
+    previousValue: '30',
 
-    currentValue: "40",
+    currentValue: '40',
 
     reason:
-      "Timeout updated because order validation occasionally exceeded the previous limit.",
+      'Timeout updated because order validation occasionally exceeded the previous limit.',
 
-    changedAt: new Date("2026-01-09T15:32:00Z"),
+    changedAt: new Date('2026-01-09T15:32:00Z'),
   },
 
-    // ============================================================
+  // ============================================================
   // PAYMENT SERVICE
   // ============================================================
 
   {
-    id: "CHG-011",
+    id: 'CHG-011',
 
-    service: "payment-service",
+    service: 'payment-service',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-005",
+    currentConfigurationVersion: 'CFG-005',
 
-    field: "requestTimeout",
+    field: 'requestTimeout',
 
-    previousValue: "30",
+    previousValue: '30',
 
-    currentValue: "45",
+    currentValue: '45',
 
     reason:
-      "Payment gateway latency increased after external provider update. Timeout was extended to reduce transaction failures.",
+      'Payment gateway latency increased after external provider update. Timeout was extended to reduce transaction failures.',
 
-    changedAt: new Date("2026-01-12T09:40:00Z"),
+    changedAt: new Date('2026-01-12T09:40:00Z'),
   },
 
   {
-    id: "CHG-012",
+    id: 'CHG-012',
 
-    service: "payment-service",
+    service: 'payment-service',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-005",
+    currentConfigurationVersion: 'CFG-005',
 
-    field: "connectionPool",
+    field: 'connectionPool',
 
-    previousValue: "40",
+    previousValue: '40',
 
-    currentValue: "60",
+    currentValue: '60',
 
     reason:
-      "Connection pool increased to support higher payment transaction concurrency during peak traffic.",
+      'Connection pool increased to support higher payment transaction concurrency during peak traffic.',
 
-    changedAt: new Date("2026-01-12T09:45:00Z"),
+    changedAt: new Date('2026-01-12T09:45:00Z'),
   },
 
   // ============================================================
@@ -307,45 +305,45 @@ export const CONFIGURATION_CHANGES: ConfigurationChange[] = [
   // ============================================================
 
   {
-    id: "CHG-013",
+    id: 'CHG-013',
 
-    service: "cache",
+    service: 'cache',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-006",
+    currentConfigurationVersion: 'CFG-006',
 
-    field: "memoryLimit",
+    field: 'memoryLimit',
 
-    previousValue: "1Gi",
+    previousValue: '1Gi',
 
-    currentValue: "2Gi",
+    currentValue: '2Gi',
 
     reason:
-      "Cache memory allocation increased after eviction rate exceeded acceptable production thresholds.",
+      'Cache memory allocation increased after eviction rate exceeded acceptable production thresholds.',
 
-    changedAt: new Date("2026-01-09T11:55:00Z"),
+    changedAt: new Date('2026-01-09T11:55:00Z'),
   },
 
   {
-    id: "CHG-014",
+    id: 'CHG-014',
 
-    service: "cache",
+    service: 'cache',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-006",
+    currentConfigurationVersion: 'CFG-006',
 
-    field: "replicas",
+    field: 'replicas',
 
-    previousValue: "1",
+    previousValue: '1',
 
-    currentValue: "2",
+    currentValue: '2',
 
     reason:
-      "Additional cache replica added to improve availability and reduce request latency.",
+      'Additional cache replica added to improve availability and reduce request latency.',
 
-    changedAt: new Date("2026-01-09T12:00:00Z"),
+    changedAt: new Date('2026-01-09T12:00:00Z'),
   },
 
   // ============================================================
@@ -353,49 +351,49 @@ export const CONFIGURATION_CHANGES: ConfigurationChange[] = [
   // ============================================================
 
   {
-    id: "CHG-015",
+    id: 'CHG-015',
 
-    service: "monitoring",
+    service: 'monitoring',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-007",
+    currentConfigurationVersion: 'CFG-007',
 
-    field: "memoryLimit",
+    field: 'memoryLimit',
 
-    previousValue: "512Mi",
+    previousValue: '512Mi',
 
-    currentValue: "1Gi",
+    currentValue: '1Gi',
 
     reason:
-      "Monitoring stack memory increased after sustained growth in metrics and alerting workload.",
+      'Monitoring stack memory increased after sustained growth in metrics and alerting workload.',
 
-    changedAt: new Date("2026-01-05T08:45:00Z"),
+    changedAt: new Date('2026-01-05T08:45:00Z'),
   },
 
-    // ============================================================
+  // ============================================================
   // MONITORING
   // ============================================================
 
   {
-    id: "CHG-016",
+    id: 'CHG-016',
 
-    service: "monitoring",
+    service: 'monitoring',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-007",
+    currentConfigurationVersion: 'CFG-007',
 
-    field: "cpuLimit",
+    field: 'cpuLimit',
 
-    previousValue: "250m",
+    previousValue: '250m',
 
-    currentValue: "500m",
+    currentValue: '500m',
 
     reason:
-      "CPU resources increased after sustained Prometheus scrape load and alert evaluation latency.",
+      'CPU resources increased after sustained Prometheus scrape load and alert evaluation latency.',
 
-    changedAt: new Date("2026-01-05T08:55:00Z"),
+    changedAt: new Date('2026-01-05T08:55:00Z'),
   },
 
   // ============================================================
@@ -403,66 +401,66 @@ export const CONFIGURATION_CHANGES: ConfigurationChange[] = [
   // ============================================================
 
   {
-    id: "CHG-017",
+    id: 'CHG-017',
 
-    service: "deployment",
+    service: 'deployment',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-008",
+    currentConfigurationVersion: 'CFG-008',
 
-    field: "version",
+    field: 'version',
 
-    previousValue: "v1.27.5",
+    previousValue: 'v1.27.5',
 
-    currentValue: "v1.28.4",
+    currentValue: 'v1.28.4',
 
     reason:
-      "Deployment controller upgraded to the latest supported production release.",
+      'Deployment controller upgraded to the latest supported production release.',
 
-    changedAt: new Date("2026-01-06T15:40:00Z"),
+    changedAt: new Date('2026-01-06T15:40:00Z'),
   },
 
   {
-    id: "CHG-018",
+    id: 'CHG-018',
 
-    service: "deployment",
+    service: 'deployment',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-008",
+    currentConfigurationVersion: 'CFG-008',
 
-    field: "image",
+    field: 'image',
 
-    previousValue: "deployment-controller:v1.27.5",
+    previousValue: 'deployment-controller:v1.27.5',
 
-    currentValue: "deployment-controller:v1.28.4",
+    currentValue: 'deployment-controller:v1.28.4',
 
     reason:
-      "Container image updated as part of the production deployment controller upgrade.",
+      'Container image updated as part of the production deployment controller upgrade.',
 
-    changedAt: new Date("2026-01-06T15:50:00Z"),
+    changedAt: new Date('2026-01-06T15:50:00Z'),
   },
 
   {
-    id: "CHG-019",
+    id: 'CHG-019',
 
-    service: "deployment",
+    service: 'deployment',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-008",
+    currentConfigurationVersion: 'CFG-008',
 
-    field: "replicas",
+    field: 'replicas',
 
-    previousValue: "1",
+    previousValue: '1',
 
-    currentValue: "2",
+    currentValue: '2',
 
     reason:
-      "Replica count increased to improve controller availability during rolling deployments.",
+      'Replica count increased to improve controller availability during rolling deployments.',
 
-    changedAt: new Date("2026-01-06T16:00:00Z"),
+    changedAt: new Date('2026-01-06T16:00:00Z'),
   },
 
   // ============================================================
@@ -470,49 +468,49 @@ export const CONFIGURATION_CHANGES: ConfigurationChange[] = [
   // ============================================================
 
   {
-    id: "CHG-020",
+    id: 'CHG-020',
 
-    service: "authentication",
+    service: 'authentication',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-009",
+    currentConfigurationVersion: 'CFG-009',
 
-    field: "requestTimeout",
+    field: 'requestTimeout',
 
-    previousValue: "15",
+    previousValue: '15',
 
-    currentValue: "20",
+    currentValue: '20',
 
     reason:
-      "Authentication timeout increased to reduce login failures caused by slow identity provider responses.",
+      'Authentication timeout increased to reduce login failures caused by slow identity provider responses.',
 
-    changedAt: new Date("2026-01-10T13:30:00Z"),
+    changedAt: new Date('2026-01-10T13:30:00Z'),
   },
 
-    // ============================================================
+  // ============================================================
   // AUTHENTICATION
   // ============================================================
 
   {
-    id: "CHG-021",
+    id: 'CHG-021',
 
-    service: "authentication",
+    service: 'authentication',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-009",
+    currentConfigurationVersion: 'CFG-009',
 
-    field: "replicas",
+    field: 'replicas',
 
-    previousValue: "1",
+    previousValue: '1',
 
-    currentValue: "2",
+    currentValue: '2',
 
     reason:
-      "Replica count increased to improve authentication service availability and reduce login request latency.",
+      'Replica count increased to improve authentication service availability and reduce login request latency.',
 
-    changedAt: new Date("2026-01-10T13:40:00Z"),
+    changedAt: new Date('2026-01-10T13:40:00Z'),
   },
 
   // ============================================================
@@ -520,45 +518,45 @@ export const CONFIGURATION_CHANGES: ConfigurationChange[] = [
   // ============================================================
 
   {
-    id: "CHG-022",
+    id: 'CHG-022',
 
-    service: "health-check",
+    service: 'health-check',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-010",
+    currentConfigurationVersion: 'CFG-010',
 
-    field: "requestTimeout",
+    field: 'requestTimeout',
 
-    previousValue: "5",
+    previousValue: '5',
 
-    currentValue: "10",
+    currentValue: '10',
 
     reason:
-      "Health check timeout increased to prevent false unhealthy reports during temporary infrastructure latency.",
+      'Health check timeout increased to prevent false unhealthy reports during temporary infrastructure latency.',
 
-    changedAt: new Date("2026-01-07T09:20:00Z"),
+    changedAt: new Date('2026-01-07T09:20:00Z'),
   },
 
   {
-    id: "CHG-023",
+    id: 'CHG-023',
 
-    service: "health-check",
+    service: 'health-check',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-010",
+    currentConfigurationVersion: 'CFG-010',
 
-    field: "memoryLimit",
+    field: 'memoryLimit',
 
-    previousValue: "128Mi",
+    previousValue: '128Mi',
 
-    currentValue: "256Mi",
+    currentValue: '256Mi',
 
     reason:
-      "Memory allocation increased after additional health probes and diagnostic checks were introduced.",
+      'Memory allocation increased after additional health probes and diagnostic checks were introduced.',
 
-    changedAt: new Date("2026-01-07T09:28:00Z"),
+    changedAt: new Date('2026-01-07T09:28:00Z'),
   },
 
   // ============================================================
@@ -566,112 +564,112 @@ export const CONFIGURATION_CHANGES: ConfigurationChange[] = [
   // ============================================================
 
   {
-    id: "CHG-024",
+    id: 'CHG-024',
 
-    service: "logging",
+    service: 'logging',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-011",
+    currentConfigurationVersion: 'CFG-011',
 
-    field: "memoryLimit",
+    field: 'memoryLimit',
 
-    previousValue: "1Gi",
+    previousValue: '1Gi',
 
-    currentValue: "2Gi",
+    currentValue: '2Gi',
 
     reason:
-      "Logging service memory increased to support higher log ingestion and indexing workload.",
+      'Logging service memory increased to support higher log ingestion and indexing workload.',
 
-    changedAt: new Date("2026-01-08T11:05:00Z"),
+    changedAt: new Date('2026-01-08T11:05:00Z'),
   },
 
   {
-    id: "CHG-025",
+    id: 'CHG-025',
 
-    service: "logging",
+    service: 'logging',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-011",
+    currentConfigurationVersion: 'CFG-011',
 
-    field: "replicas",
+    field: 'replicas',
 
-    previousValue: "1",
+    previousValue: '1',
 
-    currentValue: "2",
+    currentValue: '2',
 
     reason:
-      "Additional logging replica deployed to improve resilience and distribute indexing traffic.",
+      'Additional logging replica deployed to improve resilience and distribute indexing traffic.',
 
-    changedAt: new Date("2026-01-08T11:12:00Z"),
+    changedAt: new Date('2026-01-08T11:12:00Z'),
   },
 
-    // ============================================================
+  // ============================================================
   // ANALYTICS ENGINE
   // ============================================================
 
   {
-    id: "CHG-026",
+    id: 'CHG-026',
 
-    service: "analytics-engine",
+    service: 'analytics-engine',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-012",
+    currentConfigurationVersion: 'CFG-012',
 
-    field: "cpuLimit",
+    field: 'cpuLimit',
 
-    previousValue: "1000m",
+    previousValue: '1000m',
 
-    currentValue: "2000m",
+    currentValue: '2000m',
 
     reason:
-      "CPU allocation increased after large analytical workloads caused sustained high processor utilization.",
+      'CPU allocation increased after large analytical workloads caused sustained high processor utilization.',
 
-    changedAt: new Date("2026-01-11T14:40:00Z"),
+    changedAt: new Date('2026-01-11T14:40:00Z'),
   },
 
   {
-    id: "CHG-027",
+    id: 'CHG-027',
 
-    service: "analytics-engine",
+    service: 'analytics-engine',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-012",
+    currentConfigurationVersion: 'CFG-012',
 
-    field: "memoryLimit",
+    field: 'memoryLimit',
 
-    previousValue: "2Gi",
+    previousValue: '2Gi',
 
-    currentValue: "4Gi",
+    currentValue: '4Gi',
 
     reason:
-      "Memory allocation increased to support larger in-memory analytics and reduce processing latency.",
+      'Memory allocation increased to support larger in-memory analytics and reduce processing latency.',
 
-    changedAt: new Date("2026-01-11T14:45:00Z"),
+    changedAt: new Date('2026-01-11T14:45:00Z'),
   },
 
   {
-    id: "CHG-028",
+    id: 'CHG-028',
 
-    service: "analytics-engine",
+    service: 'analytics-engine',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-012",
+    currentConfigurationVersion: 'CFG-012',
 
-    field: "replicas",
+    field: 'replicas',
 
-    previousValue: "1",
+    previousValue: '1',
 
-    currentValue: "2",
+    currentValue: '2',
 
     reason:
-      "Replica count increased to distribute analytical workloads and improve service availability.",
+      'Replica count increased to distribute analytical workloads and improve service availability.',
 
-    changedAt: new Date("2026-01-11T14:52:00Z"),
+    changedAt: new Date('2026-01-11T14:52:00Z'),
   },
 
   // ============================================================
@@ -679,45 +677,44 @@ export const CONFIGURATION_CHANGES: ConfigurationChange[] = [
   // ============================================================
 
   {
-    id: "CHG-029",
+    id: 'CHG-029',
 
-    service: "system",
+    service: 'system',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-013",
+    currentConfigurationVersion: 'CFG-013',
 
-    field: "memoryLimit",
+    field: 'memoryLimit',
 
-    previousValue: "256Mi",
+    previousValue: '256Mi',
 
-    currentValue: "512Mi",
+    currentValue: '512Mi',
 
     reason:
-      "System controller memory allocation increased to improve orchestration stability under production load.",
+      'System controller memory allocation increased to improve orchestration stability under production load.',
 
-    changedAt: new Date("2026-01-05T07:40:00Z"),
+    changedAt: new Date('2026-01-05T07:40:00Z'),
   },
 
   {
-    id: "CHG-030",
+    id: 'CHG-030',
 
-    service: "system",
+    service: 'system',
 
-    previousConfigurationVersion: "CFG-000",
+    previousConfigurationVersion: 'CFG-000',
 
-    currentConfigurationVersion: "CFG-013",
+    currentConfigurationVersion: 'CFG-013',
 
-    field: "cpuLimit",
+    field: 'cpuLimit',
 
-    previousValue: "250m",
+    previousValue: '250m',
 
-    currentValue: "500m",
+    currentValue: '500m',
 
     reason:
-      "CPU resources increased after observing higher scheduling and orchestration workload during production operations.",
+      'CPU resources increased after observing higher scheduling and orchestration workload during production operations.',
 
-    changedAt: new Date("2026-01-05T07:50:00Z"),
+    changedAt: new Date('2026-01-05T07:50:00Z'),
   },
-
 ];

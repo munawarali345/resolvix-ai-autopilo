@@ -1,5 +1,3 @@
-
-
 // ================================================================
 // CONFIGURATION DATA
 // ================================================================
@@ -20,45 +18,39 @@
 //
 // ================================================================
 
-import { ServiceConfiguration } from "../../types/configurationTool.type.js";
+import { ServiceConfiguration } from '../../types/configurationTool.type.js';
 
 export const CONFIGURATIONS: ServiceConfiguration[] = [
-
   // ============================================================
   // API GATEWAY
   // ============================================================
 
   {
-    id: "CFG-001",
+    id: 'CFG-001',
 
-    service: "api-gateway",
+    service: 'api-gateway',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v2.4.1",
+    version: 'v2.4.1',
 
-    image: "company/api-gateway:v2.4.1",
+    image: 'company/api-gateway:v2.4.1',
 
     replicas: 3,
 
-    cpuLimit: "500m",
+    cpuLimit: '500m',
 
-    memoryLimit: "512Mi",
+    memoryLimit: '512Mi',
 
     requestTimeout: 30,
 
     autoScaling: true,
 
-    configurationVersion: "CFG-001",
+    configurationVersion: 'CFG-001',
 
-    lastUpdated: new Date("2026-01-10T09:15:00Z"),
+    lastUpdated: new Date('2026-01-10T09:15:00Z'),
 
-    supportedSeverity: [
-      "critical",
-      "high",
-      "medium",
-      "low",
-    ],
+    supportedSeverity: ['critical', 'high', 'medium', 'low'],
   },
 
   // ============================================================
@@ -66,34 +58,31 @@ export const CONFIGURATIONS: ServiceConfiguration[] = [
   // ============================================================
 
   {
-    id: "CFG-002",
+    id: 'CFG-002',
 
-    service: "database",
+    service: 'database',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v15.3",
+    version: 'v15.3',
 
-    image: "postgres:15.3",
+    image: 'postgres:15.3',
 
     replicas: 1,
 
-    cpuLimit: "2000m",
+    cpuLimit: '2000m',
 
-    memoryLimit: "4Gi",
+    memoryLimit: '4Gi',
 
     connectionPool: 100,
 
     autoScaling: false,
 
-    configurationVersion: "CFG-002",
+    configurationVersion: 'CFG-002',
 
-    lastUpdated: new Date("2026-01-08T13:40:00Z"),
+    lastUpdated: new Date('2026-01-08T13:40:00Z'),
 
-    supportedSeverity: [
-      "critical",
-      "high",
-    ],
+    supportedSeverity: ['critical', 'high'],
   },
 
   // ============================================================
@@ -101,35 +90,31 @@ export const CONFIGURATIONS: ServiceConfiguration[] = [
   // ============================================================
 
   {
-    id: "CFG-003",
+    id: 'CFG-003',
 
-    service: "user-service",
+    service: 'user-service',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v1.9.2",
+    version: 'v1.9.2',
 
-    image: "company/user-service:v1.9.2",
+    image: 'company/user-service:v1.9.2',
 
     replicas: 2,
 
-    cpuLimit: "500m",
+    cpuLimit: '500m',
 
-    memoryLimit: "768Mi",
+    memoryLimit: '768Mi',
 
     requestTimeout: 25,
 
     autoScaling: true,
 
-    configurationVersion: "CFG-003",
+    configurationVersion: 'CFG-003',
 
-    lastUpdated: new Date("2026-01-11T08:20:00Z"),
+    lastUpdated: new Date('2026-01-11T08:20:00Z'),
 
-    supportedSeverity: [
-      "critical",
-      "high",
-      "medium",
-    ],
+    supportedSeverity: ['critical', 'high', 'medium'],
   },
 
   // ============================================================
@@ -137,35 +122,31 @@ export const CONFIGURATIONS: ServiceConfiguration[] = [
   // ============================================================
 
   {
-    id: "CFG-004",
+    id: 'CFG-004',
 
-    service: "order-service",
+    service: 'order-service',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v3.1.0",
+    version: 'v3.1.0',
 
-    image: "company/order-service:v3.1.0",
+    image: 'company/order-service:v3.1.0',
 
     replicas: 3,
 
-    cpuLimit: "750m",
+    cpuLimit: '750m',
 
-    memoryLimit: "1Gi",
+    memoryLimit: '1Gi',
 
     requestTimeout: 40,
 
     autoScaling: true,
 
-    configurationVersion: "CFG-004",
+    configurationVersion: 'CFG-004',
 
-    lastUpdated: new Date("2026-01-09T15:10:00Z"),
+    lastUpdated: new Date('2026-01-09T15:10:00Z'),
 
-    supportedSeverity: [
-      "critical",
-      "high",
-      "medium",
-    ],
+    supportedSeverity: ['critical', 'high', 'medium'],
   },
 
   // ============================================================
@@ -173,21 +154,21 @@ export const CONFIGURATIONS: ServiceConfiguration[] = [
   // ============================================================
 
   {
-    id: "CFG-005",
+    id: 'CFG-005',
 
-    service: "payment-service",
+    service: 'payment-service',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v5.0.4",
+    version: 'v5.0.4',
 
-    image: "company/payment-service:v5.0.4",
+    image: 'company/payment-service:v5.0.4',
 
     replicas: 2,
 
-    cpuLimit: "1000m",
+    cpuLimit: '1000m',
 
-    memoryLimit: "1Gi",
+    memoryLimit: '1Gi',
 
     connectionPool: 60,
 
@@ -195,51 +176,43 @@ export const CONFIGURATIONS: ServiceConfiguration[] = [
 
     autoScaling: true,
 
-    configurationVersion: "CFG-005",
+    configurationVersion: 'CFG-005',
 
-    lastUpdated: new Date("2026-01-12T10:35:00Z"),
+    lastUpdated: new Date('2026-01-12T10:35:00Z'),
 
-    supportedSeverity: [
-      "critical",
-      "high",
-    ],
-
+    supportedSeverity: ['critical', 'high'],
   },
 
-    // ============================================================
+  // ============================================================
   // CACHE
   // ============================================================
 
   {
-    id: "CFG-006",
+    id: 'CFG-006',
 
-    service: "cache",
+    service: 'cache',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v7.2.1",
+    version: 'v7.2.1',
 
-    image: "redis:7.2.1",
+    image: 'redis:7.2.1',
 
     replicas: 2,
 
-    cpuLimit: "500m",
+    cpuLimit: '500m',
 
-    memoryLimit: "2Gi",
+    memoryLimit: '2Gi',
 
     requestTimeout: 5,
 
     autoScaling: true,
 
-    configurationVersion: "CFG-006",
+    configurationVersion: 'CFG-006',
 
-    lastUpdated: new Date("2026-01-09T11:45:00Z"),
+    lastUpdated: new Date('2026-01-09T11:45:00Z'),
 
-    supportedSeverity: [
-      "critical",
-      "high",
-      "medium",
-    ],
+    supportedSeverity: ['critical', 'high', 'medium'],
   },
 
   // ============================================================
@@ -247,34 +220,29 @@ export const CONFIGURATIONS: ServiceConfiguration[] = [
   // ============================================================
 
   {
-    id: "CFG-007",
+    id: 'CFG-007',
 
-    service: "monitoring",
+    service: 'monitoring',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v2.48.0",
+    version: 'v2.48.0',
 
-    image: "prometheus:v2.48.0",
+    image: 'prometheus:v2.48.0',
 
     replicas: 1,
 
-    cpuLimit: "500m",
+    cpuLimit: '500m',
 
-    memoryLimit: "1Gi",
+    memoryLimit: '1Gi',
 
     autoScaling: false,
 
-    configurationVersion: "CFG-007",
+    configurationVersion: 'CFG-007',
 
-    lastUpdated: new Date("2026-01-05T08:30:00Z"),
+    lastUpdated: new Date('2026-01-05T08:30:00Z'),
 
-    supportedSeverity: [
-      "critical",
-      "high",
-      "medium",
-      "low",
-    ],
+    supportedSeverity: ['critical', 'high', 'medium', 'low'],
   },
 
   // ============================================================
@@ -282,32 +250,29 @@ export const CONFIGURATIONS: ServiceConfiguration[] = [
   // ============================================================
 
   {
-    id: "CFG-008",
+    id: 'CFG-008',
 
-    service: "deployment",
+    service: 'deployment',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v1.28.4",
+    version: 'v1.28.4',
 
-    image: "deployment-controller:v1.28.4",
+    image: 'deployment-controller:v1.28.4',
 
     replicas: 2,
 
-    cpuLimit: "750m",
+    cpuLimit: '750m',
 
-    memoryLimit: "1Gi",
+    memoryLimit: '1Gi',
 
     autoScaling: false,
 
-    configurationVersion: "CFG-008",
+    configurationVersion: 'CFG-008',
 
-    lastUpdated: new Date("2026-01-06T16:20:00Z"),
+    lastUpdated: new Date('2026-01-06T16:20:00Z'),
 
-    supportedSeverity: [
-      "critical",
-      "high",
-    ],
+    supportedSeverity: ['critical', 'high'],
   },
 
   // ============================================================
@@ -315,35 +280,31 @@ export const CONFIGURATIONS: ServiceConfiguration[] = [
   // ============================================================
 
   {
-    id: "CFG-009",
+    id: 'CFG-009',
 
-    service: "authentication",
+    service: 'authentication',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v4.3.0",
+    version: 'v4.3.0',
 
-    image: "company/authentication:v4.3.0",
+    image: 'company/authentication:v4.3.0',
 
     replicas: 2,
 
-    cpuLimit: "500m",
+    cpuLimit: '500m',
 
-    memoryLimit: "768Mi",
+    memoryLimit: '768Mi',
 
     requestTimeout: 20,
 
     autoScaling: true,
 
-    configurationVersion: "CFG-009",
+    configurationVersion: 'CFG-009',
 
-    lastUpdated: new Date("2026-01-10T13:15:00Z"),
+    lastUpdated: new Date('2026-01-10T13:15:00Z'),
 
-    supportedSeverity: [
-      "critical",
-      "high",
-      "medium",
-    ],
+    supportedSeverity: ['critical', 'high', 'medium'],
   },
 
   // ============================================================
@@ -351,72 +312,61 @@ export const CONFIGURATIONS: ServiceConfiguration[] = [
   // ============================================================
 
   {
-    id: "CFG-010",
+    id: 'CFG-010',
 
-    service: "health-check",
+    service: 'health-check',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v1.5.2",
+    version: 'v1.5.2',
 
-    image: "company/health-check:v1.5.2",
+    image: 'company/health-check:v1.5.2',
 
     replicas: 2,
 
-    cpuLimit: "250m",
+    cpuLimit: '250m',
 
-    memoryLimit: "256Mi",
+    memoryLimit: '256Mi',
 
     requestTimeout: 10,
 
     autoScaling: false,
 
-    configurationVersion: "CFG-010",
+    configurationVersion: 'CFG-010',
 
-    lastUpdated: new Date("2026-01-07T09:10:00Z"),
+    lastUpdated: new Date('2026-01-07T09:10:00Z'),
 
-    supportedSeverity: [
-      "critical",
-      "high",
-      "medium",
-      "low",
-    ],
-
+    supportedSeverity: ['critical', 'high', 'medium', 'low'],
   },
 
-    // ============================================================
+  // ============================================================
   // LOGGING
   // ============================================================
 
   {
-    id: "CFG-011",
+    id: 'CFG-011',
 
-    service: "logging",
+    service: 'logging',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v8.11.3",
+    version: 'v8.11.3',
 
-    image: "elasticsearch:8.11.3",
+    image: 'elasticsearch:8.11.3',
 
     replicas: 2,
 
-    cpuLimit: "1000m",
+    cpuLimit: '1000m',
 
-    memoryLimit: "2Gi",
+    memoryLimit: '2Gi',
 
     autoScaling: true,
 
-    configurationVersion: "CFG-011",
+    configurationVersion: 'CFG-011',
 
-    lastUpdated: new Date("2026-01-08T10:45:00Z"),
+    lastUpdated: new Date('2026-01-08T10:45:00Z'),
 
-    supportedSeverity: [
-      "critical",
-      "high",
-      "medium",
-      "low",
-    ],
+    supportedSeverity: ['critical', 'high', 'medium', 'low'],
   },
 
   // ============================================================
@@ -424,35 +374,31 @@ export const CONFIGURATIONS: ServiceConfiguration[] = [
   // ============================================================
 
   {
-    id: "CFG-012",
+    id: 'CFG-012',
 
-    service: "analytics-engine",
+    service: 'analytics-engine',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v3.8.2",
+    version: 'v3.8.2',
 
-    image: "company/analytics-engine:v3.8.2",
+    image: 'company/analytics-engine:v3.8.2',
 
     replicas: 2,
 
-    cpuLimit: "2000m",
+    cpuLimit: '2000m',
 
-    memoryLimit: "4Gi",
+    memoryLimit: '4Gi',
 
     requestTimeout: 120,
 
     autoScaling: true,
 
-    configurationVersion: "CFG-012",
+    configurationVersion: 'CFG-012',
 
-    lastUpdated: new Date("2026-01-11T14:30:00Z"),
+    lastUpdated: new Date('2026-01-11T14:30:00Z'),
 
-    supportedSeverity: [
-      "critical",
-      "high",
-      "medium",
-    ],
+    supportedSeverity: ['critical', 'high', 'medium'],
   },
 
   // ============================================================
@@ -460,34 +406,28 @@ export const CONFIGURATIONS: ServiceConfiguration[] = [
   // ============================================================
 
   {
-    id: "CFG-013",
+    id: 'CFG-013',
 
-    service: "system",
+    service: 'system',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v1.0.0",
+    version: 'v1.0.0',
 
-    image: "company/system-controller:v1.0.0",
+    image: 'company/system-controller:v1.0.0',
 
     replicas: 1,
 
-    cpuLimit: "500m",
+    cpuLimit: '500m',
 
-    memoryLimit: "512Mi",
+    memoryLimit: '512Mi',
 
     autoScaling: false,
 
-    configurationVersion: "CFG-013",
+    configurationVersion: 'CFG-013',
 
-    lastUpdated: new Date("2026-01-05T07:30:00Z"),
+    lastUpdated: new Date('2026-01-05T07:30:00Z'),
 
-    supportedSeverity: [
-      "critical",
-      "high",
-      "medium",
-      "low",
-    ],
+    supportedSeverity: ['critical', 'high', 'medium', 'low'],
   },
-
 ];

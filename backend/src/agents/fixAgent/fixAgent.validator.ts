@@ -13,10 +13,7 @@ import { FixAgentOutput } from '../../types/index.js';
 // Validate Fix Agent Output
 // ================================================================
 
-export const validateFixOutput = (
-  data: unknown,
-): FixAgentOutput => {
-
+export const validateFixOutput = (data: unknown): FixAgentOutput => {
   // ------------------------------------------------
   // STEP 1
   // Response must be an object
@@ -33,10 +30,7 @@ export const validateFixOutput = (
   // Summary
   // ------------------------------------------------
 
-  if (
-    typeof output.summary !== 'string' ||
-    output.summary.trim() === ''
-  ) {
+  if (typeof output.summary !== 'string' || output.summary.trim() === '') {
     throw new Error('Fix Agent: Invalid summary');
   }
 
@@ -160,24 +154,22 @@ export const validateFixOutput = (
   // Estimated Time
   // ------------------------------------------------
 
-const allowedEstimatedTimes = [
-  '5-10 minutes',
-  '10-20 minutes',
-  '20-30 minutes',
-  '30-60 minutes',
-  '1-2 hours',
-] as const;
+  const allowedEstimatedTimes = [
+    '5-10 minutes',
+    '10-20 minutes',
+    '20-30 minutes',
+    '30-60 minutes',
+    '1-2 hours',
+  ] as const;
 
-if (
-
-  typeof output.estimatedTime !== 'string' ||
-  !allowedEstimatedTimes.includes(output.estimatedTime as (typeof allowedEstimatedTimes)[number])
-
-) {
-
-  throw new Error('Fix Agent: Invalid estimatedTime');
-
-}
+  if (
+    typeof output.estimatedTime !== 'string' ||
+    !allowedEstimatedTimes.includes(
+      output.estimatedTime as (typeof allowedEstimatedTimes)[number],
+    )
+  ) {
+    throw new Error('Fix Agent: Invalid estimatedTime');
+  }
 
   // ------------------------------------------------
   // STEP 12
@@ -209,5 +201,4 @@ if (
   // ------------------------------------------------
 
   return output;
-
 };

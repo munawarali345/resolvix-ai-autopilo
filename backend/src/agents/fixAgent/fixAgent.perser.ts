@@ -1,4 +1,3 @@
-
 // ================================================================
 // FIX AGENT RESPONSE PARSER
 // ================================================================
@@ -16,9 +15,7 @@ import { FixAgentOutput } from '../../types/index.js';
 // ================================================================
 
 export function parseFixResponse(content: string): FixAgentOutput {
-
   try {
-
     // ------------------------------------------------
     // STEP 1: Remove markdown formatting
     // AI may wrap the response inside ```json ... ```
@@ -42,9 +39,7 @@ export function parseFixResponse(content: string): FixAgentOutput {
     // ------------------------------------------------
 
     if (jsonStart === -1 || jsonEnd === -1) {
-
       throw new Error('No valid JSON found in AI response');
-
     }
 
     // ------------------------------------------------
@@ -65,15 +60,11 @@ export function parseFixResponse(content: string): FixAgentOutput {
     // ------------------------------------------------
 
     return parsed as FixAgentOutput;
-
   } catch {
-
     // ------------------------------------------------
     // ERROR HANDLING
     // ------------------------------------------------
 
     throw new Error('Fix Agent Parser failed: Invalid AI response format');
-
   }
-
 }

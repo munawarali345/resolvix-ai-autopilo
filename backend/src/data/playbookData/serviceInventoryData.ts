@@ -1,4 +1,3 @@
-
 // ================================================================
 // SERVICE INVENTORY DATA
 // ================================================================
@@ -21,268 +20,266 @@
 //
 // ================================================================
 
-import { ServiceInventory } from "../../types/serviceInventory.type.js";
+import { ServiceInventory } from '../../types/serviceInventory.type.js';
 
 export const SERVICE_INVENTORY: ServiceInventory[] = [
-
   {
-    id: "SVC-001",
+    id: 'SVC-001',
 
-    name: "api-gateway",
+    name: 'api-gateway',
 
-    owner: "Platform Team",
+    owner: 'Platform Team',
 
-    team: "Platform Engineering",
+    team: 'Platform Engineering',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v2.4.1",
+    version: 'v2.4.1',
 
-    runtime: "Node.js",
+    runtime: 'Node.js',
 
-    repository: "platform/api-gateway",
+    repository: 'platform/api-gateway',
 
-    criticality: "critical",
+    criticality: 'critical',
   },
 
   {
-    id: "SVC-002",
+    id: 'SVC-002',
 
-    name: "database",
+    name: 'database',
 
-    owner: "Database Team",
+    owner: 'Database Team',
 
-    team: "Infrastructure",
+    team: 'Infrastructure',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v15.3",
+    version: 'v15.3',
 
-    runtime: "PostgreSQL",
+    runtime: 'PostgreSQL',
 
-    repository: "infrastructure/postgres",
+    repository: 'infrastructure/postgres',
 
-    criticality: "critical",
+    criticality: 'critical',
   },
 
   {
-    id: "SVC-003",
+    id: 'SVC-003',
 
-    name: "user-service",
+    name: 'user-service',
 
-    owner: "Identity Team",
+    owner: 'Identity Team',
 
-    team: "Backend",
+    team: 'Backend',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v1.9.2",
+    version: 'v1.9.2',
 
-    runtime: "Node.js",
+    runtime: 'Node.js',
 
-    repository: "backend/user-service",
+    repository: 'backend/user-service',
 
-    criticality: "high",
+    criticality: 'high',
   },
 
   {
-    id: "SVC-004",
+    id: 'SVC-004',
 
-    name: "order-service",
+    name: 'order-service',
 
-    owner: "Commerce Team",
+    owner: 'Commerce Team',
 
-    team: "Backend",
+    team: 'Backend',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v3.1.0",
+    version: 'v3.1.0',
 
-    runtime: "Node.js",
+    runtime: 'Node.js',
 
-    repository: "backend/order-service",
+    repository: 'backend/order-service',
 
-    criticality: "critical",
+    criticality: 'critical',
   },
 
   {
-    id: "SVC-005",
+    id: 'SVC-005',
 
-    name: "payment-service",
+    name: 'payment-service',
 
-    owner: "Payments Team",
+    owner: 'Payments Team',
 
-    team: "Backend",
+    team: 'Backend',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v5.0.4",
+    version: 'v5.0.4',
 
-    runtime: "Node.js",
+    runtime: 'Node.js',
 
-    repository: "backend/payment-service",
+    repository: 'backend/payment-service',
 
-    criticality: "critical",
+    criticality: 'critical',
   },
 
   {
-    id: "SVC-006",
+    id: 'SVC-006',
 
-    name: "cache",
+    name: 'cache',
 
-    owner: "Platform Team",
+    owner: 'Platform Team',
 
-    team: "Infrastructure",
+    team: 'Infrastructure',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v7.2.1",
+    version: 'v7.2.1',
 
-    runtime: "Redis",
+    runtime: 'Redis',
 
-    repository: "infrastructure/redis",
+    repository: 'infrastructure/redis',
 
-    criticality: "high",
+    criticality: 'high',
   },
 
   {
-    id: "SVC-007",
+    id: 'SVC-007',
 
-    name: "monitoring",
+    name: 'monitoring',
 
-    owner: "SRE Team",
+    owner: 'SRE Team',
 
-    team: "Operations",
+    team: 'Operations',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v2.48.0",
+    version: 'v2.48.0',
 
-    runtime: "Prometheus",
+    runtime: 'Prometheus',
 
-    repository: "operations/monitoring",
+    repository: 'operations/monitoring',
 
-    criticality: "medium",
+    criticality: 'medium',
   },
 
   {
-    id: "SVC-008",
+    id: 'SVC-008',
 
-    name: "deployment",
+    name: 'deployment',
 
-    owner: "DevOps Team",
+    owner: 'DevOps Team',
 
-    team: "Platform Engineering",
+    team: 'Platform Engineering',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v1.28.4",
+    version: 'v1.28.4',
 
-    runtime: "Kubernetes",
+    runtime: 'Kubernetes',
 
-    repository: "platform/deployment",
+    repository: 'platform/deployment',
 
-    criticality: "critical",
+    criticality: 'critical',
   },
 
   {
-    id: "SVC-009",
+    id: 'SVC-009',
 
-    name: "authentication",
+    name: 'authentication',
 
-    owner: "Identity Team",
+    owner: 'Identity Team',
 
-    team: "Security",
+    team: 'Security',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v4.3.0",
+    version: 'v4.3.0',
 
-    runtime: "Node.js",
+    runtime: 'Node.js',
 
-    repository: "security/authentication",
+    repository: 'security/authentication',
 
-    criticality: "critical",
+    criticality: 'critical',
   },
 
   {
-    id: "SVC-010",
+    id: 'SVC-010',
 
-    name: "health-check",
+    name: 'health-check',
 
-    owner: "SRE Team",
+    owner: 'SRE Team',
 
-    team: "Operations",
+    team: 'Operations',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v1.5.2",
+    version: 'v1.5.2',
 
-    runtime: "Node.js",
+    runtime: 'Node.js',
 
-    repository: "operations/health-check",
+    repository: 'operations/health-check',
 
-    criticality: "medium",
+    criticality: 'medium',
   },
 
   {
-    id: "SVC-011",
+    id: 'SVC-011',
 
-    name: "logging",
+    name: 'logging',
 
-    owner: "Observability Team",
+    owner: 'Observability Team',
 
-    team: "Operations",
+    team: 'Operations',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v8.11.3",
+    version: 'v8.11.3',
 
-    runtime: "Elasticsearch",
+    runtime: 'Elasticsearch',
 
-    repository: "operations/logging",
+    repository: 'operations/logging',
 
-    criticality: "high",
+    criticality: 'high',
   },
 
   {
-    id: "SVC-012",
+    id: 'SVC-012',
 
-    name: "analytics-engine",
+    name: 'analytics-engine',
 
-    owner: "Analytics Team",
+    owner: 'Analytics Team',
 
-    team: "Data Engineering",
+    team: 'Data Engineering',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v3.8.2",
+    version: 'v3.8.2',
 
-    runtime: "Python",
+    runtime: 'Python',
 
-    repository: "analytics/engine",
+    repository: 'analytics/engine',
 
-    criticality: "high",
+    criticality: 'high',
   },
 
   {
-    id: "SVC-013",
+    id: 'SVC-013',
 
-    name: "system",
+    name: 'system',
 
-    owner: "Platform Team",
+    owner: 'Platform Team',
 
-    team: "Platform Engineering",
+    team: 'Platform Engineering',
 
-    environment: "production",
+    environment: 'production',
 
-    version: "v1.0.0",
+    version: 'v1.0.0',
 
-    runtime: "Linux",
+    runtime: 'Linux',
 
-    repository: "platform/system",
+    repository: 'platform/system',
 
-    criticality: "critical",
+    criticality: 'critical',
   },
-
 ];

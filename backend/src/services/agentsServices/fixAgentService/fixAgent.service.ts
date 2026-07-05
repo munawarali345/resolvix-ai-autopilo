@@ -1,4 +1,3 @@
-
 // ================================================================
 // fix Agent SERVICE
 // ================================================================
@@ -24,8 +23,6 @@ import { fixAgent } from '../../../agents/fixAgent/fixAgent.agent.js';
 
 import { AgentExecutionModel } from '../../../models/agentExecution.model.js';
 
-
-
 // ================================================================
 // fix Agent SERVICE
 // ================================================================
@@ -45,21 +42,11 @@ export const fixAgentService = async (
   // Validate required workflow data
   // ------------------------------------------------
 
-  if (
-
-  !state.incident ||
-  !state.rootCauseResult ||
-  !state.logAnalysisResult
-
-) {
-
-  throw new Error(
-
-    'Fix Agent Service requires incident, log analysis result and root cause result',
-
-  );
-  
-}
+  if (!state.incident || !state.rootCauseResult || !state.logAnalysisResult) {
+    throw new Error(
+      'Fix Agent Service requires incident, log analysis result and root cause result',
+    );
+  }
 
   // ------------------------------------------------
   // STEP 3
@@ -67,15 +54,13 @@ export const fixAgentService = async (
   // ------------------------------------------------
 
   const agentInput: FixAgentInput = {
-
     incident: state.incident,
 
     logAnalysisResult: state.logAnalysisResult,
 
-    rootCauseResult:   state.rootCauseResult,
+    rootCauseResult: state.rootCauseResult,
 
     currentStep: state.currentStep,
-
   };
 
   // ------------------------------------------------
@@ -85,14 +70,12 @@ export const fixAgentService = async (
 
   const aiResponse = await fixAgent(agentInput);
 
-
   // ------------------------------------------------
   // STEP 5
   // Save execution log
   // ------------------------------------------------
 
   await AgentExecutionModel.create({
-
     incidentId: state.incident._id?.toString(),
 
     agentName: 'fix',
@@ -108,7 +91,6 @@ export const fixAgentService = async (
     startedAt: new Date(startTime),
 
     completedAt: new Date(),
-
   });
 
   // ------------------------------------------------

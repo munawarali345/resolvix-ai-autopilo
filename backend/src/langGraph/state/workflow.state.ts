@@ -50,7 +50,15 @@ export const WorkflowGraphState = Annotation.Root({
   // fix Agent result.
   fixAgentResult: Annotation<WorkflowState['fixAgentResult']>(),
 
-   // Log Analysis tool outputs.
+  // Log Analysis tool outputs.
   fixAgentArtifacts: Annotation<WorkflowState['fixAgentArtifacts']>(),
 
+  // risk validator Agent result.
+  riskValidatorResult: Annotation<WorkflowState['riskValidatorResult']>(),
+
+  // Log Analysis tool outputs.
+  riskValidatorArtifacts: Annotation<WorkflowState['riskValidatorArtifacts']>(),
+
+  approval: Annotation<WorkflowState["approval"]>(),
+  
 });

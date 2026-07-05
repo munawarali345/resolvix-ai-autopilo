@@ -10,26 +10,33 @@
 // 2. Future me Risk Validation Agent ko call karna
 // ================================================================
 
-import { WorkflowState } from '../../types/index.js';
+import { WorkflowGraphState } from '../state/workflow.state.js';
 
-import { updateWorkflowStep } from '../../utils/workflowState.util.js';
+import {
+  updateWorkflowStep,
+  setRiskValidatorExecution,
+} from '../../utils/workflowState.util.js';
+
+import { riskValidatorAgentService } from '../../services/agentsServices/riskValidationAgentService/riskValidatorAgent.service.js';
+
+type GraphState = typeof WorkflowGraphState.State;
 
 // ================================================================
 // RISK VALIDATION NODE
 // ================================================================
 export const riskValidationNode = async (
-  state: WorkflowState,
-): Promise<WorkflowState> => {
+  state: GraphState,
+): Promise<GraphState> => {
   // Workflow step ko "risk-validation" par set karo
-  const updatedState = updateWorkflowStep(
-    state,
+  const updatedState = updateWorkflowStep(state, 'risk-validation');
 
-    'risk-validation',
-  );
+  // ================================================================
+  // STEP 2: Call risk validator Service
+  // ================================================================
+  const result = await riskValidatorAgentService(updatedState);
 
-  // TODO:
-  // Yahan future me riskValidationAgent(updatedState)
-  // call hoga
-
-  return updatedState;
+  // ================================================================
+  // STEP 3: Save result into state
+  // ================================================================
+  return setRiskValidatorExecution(updatedState, result);
 };

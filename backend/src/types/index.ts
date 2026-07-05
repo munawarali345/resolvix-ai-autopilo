@@ -66,3 +66,9 @@ export * from './configDiff.type.js';
 
 // service inventory types
 export * from './serviceInventory.type.js';
+
+// risk validation agent types
+export * from './riskAgent.types.js';
+
+// risk validation tools types
+export * from './riskAgentTools.type.js';

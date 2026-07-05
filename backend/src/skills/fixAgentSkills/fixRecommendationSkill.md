@@ -10,7 +10,6 @@ owner: Resolvix AI Ops
 agent: Fix Recommendation Agent
 
 category: Remediation
-
 ---
 
 # Fix Recommendation Skill
@@ -140,11 +139,7 @@ Purpose:
 
 Retrieve service ownership, criticality and operational metadata.
 
-Execute only the tools required by the current incident context.
-
-Do not execute unnecessary tools.
-
----
+## Execute all available remediation tools before generating the recommendation.
 
 ## Phase 4 — Evaluate Tool Results
 
@@ -253,13 +248,15 @@ Never recommend actions that are not supported by retrieved operational knowledg
 
 Always retrieve the operational knowledge required for the current recommendation.
 
-Select only the tools relevant to the identified Root Cause and remediation task.
+Execute all remediation tools.
+
+Use the combined outputs from every tool while generating the recommendation.
 
 Use only the minimum required input for each tool.
 
 Do not expose unrelated workflow data to tools.
 
-Do not repeatedly invoke the same tool unless additional investigation context requires it.
+Execute each remediation tool only once per recommendation unless the workflow explicitly requires re-evaluation.
 
 Combine outputs from all executed tools before producing the final recommendation.
 

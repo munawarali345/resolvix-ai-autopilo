@@ -15,6 +15,8 @@ import {
   RootCauseAgentOutput,
   FixAgentArtifacts,
   FixAgentOutput,
+  RiskValidatorArtifacts,
+  RiskValidatorOutput,
 } from './index.js';
 
 // ================================================================
@@ -44,6 +46,13 @@ export type NextWorkflowStep =
   | 'execution'
   | 'reporting';
 
+
+  export interface ApprovalState {
+
+  status: "pending" | "approved" | "rejected" | null;
+
+}
+
 // ================================================================
 // Shared Workflow State Interface
 // ================================================================
@@ -64,9 +73,15 @@ export interface WorkflowState {
 
   rootCauseResult: RootCauseAgentOutput | null;
 
-  fixAgentResult:  FixAgentOutput | null;
+  fixAgentResult: FixAgentOutput | null;
 
-  fixAgentArtifacts: FixAgentArtifacts;
+  fixAgentArtifacts: FixAgentArtifacts | null;
+
+  riskValidatorResult: RiskValidatorOutput | null;
+
+  riskValidatorArtifacts: RiskValidatorArtifacts | null;
+
+  approval: ApprovalState | null;
 
   // Current workflow stage
   currentStep: WorkflowStep;

@@ -1,4 +1,3 @@
-
 // ================================================================
 // CONFIGURATION TYPES
 // ================================================================
@@ -17,26 +16,19 @@
 //
 // ================================================================
 
-import {
-  IncidentSeverity,
-  logService,
-} from "./index.js";
+import { IncidentSeverity, logService } from './index.js';
 
 // ================================================================
 // DEPLOYMENT ENVIRONMENT
 // ================================================================
 
-export type Environment =
-  | "development"
-  | "staging"
-  | "production";
+export type Environment = 'development' | 'staging' | 'production';
 
 // ================================================================
 // SERVICE CONFIGURATION
 // ================================================================
 
 export interface ServiceConfiguration {
-
   // Unique configuration identifier.
   id: string;
 

@@ -1,9 +1,6 @@
-
-import { logService, Environment, IncidentSeverity } from "./index.js";
-
+import { logService, Environment, IncidentSeverity } from './index.js';
 
 export interface ServiceInventory {
-
   id: string;
 
   name: logService;
@@ -21,5 +18,4 @@ export interface ServiceInventory {
   repository: string;
 
   criticality: IncidentSeverity;
-
 }

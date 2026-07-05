@@ -1,81 +1,56 @@
-
 // ================================================================
 // SERVICE INVENTORY FUNCTION
 // ================================================================
 
-import { SERVICE_INVENTORY } from "../../../data/playbookData/serviceInventoryData.js";
+import { SERVICE_INVENTORY } from '../../../data/playbookData/serviceInventoryData.js';
 
 import {
   AffectedServicesToolInput,
   ServiceInventoryOutput,
-} from "../../../types/index.js";
+} from '../../../types/index.js';
 
 // ================================================================
 // Service Inventory
 // ================================================================
 
 export function serviceInventory(
-
   input: AffectedServicesToolInput,
-
 ): ServiceInventoryOutput {
-
   // No affected services.
 
   if (!input.affectedServices.length) {
-
     return {
-
       services: [],
-
     };
-
   }
 
   // Find affected services.
 
-  const services = SERVICE_INVENTORY.filter(
-
-    (service) =>
-
-      input.affectedServices.includes(
-
-        service.name,
-
-      ),
-
+  const services = SERVICE_INVENTORY.filter((service) =>
+    input.affectedServices.includes(service.name),
   );
 
   // Return service inventory.
 
   return {
+    services: services.map((service) => ({
+      id: service.id,
 
-    services: services.map(
+      name: service.name,
 
-      (service) => ({
+      owner: service.owner,
 
-        id: service.id,
+      team: service.team,
 
-        name: service.name,
+      environment: service.environment,
 
-        owner: service.owner,
+      version: service.version,
 
-        team: service.team,
+      runtime: service.runtime,
 
-        environment: service.environment,
+      repository: service.repository,
 
-        version: service.version,
-
-        runtime: service.runtime,
-
-        repository: service.repository,
-
-        criticality: service.criticality,
-
-      }),
-
-    ),
-
+      criticality: service.criticality,
+    })),
   };
-
 }

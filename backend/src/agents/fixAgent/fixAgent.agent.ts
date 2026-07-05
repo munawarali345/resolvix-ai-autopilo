@@ -1,5 +1,5 @@
 // ================================================================
-// LOG ANALYZER AGENT
+// fix AGENT
 // ================================================================
 //
 // Purpose:
@@ -23,7 +23,7 @@ import {
 
 import { createQwenLangChainModel } from '../../ai/qwen/qwen.langchain.js';
 
-import { FIX_RECOMMENDATION_SYSTEM_PROMPT  } from '../fixAgent/fixAgent.prompt.js';
+import { FIX_RECOMMENDATION_SYSTEM_PROMPT } from '../fixAgent/fixAgent.prompt.js';
 import { loadSkill } from '../../utils/loadSkill.util.js';
 
 import { searchFixPlaybookTool } from '../../tools/fixAgentTools/toolWrappers/searchFixPlaybookToolWrapper.js';
@@ -44,7 +44,7 @@ import { parseFixResponse } from './fixAgent.perser.js';
 // validator
 import { validateFixOutput } from './fixAgent.validator.js';
 
-import { StructuredTool } from "@langchain/core/tools";
+import { StructuredTool } from '@langchain/core/tools';
 
 const qwenModel = createQwenLangChainModel();
 
@@ -53,7 +53,6 @@ const qwenModel = createQwenLangChainModel();
 // ================================================================
 
 const model = qwenModel.bindTools([
-
   searchFixPlaybookTool,
 
   searchRunbookTool,
@@ -63,7 +62,6 @@ const model = qwenModel.bindTools([
   configurationDiffTool,
 
   serviceInventoryTool,
-
 ]);
 
 // ================================================================
@@ -71,7 +69,6 @@ const model = qwenModel.bindTools([
 // ================================================================
 
 const toolRegistry: Record<string, StructuredTool> = {
-
   search_fix_playbook: searchFixPlaybookTool,
 
   search_runbook: searchRunbookTool,
@@ -81,7 +78,6 @@ const toolRegistry: Record<string, StructuredTool> = {
   configuration_diff: configurationDiffTool,
 
   service_inventory: serviceInventoryTool,
-
 };
 
 // ================================================================
@@ -91,10 +87,8 @@ const toolRegistry: Record<string, StructuredTool> = {
 export const fixAgent = async (
   agentInput: FixAgentInput,
 ): Promise<FixAgentExecutionResult> => {
-
   // Load Skill
   const skill = await loadSkill(
-
     'fixAgentSkills',
 
     'generateFixSkill.md',
@@ -106,7 +100,7 @@ export const fixAgent = async (
 
   const systemPrompt = `
 
-     ${FIX_RECOMMENDATION_SYSTEM_PROMPT }
+     ${FIX_RECOMMENDATION_SYSTEM_PROMPT}
 
      ${skill}
 
@@ -135,31 +129,31 @@ Follow your assigned skill and use available tools whenever required.
 
 `;
 
- // ================================================================
-// Tool Artifacts
-// Stores outputs produced by Fix Agent tools.
-// ================================================================
+  // ================================================================
+  // Tool Artifacts
+  // Stores outputs produced by Fix Agent tools.
+  // ================================================================
 
-const artifacts: FixAgentArtifacts = {
+  const artifacts: FixAgentArtifacts = {
+    playbooks: [],
 
-  playbooks: [],
+    runbooks: [],
 
-  runbooks: [],
+    configurations: [],
 
-  configurations: [],
+    configurationChanges: [],
 
-  configurationChanges: [],
+    serviceInventory: [],
+  };
 
-  serviceInventory: [],
-
-};
-
-  const messages: BaseMessage[] = [ new SystemMessage(systemPrompt), new HumanMessage(userPrompt),];
+  const messages: BaseMessage[] = [
+    new SystemMessage(systemPrompt),
+    new HumanMessage(userPrompt),
+  ];
 
   let continueExecution = true;
 
   while (continueExecution) {
-
     const response = await model.invoke(messages);
 
     messages.push(response);
@@ -169,7 +163,6 @@ const artifacts: FixAgentArtifacts = {
     // --------------------------------------------------------
 
     if (!response.tool_calls?.length) {
-
       continueExecution = false;
 
       const parsedOutput = parseFixResponse(response.content as string);
@@ -177,11 +170,9 @@ const artifacts: FixAgentArtifacts = {
       const validatedOutput = validateFixOutput(parsedOutput);
 
       return {
-
         analysis: validatedOutput,
 
         artifacts,
-
       };
     }
 
@@ -190,13 +181,10 @@ const artifacts: FixAgentArtifacts = {
     // --------------------------------------------------------
 
     for (const toolCall of response.tool_calls) {
-
       const tool = toolRegistry[toolCall.name as keyof typeof toolRegistry];
 
       if (!tool) {
-
         throw new Error(`Unknown Tool: ${toolCall.name}`);
-
       }
 
       const result = await tool.invoke(toolCall);
@@ -205,9 +193,7 @@ const artifacts: FixAgentArtifacts = {
       // Skip ToolMessage and only store actual tool output.
       // --------------------------------------------------------
       if (result instanceof ToolMessage) {
-
         throw new Error('Tool returned ToolMessage instead of actual output.');
-
       }
 
       // =========================================================
@@ -222,7 +208,6 @@ const artifacts: FixAgentArtifacts = {
       // Save extracted ERROR logs.
       // ---------------------------------------------------------
       if (toolCall.name === 'search_fix_playbook') {
-
         artifacts.playbooks = result as FixAgentArtifacts['playbooks'];
       }
 
@@ -230,60 +215,48 @@ const artifacts: FixAgentArtifacts = {
       // Save affected services discovered from logs.
       // ---------------------------------------------------------
       if (toolCall.name === 'search_runbook') {
-
-        artifacts.runbooks =
-
-          result as FixAgentArtifacts['runbooks'];
-
+        artifacts.runbooks = result as FixAgentArtifacts['runbooks'];
       }
 
       // ---------------------------------------------------------
       // Save grouped repeated log messages.
       // ---------------------------------------------------------
       if (toolCall.name === 'configuration_reader') {
-
-        artifacts.configurations = result as FixAgentArtifacts['configurations'];
-
+        artifacts.configurations =
+          result as FixAgentArtifacts['configurations'];
       }
 
       // ---------------------------------------------------------
       // Save generated incident timeline.
       // ---------------------------------------------------------
       if (toolCall.name === 'configuration_diff') {
-
-        artifacts.configurationChanges = result as FixAgentArtifacts['configurationChanges'];
-
+        artifacts.configurationChanges =
+          result as FixAgentArtifacts['configurationChanges'];
       }
 
       // ---------------------------------------------------------
       // Save inferred service dependency graph.
       // ---------------------------------------------------------
       if (toolCall.name === 'service_inventory') {
-
-        artifacts.serviceInventory = result as FixAgentArtifacts['serviceInventory'];
-
+        artifacts.serviceInventory =
+          result as FixAgentArtifacts['serviceInventory'];
       }
 
       if (!toolCall.id) {
-
         throw new Error('Tool call id is missing.');
-
       }
 
-      messages.push( new ToolMessage({ tool_call_id: toolCall.id, content: JSON.stringify(result),}),
-
+      messages.push(
+        new ToolMessage({
+          tool_call_id: toolCall.id,
+          content: JSON.stringify(result),
+        }),
       );
     }
   }
 
-  throw new Error(
-
-    'Fix Agent terminated without producing a final response.',
-
-  );
-
+  throw new Error('Fix Agent terminated without producing a final response.');
 };
-
 
 // High Level Archtecture
 

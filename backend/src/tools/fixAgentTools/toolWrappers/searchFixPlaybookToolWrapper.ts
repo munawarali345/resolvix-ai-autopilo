@@ -1,4 +1,3 @@
-
 // ================================================================
 // SEARCH FIX PLAYBOOK LANGCHAIN TOOL
 // ================================================================
@@ -12,12 +11,12 @@
 //
 // ================================================================
 
-import { tool } from "@langchain/core/tools";
-import { z } from "zod";
+import { tool } from '@langchain/core/tools';
+import { z } from 'zod';
 
-import { searchFixPlaybook } from "../toolExecutors/searchFixPlaybook.function.js";
+import { searchFixPlaybook } from '../toolExecutors/searchFixPlaybook.function.js';
 
-import { LOG_SERVICES } from "../../../types/index.js";
+import { LOG_SERVICES } from '../../../types/index.js';
 
 // ================================================================
 // TOOL INPUT SCHEMA
@@ -26,35 +25,17 @@ import { LOG_SERVICES } from "../../../types/index.js";
 // Validate tool input.
 
 const SearchFixPlaybookToolSchema = z.object({
-
   incident: z.object({
-
     title: z.string(),
 
     description: z.string(),
 
-    severity: z.enum([
-
-      "critical",
-
-      "high",
-
-      "medium",
-
-      "low",
-
-    ]),
+    severity: z.enum(['critical', 'high', 'medium', 'low']),
 
     rootCause: z.string(),
-
   }),
 
-  affectedServices: z.array(
-
-    z.enum(LOG_SERVICES),
-
-  ),
-
+  affectedServices: z.array(z.enum(LOG_SERVICES)),
 });
 
 // ================================================================
@@ -64,10 +45,9 @@ const SearchFixPlaybookToolSchema = z.object({
 // Tool metadata used by the LLM.
 
 const metadata = {
-
   // Tool name.
 
-  name: "search_fix_playbook",
+  name: 'search_fix_playbook',
 
   // Tool description.
 
@@ -99,7 +79,6 @@ Do NOT use this tool for:
   // Input schema.
 
   schema: SearchFixPlaybookToolSchema,
-
 };
 
 // ================================================================
@@ -109,17 +88,13 @@ Do NOT use this tool for:
 // Expose the business logic as a LangChain Tool.
 
 export const searchFixPlaybookTool = tool(
-
   // Execute tool.
 
   async (input) => {
-
     return searchFixPlaybook(input);
-
   },
 
   // Tool metadata.
 
   metadata,
-
 );

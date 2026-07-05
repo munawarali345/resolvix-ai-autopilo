@@ -12,6 +12,7 @@ import {
   RootCauseExecutionResult,
   LogAnalyzerExecutionResult,
   FixAgentExecutionResult,
+  RiskValidatorExecutionResult,
 } from '../types/index.js';
 import { WorkflowGraphState } from '../langGraph/state/workflow.state.js';
 
@@ -78,6 +79,9 @@ export const setLogAnalysisExecution = (
   };
 };
 
+// ================================================================
+// Store complete rootCause execution
+// ================================================================
 export const setRootCauseExecution = (
   state: GraphState,
   result: RootCauseExecutionResult,
@@ -89,24 +93,21 @@ export const setRootCauseExecution = (
     rootCauseResult: result.analysis,
 
     incident: {
-
       ...state.incident!,
 
       rootCause: result.analysis.rootCause,
-
     },
-
   };
 };
 
-
+// ================================================================
+// Store complete fix agent execution
+// ================================================================
 export const setFixExecution = (
   state: GraphState,
   result: FixAgentExecutionResult,
 ): GraphState => {
-
   return {
-
     ...state,
 
     // Save AI analysis
@@ -114,7 +115,23 @@ export const setFixExecution = (
 
     // Save tool outputs
     fixAgentArtifacts: result.artifacts,
+  };
+};
 
+// ================================================================
+// Store complete risk validator execution
+// ================================================================
+export const setRiskValidatorExecution = (
+  state: GraphState,
+  result: RiskValidatorExecutionResult,
+): GraphState => {
+  return {
+    ...state,
 
+    // Save AI analysis
+    riskValidatorResult: result.analysis,
+
+    // Save tool outputs
+    riskValidatorArtifacts: result.artifacts,
   };
 };
