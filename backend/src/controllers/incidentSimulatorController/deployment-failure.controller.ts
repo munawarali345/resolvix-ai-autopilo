@@ -6,6 +6,8 @@ import { Request, Response, NextFunction } from 'express';
 
 import { simulateDeploymentFailureService } from '../../services/incidentSimulatorServices/index.js';
 
+import { detectionService } from '../../services/agentsServices/detectionAgentService/detection.service.js';
+
 // ========================
 // Simulate deployment failure
 // ========================
@@ -17,10 +19,14 @@ export const simulateDeploymentFailureController = async (
   try {
     const result = await simulateDeploymentFailureService();
 
+    const detectionResult = await detectionService(result.logs);
+
     res.status(200).json({
       success: true,
 
-      data: result,
+      logs: result,
+
+      detection: detectionResult,
     });
   } catch (error) {
     next(error);

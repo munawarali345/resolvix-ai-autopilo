@@ -13,6 +13,8 @@ import {
   LogAnalyzerExecutionResult,
   FixAgentExecutionResult,
   RiskValidatorExecutionResult,
+  ExecutorExecutionResult,
+  ReporterExecutionResult,
 } from '../types/index.js';
 import { WorkflowGraphState } from '../langGraph/state/workflow.state.js';
 
@@ -133,5 +135,69 @@ export const setRiskValidatorExecution = (
 
     // Save tool outputs
     riskValidatorArtifacts: result.artifacts,
+  };
+};
+
+// ================================================================
+// Store complete executor execution
+// ================================================================
+
+export const setexecutorAgentExecution = (
+  state: GraphState,
+
+  result: ExecutorExecutionResult,
+): GraphState => {
+  // Filhal jo incident status state me hai, usi ko default maan lo
+  let incidentStatus = state.incident!.status; // defult status
+
+  if (result.execution.executionStatus === 'SUCCESS') {
+    incidentStatus = 'resolved';
+  } else if (result.execution.executionStatus === 'ROLLED_BACK') {
+    incidentStatus = 'open';
+  } else {
+    incidentStatus = 'in_progress';
+  }
+
+  return {
+    ...state,
+
+    executorAgentResult: result.execution,
+
+    executorAgentArtifacts: result.artifacts,
+
+    incident: {
+      ...state.incident!,
+
+      fixSummary: result.execution.summary,
+
+      executionStatus: result.execution.executionStatus,
+
+      status: incidentStatus,
+
+      resolvedAt:
+        incidentStatus === 'resolved' ? new Date() : state.incident!.resolvedAt,
+    },
+  };
+};
+
+// ================================================================
+// Store complete reporter execution
+// ================================================================
+export const setReporterExecution = (
+  state: GraphState,
+  result: ReporterExecutionResult,
+): GraphState => {
+  return {
+    ...state,
+
+    reporterAgentResult: result.report,
+
+    reporterAgentArtifacts: result.artifacts,
+
+    incident: {
+      ...state.incident!,
+
+      mttr: result.report.metrics.mttr,
+    },
   };
 };

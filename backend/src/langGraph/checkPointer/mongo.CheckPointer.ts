@@ -1,4 +1,3 @@
-
 // ================================================================
 // LANGGRAPH MONGODB CHECKPOINTER
 // ================================================================
@@ -14,11 +13,11 @@
 //
 // ================================================================
 
-import { MongoClient } from "mongodb";
+import { MongoClient } from 'mongodb';
 
-import { MongoDBSaver } from "@langchain/langgraph-checkpoint-mongodb";
+import { MongoDBSaver } from '@langchain/langgraph-checkpoint-mongodb';
 
-import { env } from "../../config/validateEnv.js";
+import { env } from '../../config/validateEnv.js';
 
 // ================================================================
 // Mongo Client
@@ -37,23 +36,17 @@ let checkpointer: MongoDBSaver | null = null;
 // ================================================================
 
 export async function createMongoCheckpointer() {
-
   if (checkpointer) {
-
     return checkpointer;
-
   }
 
   await client.connect();
 
   checkpointer = new MongoDBSaver({
-
     client,
-
   });
 
   await checkpointer.setup();
 
   return checkpointer;
-
 }

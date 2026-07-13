@@ -1,5 +1,5 @@
 // ================================================================
-// REPORTING NODE
+// REPORTER NODE
 // ================================================================
 //
 // Purpose:
@@ -7,29 +7,35 @@
 //
 // Is node ka kaam:
 // 1. Workflow step update karna
-// 2. Future me Report generate karna
 // ================================================================
 
 import { WorkflowState } from '../../types/index.js';
 
-import { updateWorkflowStep } from '../../utils/workflowState.util.js';
+import {
+  updateWorkflowStep,
+  setReporterExecution,
+} from '../../utils/workflowState.util.js';
+
+import { reporterService } from '../../services/agentsServices/reporterAgentService/reporter.service.js';
 
 // ================================================================
-// REPORTING NODE
+// ROOT CAUSE NODE
 // ================================================================
-export const reportingNode = async (
+export const reporterNode = async (
   state: WorkflowState,
 ): Promise<WorkflowState> => {
-  // Workflow step ko "reporting" par set karo
-  const updatedState = updateWorkflowStep(
-    state,
+  // ================================================================
+  // STEP 1: Update workflow step
+  // ================================================================
+  const updatedState = updateWorkflowStep(state, 'reporting');
 
-    'reporting',
-  );
+  // ================================================================
+  // STEP 2: Call reporter Service
+  // ================================================================
+  const result = await reporterService(updatedState);
 
-  // TODO:
-  // Yahan future me reportingAgent(updatedState)
-  // call hoga (incident report generate karega)
-
-  return updatedState;
+  // ================================================================
+  // STEP 3: Save result into state
+  // ================================================================
+  return setReporterExecution(updatedState, result);
 };

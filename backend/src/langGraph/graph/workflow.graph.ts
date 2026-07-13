@@ -17,9 +17,8 @@ import { riskValidationNode } from '../nodes/riskValidator.node.js';
 import { executionNode } from '../nodes/executor.node.js';
 import { reportingNode } from '../nodes/reporter.node.js';
 
-import { approvalRouterNode } from "../nodes/approvalRouter.node.js";
-import { createMongoCheckpointer } from "../checkPointer/mongo.CheckPointer.js";
-
+import { approvalRouterNode } from '../nodes/approvalRouter.node.js';
+import { createMongoCheckpointer } from '../checkPointer/mongo.CheckPointer.js';
 
 // ================================================================
 // GRAPH BUILD
@@ -32,7 +31,7 @@ const graph = new StateGraph(WorkflowGraphState)
   .addNode('rootCauseNode', rootCauseNode)
   .addNode('fixNode', fixNode)
   .addNode('riskValidationNode', riskValidationNode)
-  .addNode("approvalRouterNode", approvalRouterNode)
+  .addNode('approvalRouterNode', approvalRouterNode)
   .addNode('executionNode', executionNode)
   .addNode('reportingNode', reportingNode)
 
@@ -53,14 +52,13 @@ const graph = new StateGraph(WorkflowGraphState)
 // COMPILED WORKFLOW
 // ================================================================
 
-   let appWorkflow: ReturnType<typeof graph.compile>;
+let appWorkflow: ReturnType<typeof graph.compile>;
 
 // ================================================================
 // INITIALIZE WORKFLOW
 // ================================================================
 
 export async function initializeWorkflow() {
-
   const checkpointer = await createMongoCheckpointer();
 
   // ------------------------------------------------
@@ -68,20 +66,13 @@ export async function initializeWorkflow() {
   // ------------------------------------------------
 
   if (appWorkflow) {
-
-      return;
-
+    return;
   }
 
-    appWorkflow = graph.compile({
-
-       checkpointer,
-
+  appWorkflow = graph.compile({
+    checkpointer,
   });
-
-
 }
-
 
 // ================================================================
 // GET WORKFLOW
@@ -94,17 +85,11 @@ export async function initializeWorkflow() {
 // ================================================================
 
 export function getWorkflow() {
-
   if (!appWorkflow) {
-
     throw new Error(
-
-      "Workflow has not been initialized. Call initializeWorkflow() during server startup."
-
+      'Workflow has not been initialized. Call initializeWorkflow() during server startup.',
     );
-
   }
 
   return appWorkflow;
-
 }

@@ -10,9 +10,10 @@ export type Incident = {
   status: IncidentStatus;
   detectedAt: Date;
   rootCause?: string;
-  fixApplied?: string;
+  fixSummary?: string;
+  executionStatus?: 'SUCCESS' | 'FAILED' | 'ROLLED_BACK';
   resolvedAt?: Date;
-  mttr?: number;
+  mttr?: number | null;
   createdAt?: Date;
   updatedAt?: Date;
 };

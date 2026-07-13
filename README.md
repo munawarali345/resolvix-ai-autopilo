@@ -6,8 +6,8 @@
 
 ## Overview
 
-Resolvix AI Ops AI is an autonomous multi-agent DevOps platform that autonomously monitors 
-application health, detects incidents, diagnoses root causes, proposes remediation strategies, 
+Resolvix AI Ops AI is an autonomous multi-agent DevOps platform that autonomously monitors
+application health, detects incidents, diagnoses root causes, proposes remediation strategies,
 validates risk, and executes recovery actions with minimal human intervention.
 
 ## Architecture
@@ -20,7 +20,7 @@ graph TD
     D --> E[Risk Validator]
     E --> F[Executor]
     F --> G[Reporter]
-    
+
     style A fill:#e1f5fe
     style B fill:#f3e5f5
     style C fill:#e8f5e8
@@ -32,13 +32,13 @@ graph TD
 
 ## Multi-Agent Workflow
 
-| Agent | Purpose | Skills | Tools |
-|-------|---------|--------|-------|
-| **Orchestrator** | Workflow coordination | - | - |
-| **Log Analysis** | Extract errors, build timeline, identify patterns | Log Analysis Skill | extractErrors, buildTimeline, groupLogs, extractAffectedServices, dependencyMapper |
-| **Root Cause** | Identify probable root cause | Trace Dependencies Skill | - |
-| **Fix Agent** | Generate remediation recommendations | Fix Recommendation Skill | searchFixPlaybook, searchRunbook, configurationReader, configurationDiff, serviceInventory |
-| **Risk Validator** | Validate remediation safety | Validate Risk Skill | approvalPolicy, maintenanceWindow, impactAssessment, missingValidation |
+| Agent              | Purpose                                           | Skills                   | Tools                                                                                      |
+| ------------------ | ------------------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------ |
+| **Orchestrator**   | Workflow coordination                             | -                        | -                                                                                          |
+| **Log Analysis**   | Extract errors, build timeline, identify patterns | Log Analysis Skill       | extractErrors, buildTimeline, groupLogs, extractAffectedServices, dependencyMapper         |
+| **Root Cause**     | Identify probable root cause                      | Trace Dependencies Skill | -                                                                                          |
+| **Fix Agent**      | Generate remediation recommendations              | Fix Recommendation Skill | searchFixPlaybook, searchRunbook, configurationReader, configurationDiff, serviceInventory |
+| **Risk Validator** | Validate remediation safety                       | Validate Risk Skill      | approvalPolicy, maintenanceWindow, impactAssessment, missingValidation                     |
 
 ## Project Structure
 
@@ -109,6 +109,7 @@ src/skills/
 ```
 
 Skills enforce:
+
 - Evidence-based reasoning
 - Tool selection strategy
 - Safety constraints
@@ -134,6 +135,7 @@ src/tools/
 ### Scoring Algorithm
 
 Playbook matching uses weighted scoring:
+
 - Root Cause Match: 60 points
 - Service Match: 15 points per service (max 30)
 - Severity Match: 10 points
@@ -141,9 +143,11 @@ Playbook matching uses weighted scoring:
 ## Knowledge Base
 
 ### Playbooks (56 Ready-to-Use)
+
 Located in `src/data/playbookData/playbooks.data.ts`
 
 Categories:
+
 - Database Failures (15 playbooks)
 - Memory Leaks (10 playbooks)
 - API 500 Errors (11 playbooks)
@@ -151,25 +155,29 @@ Categories:
 - CPU Spikes (10 playbooks)
 
 ### Runbooks
+
 Located in `src/data/playbookData/runbook.data.ts`
 
 ### Service Inventory
+
 Located in `src/data/playbookData/serviceInventoryData.ts`
 
 ## AI Integration
 
 ### Qwen Cloud APIs
+
 - **Direct Client**: `src/ai/qwen/qwen.client.ts` - Raw API communication
 - **LangChain Model**: `src/ai/qwen/qwen.langchain.ts` - Tool-calling model wrapper
 
 ### Configuration (`src/ai/qwen/qwen.config.ts`)
+
 ```typescript
 QWEN_CONFIG = {
   baseUrl: 'https://dashscope-intl.aliyuncs.com/compatible-mode/v1',
   model: env.QWEN_MODEL,
   temperature: 0,
-  maxTokens: 1000
-}
+  maxTokens: 1000,
+};
 ```
 
 ## Incident Simulation
@@ -196,6 +204,7 @@ POST /api/simulate/cpu-spike
 ## Tech Stack
 
 ### Backend
+
 - **Framework**: Express.js + TypeScript (ESM)
 - **AI Framework**: LangChain + LangGraph
 - **Database**: MongoDB (Mongoose)
@@ -203,6 +212,7 @@ POST /api/simulate/cpu-spike
 - **Logging**: Winston
 
 ### Frontend
+
 - **Framework**: Next.js 15 (App Router)
 - **State Management**: Zustand
 - **UI Library**: shadcn/ui
@@ -211,17 +221,20 @@ POST /api/simulate/cpu-spike
 ## Quick Start
 
 ### Install Dependencies
+
 ```bash
 pnpm install
 ```
 
 ### Start Backend
+
 ```bash
 pnpm dev:backend
 # Server runs at http://localhost:5000
 ```
 
 ### Start Frontend
+
 ```bash
 pnpm dev:frontend
 # App runs at http://localhost:3000

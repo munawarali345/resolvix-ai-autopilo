@@ -8,7 +8,7 @@
 import { Log } from './log.type.js';
 import { Incident } from './incident.type.js';
 import {
-  DetectionServiceOutput,
+  DetectionAgentOutput,
   OrchestratorAgentOutput,
   LogAnalyzerAgentOutput,
   LogAnalysisArtifacts,
@@ -17,6 +17,10 @@ import {
   FixAgentOutput,
   RiskValidatorArtifacts,
   RiskValidatorOutput,
+  ExecutorOutput,
+  ExecutorArtifacts,
+  ReporterOutput,
+  ReporterArtifacts,
 } from './index.js';
 
 // ================================================================
@@ -46,11 +50,8 @@ export type NextWorkflowStep =
   | 'execution'
   | 'reporting';
 
-
-  export interface ApprovalState {
-
-  status: "pending" | "approved" | "rejected" | null;
-
+export interface ApprovalState {
+  status: 'pending' | 'approved' | 'rejected' | null;
 }
 
 // ================================================================
@@ -63,7 +64,7 @@ export interface WorkflowState {
   // Detection ke baad create hone wala incident
   incident: Incident | null;
 
-  detectionResult: DetectionServiceOutput | null;
+  detectionResult: DetectionAgentOutput | null;
 
   orchestratorDecision: OrchestratorAgentOutput | null;
 
@@ -82,6 +83,14 @@ export interface WorkflowState {
   riskValidatorArtifacts: RiskValidatorArtifacts | null;
 
   approval: ApprovalState | null;
+
+  executorAgentResult: ExecutorOutput | null;
+
+  executorAgentArtifacts: ExecutorArtifacts | null;
+
+  reporterAgentResult: ReporterOutput | null;
+
+  reporterAgentArtifacts: ReporterArtifacts | null;
 
   // Current workflow stage
   currentStep: WorkflowStep;

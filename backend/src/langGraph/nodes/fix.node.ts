@@ -25,7 +25,9 @@ type GraphState = typeof WorkflowGraphState.State;
 // FIX NODE
 // ================================================================
 export const fixNode = async (state: GraphState): Promise<GraphState> => {
-  // Workflow step ko "fix" par set karo
+  // ================================================================
+  // STEP 1: Workflow step ko "fix" par set karo
+  // ================================================================
   const updatedState = updateWorkflowStep(state, 'fix');
 
   // ================================================================

@@ -16,9 +16,9 @@
 //
 // ================================================================
 
-import { interrupt } from "@langchain/langgraph";
+import { interrupt } from '@langchain/langgraph';
 
-import { WorkflowState } from "../../types/index.js";
+import { WorkflowState } from '../../types/index.js';
 
 // ================================================================
 // NODE
@@ -27,36 +27,31 @@ import { WorkflowState } from "../../types/index.js";
 export async function approvalRouterNode(
   state: WorkflowState,
 ): Promise<Partial<WorkflowState>> {
-
   // ------------------------------------------------
   // Safety Check
   // ------------------------------------------------
 
   if (!state.riskValidatorResult) {
-
     throw new Error(
-      "Risk Validator result is missing before approval routing.",
+      'Risk Validator result is missing before approval routing.',
     );
-
   }
 
   // ------------------------------------------------
-// Human Approval Required
-//
-// interrupt() workflow ko pause karta hai.
-//
-// Is waqt LangGraph current workflow state ko
-// configured checkpointer ke through persist karta hai.
-//
-// Neeche diya gaya payload frontend/API ko mil sakta hai
-// taake human approval request display ki ja sake.
-//
-// ------------------------------------------------
+  // Human Approval Required
+  //
+  // interrupt() workflow ko pause karta hai.
+  //
+  // Is waqt LangGraph current workflow state ko
+  // configured checkpointer ke through persist karta hai.
+  //
+  // Neeche diya gaya payload frontend/API ko mil sakta hai
+  // taake human approval request display ki ja sake.
+  //
+  // ------------------------------------------------
 
   if (state.riskValidatorResult.approvalRequired) {
-
-    interrupt({ 
-
+    interrupt({
       incidentId: state.incident?._id,
 
       reason: state.riskValidatorResult.reason,
@@ -64,9 +59,7 @@ export async function approvalRouterNode(
       riskLevel: state.riskValidatorResult.riskLevel,
 
       riskScore: state.riskValidatorResult.riskScore,
-
     });
-
   }
 
   // ------------------------------------------------
@@ -74,9 +67,7 @@ export async function approvalRouterNode(
   // ------------------------------------------------
 
   return {};
-
 }
-
 
 // interrupt()
 //         │

@@ -37,7 +37,9 @@ export type DetectionAgentInput = {
 // ================================================================
 export type DetectionAgentIncident = {
   title: string;
+
   description: string;
+
   severity: 'critical' | 'high' | 'medium' | 'low';
 
   status: 'open'; // always open at detection stage

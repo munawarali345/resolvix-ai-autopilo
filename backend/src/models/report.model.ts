@@ -16,15 +16,18 @@ const timelineSchema = new Schema<ReportTimeline>(
       type: Date,
       required: true,
     },
+
     event: {
       type: String,
       required: true, // Kya event tha
     },
+
     agent: {
       type: String,
       required: true, // Kaunsa agent handle kiya
     },
   },
+
   { _id: false }, // Sub-document ko ID na de
 );
 
@@ -35,19 +38,28 @@ const metricsSchema = new Schema<ReportMetrics>(
       type: Number,
       required: true, // Detection mein kitna time (ms)
     },
+
     diagnosisTime: {
       type: Number,
       required: true, // Diagnosis mein kitna time (ms)
     },
+
     executionTime: {
       type: Number,
       required: true, // Fix execution mein kitna time (ms)
     },
+
+    mttr: {
+      type: Number,
+      default: null,
+    },
+
     totalTime: {
       type: Number,
       required: true, // Total time (ms)
     },
   },
+
   { _id: false }, // Sub-document ko ID na de
 );
 
@@ -59,23 +71,50 @@ const reportSchema = new Schema<ReportDocument>(
       required: [true, 'Incident ID zaroori hai'], // Kis incident ka report hai
       index: true, // Frequently queried
     },
+
     title: {
       type: String,
       required: [true, 'Report title zaroori hai'], // Report ka title
     },
+
     summary: {
       type: String,
       required: [true, 'Summary zaroori hai'], // Short summary
     },
+
     timeline: {
       type: [timelineSchema],
       required: true, // Incident ke steps
     },
+
     metrics: {
       type: metricsSchema,
       required: true, // Performance metrics
     },
+
+    executiveSummary: {
+      type: String,
+      required: true,
+    },
+
+    technicalSummary: {
+      type: String,
+      required: true,
+    },
+
+    incidentStatus: {
+      type: String,
+      enum: ['RESOLVED', 'FAILED', 'ROLLED_BACK'],
+
+      required: true,
+    },
+
+    confidence: {
+      type: Number,
+      required: true,
+    },
   },
+
   {
     timestamps: true, // createdAt automatically
   },

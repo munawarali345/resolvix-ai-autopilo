@@ -17,43 +17,56 @@ const incidentSchema = new Schema<IncidentDocument>(
       required: [true, 'Incident title zaroori hai'], // Title mandatory
       trim: true,
     },
+
     description: {
       type: String,
       required: [true, 'Description zaroori hai'], // Description mandatory
     },
+
     severity: {
       type: String,
       enum: ['critical', 'high', 'medium', 'low'] as const, // Severity levels
       default: 'medium',
       required: true,
     },
+
     status: {
       type: String,
       enum: ['open', 'in_progress', 'resolved', 'rejected'] as const, // Status options
       default: 'open',
     },
+
     detectedAt: {
       type: Date,
       default: Date.now, // Current time default
       required: true,
     },
+
     rootCause: {
       type: String,
       default: null, // Initially null - agent fill karega
     },
-    fixApplied: {
+
+    fixSummary: {
       type: String,
-      default: null, // Initially null - agent apply karega
     },
+
+    executionStatus: {
+      type: String,
+      enum: ['SUCCESS', 'FAILED', 'ROLLED_BACK'],
+    },
+
     resolvedAt: {
       type: Date,
       default: null, // Set hoga jab resolve hoga
     },
+
     mttr: {
       type: Number, // Mean Time To Resolution (milliseconds)
       default: null, // Automatically calculate hoga
     },
   },
+
   {
     timestamps: true, // createdAt, updatedAt automatically
   },

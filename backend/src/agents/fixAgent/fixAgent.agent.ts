@@ -42,7 +42,7 @@ import {
 import { parseFixResponse } from './fixAgent.perser.js';
 
 // validator
-import { validateFixOutput } from './fixAgent.validator.js';
+import { validateFixAgentOutput } from './fixAgent.validator.js';
 
 import { StructuredTool } from '@langchain/core/tools';
 
@@ -167,7 +167,7 @@ Follow your assigned skill and use available tools whenever required.
 
       const parsedOutput = parseFixResponse(response.content as string);
 
-      const validatedOutput = validateFixOutput(parsedOutput);
+      const validatedOutput = validateFixAgentOutput(parsedOutput);
 
       return {
         analysis: validatedOutput,

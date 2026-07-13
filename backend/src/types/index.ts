@@ -72,3 +72,15 @@ export * from './riskAgent.types.js';
 
 // risk validation tools types
 export * from './riskAgentTools.type.js';
+
+// executor agent types
+export * from './executorAgent.type.js';
+
+// executor agent tools types
+export * from './executorTools.type.js';
+
+// reporter agent types
+export * from './reporterAgent.types.js';
+
+// reporter agent tools types
+export * from './reporterAgentTools.Types.js';

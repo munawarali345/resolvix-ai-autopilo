@@ -16,41 +16,49 @@ flowchart LR
 ## Agent Architecture
 
 ### 1. Orchestrator Agent
+
 - **File**: `src/agents/orchestratorAgent/orchestrator.agent.ts`
 - **Purpose**: Workflow coordination
 - **Uses**: Direct Qwen client (qwen.client.ts)
 
 ### 2. Log Analysis Agent
+
 - **File**: `src/agents/log-analysisAgent/logAnalysis.agent.ts`
 - **Purpose**: Extract errors, build timeline, identify patterns
 - **Tools**: extractErrors, buildTimeline, groupLogs, extractAffectedServices, dependencyMapper
 
 ### 3. Root Cause Agent
+
 - **File**: `src/agents/root-causeAgent/rootCouse.agnte.ts`
 - **Purpose**: Identify probable root cause
 - **Uses**: Evidence from log analysis
 
 ### 4. Fix Agent
+
 - **File**: `src/agents/fixAgent/fixAgent.agent.ts`
 - **Purpose**: Generate remediation recommendations
 - **Tools**: searchFixPlaybook, searchRunbook, configurationReader, configurationDiff, serviceInventory
 
 ### 5. Risk Validator Agent
+
 - **File**: `src/agents/risk-validatorAgent/riskValidator.agent.ts`
 - **Purpose**: Validate remediation safety
 - **Tools**: approvalPolicy, maintenanceWindow, impactAssessment, missingValidation
 
 ### 6. Executor Node
+
 - **File**: `src/langGraph/nodes/executor.node.ts`
 - **Purpose**: Execute approved commands
 
 ### 7. Reporter Node
+
 - **File**: `src/langGraph/nodes/reporter.node.ts`
 - **Purpose**: Generate incident report
 
 ## Tool Architecture
 
 ### Fix Agent Tools (5)
+
 ```
 src/tools/fixAgentTools/
 ├── toolExecutors/
@@ -68,6 +76,7 @@ src/tools/fixAgentTools/
 ```
 
 ### Log Analyzer Tools (5)
+
 ```
 src/tools/logAnalyzerAgentTools/
 ├── toolExecutors/
@@ -85,6 +94,7 @@ src/tools/logAnalyzerAgentTools/
 ```
 
 ### Risk Validator Tools (4)
+
 ```
 src/tools/riskValidatorTools/
 ├── toolExecutors/
@@ -130,6 +140,7 @@ src/langGraph/
 ## State Management
 
 Type definitions in `src/types/`:
+
 - `workflow.types.ts` - Workflow interfaces
 - `orchestrationAgent.type.ts` - Orchestrator types
 - `logAnalyzer.type.ts` - Log analyzer types

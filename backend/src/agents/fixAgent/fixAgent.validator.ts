@@ -7,13 +7,22 @@
 //
 // ================================================================
 
-import { FixAgentOutput } from '../../types/index.js';
+import { FixAgentOutput } from '../../types/fixAgent.types.js';
+
+import { LOG_SERVICES } from '../../types/index.js';
+
+const allowedEstimatedTimes = [
+  '5-10 minutes',
+  '10-15 minutes',
+  '15-30 minutes',
+  '20-40 minutes',
+] as const;
 
 // ================================================================
 // Validate Fix Agent Output
 // ================================================================
 
-export const validateFixOutput = (data: unknown): FixAgentOutput => {
+export const validateFixAgentOutput = (data: unknown): FixAgentOutput => {
   // ------------------------------------------------
   // STEP 1
   // Response must be an object
@@ -69,8 +78,8 @@ export const validateFixOutput = (data: unknown): FixAgentOutput => {
   }
 
   for (const service of output.affectedServices) {
-    if (typeof service !== 'string') {
-      throw new Error('Fix Agent: Invalid affectedServices item');
+    if (!LOG_SERVICES.includes(service)) {
+      throw new Error(`Fix Agent: Invalid affected service '${service}'`);
     }
   }
 
@@ -84,7 +93,7 @@ export const validateFixOutput = (data: unknown): FixAgentOutput => {
   }
 
   for (const command of output.commands) {
-    if (typeof command !== 'string') {
+    if (typeof command !== 'string' || command.trim() === '') {
       throw new Error('Fix Agent: Invalid command');
     }
   }
@@ -99,8 +108,8 @@ export const validateFixOutput = (data: unknown): FixAgentOutput => {
   }
 
   for (const step of output.rollbackPlan) {
-    if (typeof step !== 'string') {
-      throw new Error('Fix Agent: Invalid rollbackPlan item');
+    if (typeof step !== 'string' || step.trim() === '') {
+      throw new Error('Fix Agent: Invalid rollback step');
     }
   }
 
@@ -114,8 +123,8 @@ export const validateFixOutput = (data: unknown): FixAgentOutput => {
   }
 
   for (const step of output.verificationSteps) {
-    if (typeof step !== 'string') {
-      throw new Error('Fix Agent: Invalid verificationSteps item');
+    if (typeof step !== 'string' || step.trim() === '') {
+      throw new Error('Fix Agent: Invalid verification step');
     }
   }
 
@@ -129,8 +138,8 @@ export const validateFixOutput = (data: unknown): FixAgentOutput => {
   }
 
   for (const item of output.evidence) {
-    if (typeof item !== 'string') {
-      throw new Error('Fix Agent: Invalid evidence item');
+    if (typeof item !== 'string' || item.trim() === '') {
+      throw new Error('Fix Agent: Invalid evidence');
     }
   }
 
@@ -144,8 +153,8 @@ export const validateFixOutput = (data: unknown): FixAgentOutput => {
   }
 
   for (const hint of output.riskHints) {
-    if (typeof hint !== 'string') {
-      throw new Error('Fix Agent: Invalid riskHints item');
+    if (typeof hint !== 'string' || hint.trim() === '') {
+      throw new Error('Fix Agent: Invalid risk hint');
     }
   }
 
@@ -154,45 +163,34 @@ export const validateFixOutput = (data: unknown): FixAgentOutput => {
   // Estimated Time
   // ------------------------------------------------
 
-  const allowedEstimatedTimes = [
-    '5-10 minutes',
-    '10-20 minutes',
-    '20-30 minutes',
-    '30-60 minutes',
-    '1-2 hours',
-  ] as const;
-
-  if (
-    typeof output.estimatedTime !== 'string' ||
-    !allowedEstimatedTimes.includes(
-      output.estimatedTime as (typeof allowedEstimatedTimes)[number],
-    )
-  ) {
+  if (!allowedEstimatedTimes.includes(output.estimatedTime)) {
     throw new Error('Fix Agent: Invalid estimatedTime');
   }
 
   // ------------------------------------------------
   // STEP 12
-  // Recommended Playbook ID (Optional)
-  // ------------------------------------------------
-
-  if (
-    output.recommendedPlaybookId !== undefined &&
-    typeof output.recommendedPlaybookId !== 'string'
-  ) {
-    throw new Error('Fix Agent: Invalid recommendedPlaybookId');
-  }
-
-  // ------------------------------------------------
-  // STEP 13
-  // Recommended Runbook ID (Optional)
+  // Recommended Runbook Id
   // ------------------------------------------------
 
   if (
     output.recommendedRunbookId !== undefined &&
-    typeof output.recommendedRunbookId !== 'string'
+    (typeof output.recommendedRunbookId !== 'string' ||
+      output.recommendedRunbookId.trim() === '')
   ) {
     throw new Error('Fix Agent: Invalid recommendedRunbookId');
+  }
+
+  // ------------------------------------------------
+  // STEP 13
+  // Recommended Playbook Id
+  // ------------------------------------------------
+
+  if (
+    output.recommendedPlaybookId !== undefined &&
+    (typeof output.recommendedPlaybookId !== 'string' ||
+      output.recommendedPlaybookId.trim() === '')
+  ) {
+    throw new Error('Fix Agent: Invalid recommendedPlaybookId');
   }
 
   // ------------------------------------------------

@@ -10,26 +10,31 @@
 // 2. Future me Execution Agent ko call karna
 // ================================================================
 
-import { WorkflowState } from '../../types/index.js';
+import { WorkflowGraphState } from '../state/workflow.state.js';
 
-import { updateWorkflowStep } from '../../utils/workflowState.util.js';
+import {
+  updateWorkflowStep,
+  setexecutorAgentExecution,
+} from '../../utils/workflowState.util.js';
+
+import { exectorAgentService } from '../../services/agentsServices/executorAgentService/executorAgent.service.js';
+
+type GraphState = typeof WorkflowGraphState.State;
 
 // ================================================================
 // EXECUTION NODE
 // ================================================================
-export const executionNode = async (
-  state: WorkflowState,
-): Promise<WorkflowState> => {
+export const executionNode = async (state: GraphState): Promise<GraphState> => {
   // Workflow step ko "execution" par set karo
-  const updatedState = updateWorkflowStep(
-    state,
+  const updatedState = updateWorkflowStep(state, 'execution');
 
-    'execution',
-  );
+  // ================================================================
+  // STEP 2: Call fix agent Service
+  // ================================================================
+  const result = await exectorAgentService(updatedState);
 
-  // TODO:
-  // Yahan future me executionAgent(updatedState)
-  // call hoga (actual deployment / fix apply)
-
-  return updatedState;
+  // ================================================================
+  // STEP 3: Save result into state
+  // ================================================================
+  return setexecutorAgentExecution(updatedState, result);
 };

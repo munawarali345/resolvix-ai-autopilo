@@ -37,16 +37,12 @@ import { getWorkflow } from '../../../langGraph/graph/workflow.graph.js';
 export const detectionService = async (
   logs: Log[],
 ): Promise<DetectionServiceOutput> => {
-
-
   // ------------------------------------------------
   // STEP 0: Execution start time (performance tracking)
   // ------------------------------------------------
   const startTime = Date.now();
 
-
   const workflow = getWorkflow();
-  
 
   // ================================================================
   // STEP 1: LOG ANALYSIS (Metrics generate karna)
@@ -174,26 +170,20 @@ export const detectionService = async (
     //
     // ------------------------------------------------
     await workflow.invoke(
+      workflowState,
 
-         workflowState,
-
-           {
-             configurable: {
-
-               thread_id: savedIncident._id.toString(),
-
-              },
-
-           },
-        );
-
+      {
+        configurable: {
+          thread_id: savedIncident._id.toString(),
+        },
+      },
+    );
   }
 
   // ================================================================
   // STEP 5: FINAL RESPONSE RETURN
   // ================================================================
   return {
-
     incidentDetected: aiResponse.isIncident,
 
     incident: savedIncident,
@@ -201,7 +191,5 @@ export const detectionService = async (
     confidence: aiResponse.confidence,
 
     signals: aiResponse.signals,
-
   };
-
 };
