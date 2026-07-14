@@ -22,6 +22,16 @@ export const getExecutionsByIncidentIdService = async (incidentId: string) => {
     throw new Error('No executions found for this incident');
   }
 
-  // Saare execution records return karo
-  return executions.map((execution) => execution.toObject());
+  // Frontend ke liye required fields map karo
+  const agentStatus = executions.map((execution) => ({
+    agentName: execution.agentName,
+    status: execution.status,
+    executionTime: execution.executionTime,
+    startedAt: execution.startedAt,
+    completedAt: execution.completedAt,
+    error: execution.error,
+  }));
+
+  // Return mapped response
+  return agentStatus;
 };

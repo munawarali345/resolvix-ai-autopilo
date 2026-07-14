@@ -22,7 +22,7 @@ export type DetectionServiceOutput = {
   // ------------------------------------------------
   // Kya incident detect hua?
   // ------------------------------------------------
-  incidentDetected: boolean;
+  isIncident: boolean;
 
   // ------------------------------------------------
   // Agar incident create hua hai to DB wala Incident

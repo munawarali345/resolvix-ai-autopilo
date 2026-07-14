@@ -6,7 +6,7 @@
 // Qwen AI isi structure ko strictly follow karega
 // ================================================================
 
-import { Log } from '../types/index.js';
+import { Log, Incident } from '../types/index.js';
 
 // ================================================================
 // 1. INPUT TYPE (Logs + pre-analyzed metrics)
@@ -69,5 +69,5 @@ export type DetectionAgentOutput = {
   signals: string[];
 
   // Incident object (sirf tab jab incident detect ho)
-  incident: DetectionAgentIncident | null;
+  incident: Incident | null;
 };

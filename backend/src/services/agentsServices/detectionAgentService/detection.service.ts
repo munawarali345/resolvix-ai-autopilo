@@ -143,7 +143,7 @@ export const detectionService = async (
       incident: savedIncident, // DB incident
 
       detectionResult: {
-        incidentDetected: aiResponse.isIncident,
+        isIncident: aiResponse.isIncident,
         confidence: aiResponse.confidence,
         signals: aiResponse.signals,
         incident: savedIncident,
@@ -184,7 +184,7 @@ export const detectionService = async (
   // STEP 5: FINAL RESPONSE RETURN
   // ================================================================
   return {
-    incidentDetected: aiResponse.isIncident,
+    isIncident: aiResponse.isIncident,
 
     incident: savedIncident,
 

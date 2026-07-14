@@ -112,6 +112,7 @@ export const simulateDeploymentFailureService =
         message:
           'Deployment failure scenario simulated. Bad deployment detected.',
         simulatedAt: new Date(),
+        logs: savedLogs,
       };
     } catch (error: any) {
       throw new Error(`deployment failure Simulation failed: ${error.message}`);

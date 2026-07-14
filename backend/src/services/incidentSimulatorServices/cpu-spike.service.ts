@@ -131,6 +131,7 @@ export const simulateCPUSpikeService = async (): Promise<SimulatorResponse> => {
       logsCreated: savedLogs.length, // 16 logs
       message: 'CPU spike scenario simulated. High CPU usage detected.',
       simulatedAt: new Date(),
+      logs: savedLogs,
     };
   } catch (error: any) {
     throw new Error(`Cpu Spike Simulation failed: ${error.message}`);

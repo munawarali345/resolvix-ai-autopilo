@@ -23,13 +23,17 @@ import {
 
 import { logService } from '../../../types/index.js';
 
+import { createNotification } from '../../../services/notificationService/notification.service.js';
+
+import { getSocketServer } from '../../../socket/socket.server.js';
+
 // ================================================================
 // SEND NOTIFICATION
 // ================================================================
 
 export async function notificationProvider(
+  incidentId: string,
   executionStatus: string,
-
   affectedServices: logService[],
 ): Promise<NotificationOutput> {
   // --------------------------------------------------------------
@@ -65,6 +69,48 @@ export async function notificationProvider(
     notificationChannel === 'webhook' && recipients.length > 0;
 
   // --------------------------------------------------------------
+  // Build notification document.
+  // --------------------------------------------------------------
+
+  let severity: 'info' | 'success' | 'warning' | 'error';
+
+  if (executionStatus === 'completed') {
+    severity = 'success';
+  } else if (executionStatus === 'rolled_back') {
+    severity = 'warning';
+  } else {
+    severity = 'error';
+  }
+
+  const notificationDocument = {
+    incidentId,
+
+    title: `Execution ${executionStatus}`,
+
+    message: `Execution finished with status: ${executionStatus}.`,
+
+    severity,
+
+    recipients,
+  };
+
+  // --------------------------------------------------------------
+  // notification Service call
+  // Save notification.
+  // --------------------------------------------------------------
+  const savedNotification = await createNotification(notificationDocument);
+
+  // --------------------------------------------------------------
+  // Get the globally initialized Socket.IO server instance.
+  // --------------------------------------------------------------
+  const io = getSocketServer();
+
+  // --------------------------------------------------------------
+  // Broadcast the notification to all connected dashboard clients.
+  // --------------------------------------------------------------
+  io.emit('notification:new', savedNotification);
+
+  // --------------------------------------------------------------
   // Determine failure reason.
   // --------------------------------------------------------------
 
@@ -90,3 +136,19 @@ export async function notificationProvider(
 }
 
 export default notificationProvider;
+
+// Executor Agent
+//         │
+//         ▼
+// notificationTool
+//         │
+//         ▼
+// notificationProvider()
+//         │
+//         ├── Build notification
+//         ├── Save notification in MongoDB
+//         ├── Emit notification via Socket.IO
+//         └── Return NotificationOutput
+//                 │
+//                 ▼
+// Executor Agent

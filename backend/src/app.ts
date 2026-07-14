@@ -6,7 +6,13 @@ import express, { Express } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { notFound, errorHandler } from './middlewares/error.middleware.js';
-import { authRoutes, incidentSimulationRoutes } from './routes/index.js';
+import {
+  authRoutes,
+  incidentSimulationRoutes,
+  incidentRoutes,
+  dashboardRoutes,
+  agentRoutes,
+} from './routes/index.js';
 
 const app: Express = express();
 
@@ -34,8 +40,15 @@ app.use('/api/auth', authRoutes); // auth routes
 
 app.use('/api/simulate', incidentSimulationRoutes);
 
+app.use('/api/incidents', incidentRoutes);
+
+app.use('/api/dashboard', dashboardRoutes);
+
+app.use('/api/agents', agentRoutes);
+
 // Error handling
 app.use(notFound);
 app.use(errorHandler);
 
+// export app
 export default app;

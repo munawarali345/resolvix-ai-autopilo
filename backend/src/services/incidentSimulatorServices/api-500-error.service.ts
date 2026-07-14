@@ -129,6 +129,7 @@ export const simulateAPI500ErrorService =
         logsCreated: savedLogs.length, // 18 logs
         message: 'API 500 error scenario simulated. High error rate detected.',
         simulatedAt: new Date(),
+        logs: savedLogs,
       };
     } catch (error: any) {
       throw new Error(`Api 500 Error simulation failed: ${error.message}`);

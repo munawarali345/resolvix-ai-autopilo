@@ -84,3 +84,6 @@ export * from './reporterAgent.types.js';
 
 // reporter agent tools types
 export * from './reporterAgentTools.Types.js';
+
+// notification model types
+export * from './notification.types.js';

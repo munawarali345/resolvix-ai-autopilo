@@ -104,6 +104,7 @@ export const simulateMemoryLeakService =
         logsCreated: savedLogs.length, // 12 logs
         message: 'Memory leak scenario simulated. Logs created for analysis.',
         simulatedAt: new Date(),
+        logs: savedLogs,
       };
     } catch (error: any) {
       throw new Error(`Memory Leak Simulation failed: ${error.message}`);
