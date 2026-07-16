@@ -11,7 +11,7 @@ import {
   verifyEmailService,
   forgotPasswordService,
   resetPasswordService,
-} from '../services/auth.service.js';
+} from '../../services/auth.service.js';
 
 // =====================================================
 // REGISTER CONTROLLER

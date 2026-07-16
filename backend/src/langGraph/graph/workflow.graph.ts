@@ -15,7 +15,8 @@ import { rootCauseNode } from '../nodes/rootCause.node.js';
 import { fixNode } from '../nodes/fix.node.js';
 import { riskValidationNode } from '../nodes/riskValidator.node.js';
 import { executionNode } from '../nodes/executor.node.js';
-import { reportingNode } from '../nodes/reporter.node.js';
+import { reporterNode } from '../nodes/reporter.node.js';
+import { completeNode } from "../nodes/complete.node.js";
 
 import { approvalRouterNode } from '../nodes/approvalRouter.node.js';
 import { createMongoCheckpointer } from '../checkPointer/mongo.CheckPointer.js';
@@ -33,7 +34,8 @@ const graph = new StateGraph(WorkflowGraphState)
   .addNode('riskValidationNode', riskValidationNode)
   .addNode('approvalRouterNode', approvalRouterNode)
   .addNode('executionNode', executionNode)
-  .addNode('reportingNode', reportingNode)
+  .addNode('reportingNode', reporterNode)
+  .addNode("completeNode", completeNode)
 
   // ---------------- START FLOW ----------------
   .addEdge(START, 'orchestratorNode')
@@ -46,7 +48,8 @@ const graph = new StateGraph(WorkflowGraphState)
   .addEdge('riskValidationNode', 'approvalRouterNode')
   .addEdge('approvalRouterNode', 'executionNode')
   .addEdge('executionNode', 'reportingNode')
-  .addEdge('reportingNode', END);
+  .addEdge("reportingNode", "completeNode")
+  .addEdge("completeNode", END)
 
 // ================================================================
 // COMPILED WORKFLOW

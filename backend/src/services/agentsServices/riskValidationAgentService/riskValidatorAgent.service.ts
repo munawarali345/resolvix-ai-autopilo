@@ -42,7 +42,7 @@ export const riskValidatorAgentService = async (
   // Validate required workflow data
   // ------------------------------------------------
 
-  if (!state.incident || !state.fixAgentResult || state.fixAgentArtifacts) {
+  if (!state.incident || !state.fixAgentResult || !state.fixAgentArtifacts) {
     throw new Error(
       'risk validator Service requires incident, fix Agent Result, fix agent artifacts',
     );

@@ -7,7 +7,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 import { Incident } from '../types/incident.type.js';
 
 // Incident document type
-type IncidentDocument = Incident & Document;
+export type IncidentDocument = Incident & Document;
 
 // Incident schema
 const incidentSchema = new Schema<IncidentDocument>(

@@ -3,11 +3,11 @@
 // ================================
 
 import { Router } from 'express';
-import * as authController from '../controllers/auth.controller.js';
+import * as authController from '../../controllers/authControllers/auth.controller.js';
 import {
   authRateLimit,
   apiRateLimit,
-} from '../middlewares/rate-limit.middleware.js';
+} from '../../middlewares/rate-limit.middleware.js';
 
 const router: Router = Router();
 

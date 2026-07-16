@@ -23,6 +23,8 @@ import { sendNotification } from '../toolExecutors/notification.function.js';
 const NotificationToolSchema = z.object({
   executionStatus: z.enum(['completed', 'rolled_back', 'failed']),
 
+  incidentId: z.string(),
+
   affectedServices: z.array(
     z.enum([
       'api-gateway',
@@ -84,15 +86,17 @@ Returns:
 // ================================================================
 
 export const notificationTool = tool(
-  async ({
-    executionStatus,
 
-    affectedServices,
-  }) => {
+  async ({ executionStatus,affectedServices,incidentId}) => {
+
     return sendNotification(
+
+      incidentId,
+
       executionStatus,
 
       affectedServices,
+
     );
   },
 

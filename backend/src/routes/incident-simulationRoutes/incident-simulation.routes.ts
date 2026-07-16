@@ -11,9 +11,9 @@ import {
   simulateApi500ErrorController,
   simulateDeploymentFailureController,
   simulateCpuSpikeController,
-} from '../controllers/incidentSimulatorController/index.js';
+} from '../../controllers/incidentSimulatorController/index.js';
 
-import { apiRateLimit } from '../middlewares/rate-limit.middleware.js';
+import { apiRateLimit } from '../../middlewares/rate-limit.middleware.js';
 
 const router: Router = Router();
 

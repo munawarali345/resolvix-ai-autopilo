@@ -1,3 +1,11 @@
+
+
+export interface PaginationOptions {
+  page: number;
+  limit: number;
+  skip: number;
+}
+
 export type ApiResponse<T> = {
   success: boolean;
   message: string;

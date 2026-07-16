@@ -51,16 +51,62 @@ export async function approvalRouterNode(
   // ------------------------------------------------
 
   if (state.riskValidatorResult.approvalRequired) {
-    interrupt({
-      incidentId: state.incident?._id,
 
-      reason: state.riskValidatorResult.reason,
+  // ------------------------------------------------
+  // Pause workflow and wait for human decision.
+  //
+  // interrupt() workflow ko yahin pause karega.
+  //
+  // Jab admin Approve/Reject karega,
+  // LangGraph isi line par dobara resume hoga.
+  //
+  // interrupt() ka return value wahi data hoga
+  // jo hum resume() ke through bhejenge.
+  //
+  // ------------------------------------------------
 
-      riskLevel: state.riskValidatorResult.riskLevel,
+   const approvalDecision = interrupt({
 
-      riskScore: state.riskValidatorResult.riskScore,
-    });
-  }
+     incidentId: state.incident?._id,
+
+     reason: state.riskValidatorResult.reason,
+
+     riskLevel: state.riskValidatorResult.riskLevel,
+
+     riskScore: state.riskValidatorResult.riskScore,
+
+  });
+
+
+  // ------------------------------------------------
+    // Safety Check
+    //
+    // Resume hone ke baad approvalDecision milni chahiye.
+    //
+    // Agar kisi wajah se empty hai to workflow continue
+    // nahi karna chahiye.
+    // ------------------------------------------------
+
+    if (!approvalDecision) {
+       throw new Error("Approval decision was not received.");
+    }
+
+    // ------------------------------------------------
+    // Human rejected the fix.
+    //
+    // Workflow yahin terminate kar diya jayega.
+    //
+    // Execution node kabhi nahi chalega.
+    // ------------------------------------------------
+ 
+     if (!approvalDecision.approved) {
+
+       return {};
+       
+     }
+
+ }
+
 
   // ------------------------------------------------
   // Continue Workflow

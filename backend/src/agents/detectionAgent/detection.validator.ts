@@ -14,12 +14,7 @@ import { DetectionAgentOutput } from '../../types/detectionAgent.type.js';
 // ================================================================
 const allowedSeverity = ['critical', 'high', 'medium', 'low'] as const;
 
-// ================================================================
-// Allowed Incident Status Values
-// ================================================================
-// Detection Agent sirf new incident create karta hai,
-// isliye sirf "open" status allow hai.
-const allowedStatus = ['open'] as const;
+
 
 // ================================================================
 // Validate Detection Agent Output
@@ -131,23 +126,30 @@ export const validateDetectionOutput = (
     // --------------------------
     // Status
     // --------------------------
-    if (!allowedStatus.includes(output.incident.status)) {
+    if (output.incident.status !== 'open') {
       throw new Error('Detection Agent: Invalid incident status');
     }
 
-    // --------------------------
-    // detectedAt
-    // Must be valid ISO Date string
-    // --------------------------
-    if (Number.isNaN(Date.parse(output.incident.detectedAt))) {
+   // --------------------------
+   // detectedAt
+   // Must be valid Date
+   // --------------------------
+   if (!(output.incident.detectedAt instanceof Date)) {
       throw new Error('Detection Agent: Invalid detectedAt');
-    }
-  }
+   }
 
+   if (Number.isNaN(output.incident.detectedAt.getTime())) {
+      throw new Error('Detection Agent: Invalid detectedAt');
+
+   }
+
+  }
+  
   // ------------------------------------------------
   // Step 10
   // Sab validation pass ho gayi
   // Safe object return karo
   // ------------------------------------------------
-  return output;
+  return output
+
 };

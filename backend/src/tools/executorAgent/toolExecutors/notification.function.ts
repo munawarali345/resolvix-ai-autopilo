@@ -25,17 +25,25 @@ import { logService } from '../../../types/index.js';
 // ================================================================
 
 export async function sendNotification(
+
+  incidentId: string,
+
   executionStatus: string,
 
   affectedServices: logService[],
+
 ): Promise<NotificationOutput> {
   // --------------------------------------------------------------
   // Delegate notification delivery.
   // --------------------------------------------------------------
 
   return notificationProvider(
+
+    incidentId,
+
     executionStatus,
 
     affectedServices,
+    
   );
 }
