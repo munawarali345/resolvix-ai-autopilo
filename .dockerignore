@@ -1,0 +1,23 @@
+# Git
+.git
+
+# Dependencies
+**/node_modules
+
+# Build output
+**/.next
+**/dist
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+
+# VS Code
+.vscode
+
+# Windows
+Thumbs.db
+

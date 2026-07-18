@@ -67,12 +67,21 @@ export const detectionAgent = async (
       },
     ]);
 
+    console.log("\n========== RAW QWEN RESPONSE ==========");
+    console.log(response.content);
+    console.log("=======================================\n");
+
     // ============================================================
     // STEP 3
     // Raw AI response ko JSON me convert karo
     // ============================================================
 
     const parsedResponse = parseDetectionResponse(response.content);
+
+
+    console.log("\n========== PARSED RESPONSE ==========");
+    console.log(JSON.stringify(parsedResponse, null, 2));
+    console.log("=====================================\n");
 
     // ============================================================
     // STEP 4

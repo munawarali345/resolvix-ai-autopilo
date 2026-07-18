@@ -85,6 +85,7 @@ const toolRegistry = {
 export const logAnalyzerAgent = async (
   agentInput: LogAnalyzerAgentInput,
 ): Promise<LogAnalyzerExecutionResult> => {
+
   // Load Skill
   const skill = await loadSkill(
     'logAnalysisSkills',
@@ -98,9 +99,9 @@ export const logAnalyzerAgent = async (
 
   const systemPrompt = `
 
-${LOG_ANALYZER_SYSTEM_PROMPT}
+   ${LOG_ANALYZER_SYSTEM_PROMPT}
 
-${skill}
+   ${skill}
 
 `;
 
@@ -152,6 +153,7 @@ Analyze the incident by following your assigned skill and use tools whenever req
   let continueExecution = true;
 
   while (continueExecution) {
+
     const response = await model.invoke(messages);
 
     messages.push(response);
@@ -161,6 +163,7 @@ Analyze the incident by following your assigned skill and use tools whenever req
     // --------------------------------------------------------
 
     if (!response.tool_calls?.length) {
+
       continueExecution = false;
 
       const parsedOutput = parseLogAnalyzerResponse(response.content as string);
@@ -187,12 +190,17 @@ Analyze the incident by following your assigned skill and use tools whenever req
 
       const result = await tool.invoke(toolCall);
 
-      // --------------------------------------------------------
-      // Skip ToolMessage and only store actual tool output.
-      // --------------------------------------------------------
-      if (result instanceof ToolMessage) {
-        throw new Error('Tool returned ToolMessage instead of actual output.');
-      }
+      let toolResult: unknown;
+
+       if (typeof result.content === "string") {
+
+                toolResult = JSON.parse(result.content);
+
+          } else {
+
+                toolResult = result.content;
+          }
+    
 
       // =========================================================
       // Save the executed tool output into artifacts.
@@ -206,37 +214,35 @@ Analyze the incident by following your assigned skill and use tools whenever req
       // Save extracted ERROR logs.
       // ---------------------------------------------------------
       if (toolCall.name === 'extract_errors') {
-        artifacts.errors = result as LogAnalysisArtifacts['errors'];
+        artifacts.errors = toolResult as LogAnalysisArtifacts['errors'];
       }
 
       // ---------------------------------------------------------
       // Save affected services discovered from logs.
       // ---------------------------------------------------------
       if (toolCall.name === 'extract_affected_services') {
-        artifacts.affectedServices =
-          result as LogAnalysisArtifacts['affectedServices'];
+        artifacts.affectedServices = toolResult as LogAnalysisArtifacts['affectedServices'];
       }
 
       // ---------------------------------------------------------
       // Save grouped repeated log messages.
       // ---------------------------------------------------------
       if (toolCall.name === 'group_logs') {
-        artifacts.groupedLogs = result as LogAnalysisArtifacts['groupedLogs'];
+        artifacts.groupedLogs = toolResult as LogAnalysisArtifacts['groupedLogs'];
       }
 
       // ---------------------------------------------------------
       // Save generated incident timeline.
       // ---------------------------------------------------------
       if (toolCall.name === 'build_timeline') {
-        artifacts.timeline = result as LogAnalysisArtifacts['timeline'];
+        artifacts.timeline = toolResult as LogAnalysisArtifacts['timeline'];
       }
 
       // ---------------------------------------------------------
       // Save inferred service dependency graph.
       // ---------------------------------------------------------
       if (toolCall.name === 'dependency_mapper') {
-        artifacts.dependencyMap =
-          result as LogAnalysisArtifacts['dependencyMap'];
+        artifacts.dependencyMap = toolResult as LogAnalysisArtifacts['dependencyMap'];
       }
 
       if (!toolCall.id) {
@@ -244,11 +250,12 @@ Analyze the incident by following your assigned skill and use tools whenever req
       }
 
       messages.push(
-        new ToolMessage({
-          tool_call_id: toolCall.id,
-          content: JSON.stringify(result),
-        }),
-      );
+               new ToolMessage({
+                  tool_call_id: toolCall.id,
+                  content: JSON.stringify(toolResult),
+                }),
+             );
+
     }
   }
 

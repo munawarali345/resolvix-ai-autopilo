@@ -219,12 +219,16 @@ Execute the approved remediation by following your assigned skill.
 
       const result = await tool.invoke(toolCall);
 
-      // --------------------------------------------------------
-      // Skip ToolMessage and only store actual tool output.
-      // --------------------------------------------------------
-      if (result instanceof ToolMessage) {
-        throw new Error('Tool returned ToolMessage instead of actual output.');
-      }
+      let toolResult: unknown;
+
+       if (typeof result.content === "string") {
+
+                toolResult = JSON.parse(result.content);
+
+          } else {
+
+                toolResult = result.content;
+          }
 
       // =========================================================
       // Save the executed tool output into artifacts.
@@ -239,21 +243,21 @@ Execute the approved remediation by following your assigned skill.
       // ---------------------------------------------------------
       if (toolCall.name === 'execute_Command') {
         artifacts.executeCommand =
-          result as ExecutorArtifacts['executeCommand'];
+          toolResult as ExecutorArtifacts['executeCommand'];
       }
 
       // ---------------------------------------------------------
       // Save execution status.
       // ---------------------------------------------------------
       if (toolCall.name === 'verification_Tool') {
-        artifacts.verification = result as ExecutorArtifacts['verification'];
+        artifacts.verification = toolResult as ExecutorArtifacts['verification'];
       }
 
       // ---------------------------------------------------------
       // Save roolbak.
       // ---------------------------------------------------------
       if (toolCall.name === 'rollback_Tool') {
-        artifacts.rollback = result as ExecutorArtifacts['rollback'];
+        artifacts.rollback = toolResult as ExecutorArtifacts['rollback'];
       }
 
       // ---------------------------------------------------------
@@ -261,14 +265,14 @@ Execute the approved remediation by following your assigned skill.
       // ---------------------------------------------------------
       if (toolCall.name === 'execution_Status') {
         artifacts.executionStatus =
-          result as ExecutorArtifacts['executionStatus'];
+          toolResult as ExecutorArtifacts['executionStatus'];
       }
 
       // ---------------------------------------------------------
       // Save notification.
       // ---------------------------------------------------------
       if (toolCall.name === 'notification_Tool') {
-        artifacts.notification = result as ExecutorArtifacts['notification'];
+        artifacts.notification = toolResult as ExecutorArtifacts['notification'];
       }
 
       if (!toolCall.id) {
@@ -276,11 +280,12 @@ Execute the approved remediation by following your assigned skill.
       }
 
       messages.push(
-        new ToolMessage({
-          tool_call_id: toolCall.id,
-          content: JSON.stringify(result),
-        }),
-      );
+         new ToolMessage({
+            tool_call_id: toolCall.id,
+            content: JSON.stringify(toolResult),
+          }),
+       );
+
     }
   }
 

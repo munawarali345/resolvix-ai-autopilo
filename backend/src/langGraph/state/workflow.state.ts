@@ -72,4 +72,10 @@ export const WorkflowGraphState = Annotation.Root({
 
   // reporter agent tool outputs.
   reporterAgentArtifacts: Annotation<WorkflowState['reporterAgentArtifacts']>(),
+
+  // Workflow lifecycle status
+  workflowStatus: Annotation<WorkflowState['workflowStatus']>(),
+
+  // Current pause information
+  pauseState: Annotation<WorkflowState['pauseState']>(),
 });

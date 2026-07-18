@@ -46,10 +46,23 @@ export function parseDetectionResponse(content: string): DetectionAgentOutput {
     const parsed = JSON.parse(jsonString);
 
     // ------------------------------------------------
+   // STEP 4.1
+   // Convert ISO date string into Date object
+  // ------------------------------------------------
+
+  if (
+     parsed?.incident?.detectedAt &&
+     typeof parsed.incident.detectedAt === "string"
+  ) {
+     parsed.incident.detectedAt = new Date(parsed.incident.detectedAt);
+   }
+
+    // ------------------------------------------------
     // STEP 5: return parsed object
     // ab yahan se detection agent use karega
     // ------------------------------------------------
     return parsed as DetectionAgentOutput;
+
   } catch {
     // ------------------------------------------------
     // ERROR HANDLING

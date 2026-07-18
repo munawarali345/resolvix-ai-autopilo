@@ -91,7 +91,7 @@ export const fixAgent = async (
   const skill = await loadSkill(
     'fixAgentSkills',
 
-    'generateFixSkill.md',
+    'fixRecommendationSkill.md',
   );
 
   // ================================================================
@@ -165,9 +165,19 @@ Follow your assigned skill and use available tools whenever required.
     if (!response.tool_calls?.length) {
       continueExecution = false;
 
+      console.log("==============================");
+       console.log("FIX AGENT RAW RESPONSE");
+       console.log(response.content);
+       console.log("==============================");
+
       const parsedOutput = parseFixResponse(response.content as string);
 
+      console.log("\n========== PARSED RESPONSE ==========");
+       console.log(JSON.stringify(parsedOutput, null, 2));
+       console.log("=====================================\n");
+
       const validatedOutput = validateFixAgentOutput(parsedOutput);
+
 
       return {
         analysis: validatedOutput,
@@ -189,12 +199,17 @@ Follow your assigned skill and use available tools whenever required.
 
       const result = await tool.invoke(toolCall);
 
-      // --------------------------------------------------------
-      // Skip ToolMessage and only store actual tool output.
-      // --------------------------------------------------------
-      if (result instanceof ToolMessage) {
-        throw new Error('Tool returned ToolMessage instead of actual output.');
-      }
+      let toolResult: unknown;
+
+       if (typeof result.content === "string") {
+
+                toolResult = JSON.parse(result.content);
+
+          } else {
+
+                toolResult = result.content;
+          }
+
 
       // =========================================================
       // Save the executed tool output into artifacts.
@@ -208,50 +223,68 @@ Follow your assigned skill and use available tools whenever required.
       // Save extracted ERROR logs.
       // ---------------------------------------------------------
       if (toolCall.name === 'search_fix_playbook') {
-        artifacts.playbooks = result as FixAgentArtifacts['playbooks'];
-      }
+           const playbookResult = toolResult as {
+              playbooks: FixAgentArtifacts['playbooks'];
+           };
+
+          artifacts.playbooks = playbookResult.playbooks;
+        }
 
       // ---------------------------------------------------------
       // Save affected services discovered from logs.
       // ---------------------------------------------------------
       if (toolCall.name === 'search_runbook') {
-        artifacts.runbooks = result as FixAgentArtifacts['runbooks'];
-      }
+           const runbookResult = toolResult as {
+              runbooks: FixAgentArtifacts['runbooks'];
+           };
+
+          artifacts.runbooks = runbookResult.runbooks;
+        }
 
       // ---------------------------------------------------------
       // Save grouped repeated log messages.
       // ---------------------------------------------------------
       if (toolCall.name === 'configuration_reader') {
-        artifacts.configurations =
-          result as FixAgentArtifacts['configurations'];
-      }
+           const configResult = toolResult as {
+              configurations: FixAgentArtifacts['configurations'];
+           };
+
+           artifacts.configurations = configResult.configurations;
+         }
 
       // ---------------------------------------------------------
       // Save generated incident timeline.
       // ---------------------------------------------------------
       if (toolCall.name === 'configuration_diff') {
-        artifacts.configurationChanges =
-          result as FixAgentArtifacts['configurationChanges'];
-      }
+           const diffResult = toolResult as {
+              changes: FixAgentArtifacts['configurationChanges'];
+           };
+
+            artifacts.configurationChanges = diffResult.changes;
+         }
 
       // ---------------------------------------------------------
       // Save inferred service dependency graph.
       // ---------------------------------------------------------
       if (toolCall.name === 'service_inventory') {
-        artifacts.serviceInventory =
-          result as FixAgentArtifacts['serviceInventory'];
-      }
+          const inventoryResult = toolResult as {
+            services: FixAgentArtifacts['serviceInventory'];
+         };
+
+             artifacts.serviceInventory = inventoryResult.services;
+         }
 
       if (!toolCall.id) {
         throw new Error('Tool call id is missing.');
       }
 
-      messages.push(
-        new ToolMessage({
-          tool_call_id: toolCall.id,
-          content: JSON.stringify(result),
-        }),
-      );
+     messages.push(
+         new ToolMessage({
+            tool_call_id: toolCall.id,
+            content: JSON.stringify(toolResult),
+          }),
+       );
+
     }
   }
 

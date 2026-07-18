@@ -144,6 +144,19 @@ The Risk Score, Risk Level and final Decision must be derived from all available
 
 Always evaluate the complete context together with the retrieved tool results before producing the final validation.
 
+Decision must be EXACTLY one of:
+
+APPROVED
+APPROVAL_REQUIRED
+REJECTED
+
+Never invent any other value.
+Never use:
+REQUIRES_APPROVAL
+REQUIRES_HUMAN_APPROVAL
+NEEDS_APPROVAL
+MANUAL_APPROVAL
+
 The JSON must strictly follow the RiskValidatorOutput schema.
 
 {

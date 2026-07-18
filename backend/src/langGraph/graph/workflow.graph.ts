@@ -48,8 +48,8 @@ const graph = new StateGraph(WorkflowGraphState)
   .addEdge('riskValidationNode', 'approvalRouterNode')
   .addEdge('approvalRouterNode', 'executionNode')
   .addEdge('executionNode', 'reportingNode')
-  .addEdge("reportingNode", "completeNode")
-  .addEdge("completeNode", END)
+  .addEdge('reportingNode', 'completeNode')
+  .addEdge('completeNode', END)
 
 // ================================================================
 // COMPILED WORKFLOW

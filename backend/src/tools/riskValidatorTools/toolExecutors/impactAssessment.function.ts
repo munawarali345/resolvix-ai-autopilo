@@ -27,17 +27,18 @@ export function assessImpact(input: RiskToolInput): ImpactAssessmentOutput {
   // Build Critical Service Lookup
   // ------------------------------------------------
 
-  const criticalServices = new Set(
-    artifacts.serviceInventory
-      .filter((service) => service.criticality === 'critical')
-      .map((service) => service.name),
-  );
+ const serviceInventory = artifacts.serviceInventory ?? [];
+
+const criticalServices = new Set( serviceInventory
+    .filter(service => service.criticality === "critical")
+    .map(service => service.name)
+);
 
   // ------------------------------------------------
   // Affected Services
   // ------------------------------------------------
 
-  const affectedServices = recommendation.affectedServices;
+  const affectedServices = recommendation.affectedServices ?? [];
 
   // ------------------------------------------------
   // Critical Service Impact
@@ -51,9 +52,9 @@ export function assessImpact(input: RiskToolInput): ImpactAssessmentOutput {
   // Supporting Operational Evidence
   // ------------------------------------------------
 
-  const rollbackAvailable = recommendation.rollbackPlan.length > 0;
+  const rollbackAvailable = (recommendation.rollbackPlan?.length ?? 0) > 0;
 
-  const verificationAvailable = recommendation.verificationSteps.length > 0;
+  const verificationAvailable = (recommendation.verificationSteps?.length ?? 0)> 0;
 
   // ------------------------------------------------
   // Impact Assessment

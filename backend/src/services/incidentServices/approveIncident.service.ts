@@ -70,7 +70,7 @@ export const approveIncidentService = async (
   // detection k time workflow.invoke(workflowState) yani new workflow start kro 
   // -------------------------------------------------------------------------------
 
-  await workflow.invoke( // yaha new ni bana re he jo puase tha wo resume jer re he 
+  const result = await workflow.invoke( // yaha new ni bana re he jo puase tha wo resume jer re he 
 
        new Command({
 
@@ -94,6 +94,7 @@ export const approveIncidentService = async (
 
      );
 
+     console.log(result);
 };
 
 

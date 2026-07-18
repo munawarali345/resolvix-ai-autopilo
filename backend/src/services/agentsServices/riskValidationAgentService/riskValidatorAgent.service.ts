@@ -63,6 +63,7 @@ export const riskValidatorAgentService = async (
     currentStep: state.currentStep,
   };
 
+
   // ------------------------------------------------
   // STEP 4
   // Call Root Cause Agent
@@ -78,7 +79,7 @@ export const riskValidatorAgentService = async (
   await AgentExecutionModel.create({
     incidentId: state.incident._id?.toString(),
 
-    agentName: 'risk validator',
+    agentName: 'risk-validator',
 
     status: 'success',
 

@@ -172,7 +172,7 @@ The JSON must strictly follow the FixAgentOutput schema.
   "riskHints": [
     "string"
   ],
-  "estimatedTime": "RunbookEstimatedTime,
+  "estimatedTime": "string",
   "recommendedRunbookId": "string",
   "recommendedPlaybookId": "string"
 }
@@ -225,6 +225,21 @@ Example:
 
   "recommendedPlaybookId": "PB-045"
 }
+
+---
+
+##IMPORTANT:
+
+Your JSON response must be compact.
+
+Rules:
+- evidence maximum 5 items
+- verificationSteps maximum 5 items
+- riskHints maximum 5 items
+- commands maximum 5 items
+- rollbackPlan maximum 3 items
+
+Never generate long explanations.
 
 ---
 

@@ -22,6 +22,7 @@ import {
 export function findMissingValidation(
   input: RiskToolInput,
 ): MissingValidationOutput {
+
   const { recommendation, artifacts } = input;
 
   const missingChecks: string[] = [];
@@ -30,7 +31,7 @@ export function findMissingValidation(
   // Recommendation Validation
   // ------------------------------------------------
 
-  if (!recommendation.rollbackPlan.length) {
+  if (!recommendation.rollbackPlan?.length) {
     missingChecks.push('Rollback plan is missing.');
   }
 
@@ -38,19 +39,19 @@ export function findMissingValidation(
   // Verification Steps
   // ------------------------------------------------
 
-  if (!recommendation.verificationSteps.length) {
+  if (!recommendation.verificationSteps?.length) {
     missingChecks.push('Verification steps are missing.');
   }
 
-  if (!recommendation.commands.length) {
+  if (!recommendation.commands?.length) {
     missingChecks.push('Execution commands are missing.');
   }
 
-  if (!recommendation.evidence.length) {
+  if (!recommendation.evidence?.length) {
     missingChecks.push('Supporting remediation evidence is missing.');
   }
 
-  if (!recommendation.affectedServices.length) {
+  if (!recommendation.affectedServices?.length) {
     missingChecks.push('Affected services are not identified.');
   }
 
@@ -58,7 +59,7 @@ export function findMissingValidation(
   // Operational Evidence Validation
   // ------------------------------------------------
 
-  if (!artifacts.playbooks.length) {
+  if (!artifacts.playbooks?.length) {
     missingChecks.push('No matching remediation playbook found.');
   }
 
@@ -66,7 +67,7 @@ export function findMissingValidation(
   // Runbook
   // ------------------------------------------------
 
-  if (!artifacts.runbooks.length) {
+  if (!artifacts.runbooks?.length) {
     missingChecks.push('No matching operational runbook found.');
   }
 
@@ -74,7 +75,7 @@ export function findMissingValidation(
   // Service Inventory
   // ------------------------------------------------
 
-  if (!artifacts.serviceInventory.length) {
+  if (!artifacts.serviceInventory?.length) {
     missingChecks.push('Service inventory information is unavailable.');
   }
 
@@ -82,7 +83,7 @@ export function findMissingValidation(
   // Configuration
   // ------------------------------------------------
 
-  if (!artifacts.configurations.length) {
+  if (!artifacts.configurations?.length) {
     missingChecks.push('Current service configuration is unavailable.');
   }
 
@@ -90,7 +91,7 @@ export function findMissingValidation(
   // Configuration Changes
   // ------------------------------------------------
 
-  if (!artifacts.configurationChanges.length) {
+  if (!artifacts.configurationChanges?.length) {
     missingChecks.push('Recent configuration change history is unavailable.');
   }
 

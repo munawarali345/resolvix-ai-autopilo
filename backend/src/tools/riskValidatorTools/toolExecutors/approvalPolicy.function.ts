@@ -21,8 +21,10 @@ import { APPROVAL_POLICY } from '../../../config/approvalPolicyTool.config.js';
 export function validateApprovalPolicy(
   input: RiskToolInput,
 ): ApprovalPolicyOutput {
+  
   // input se jo need he wo nikal raha he
   const { incident, recommendation, artifacts } = input;
+
 
   // -----------------------------
   // SERVICE CHECK
@@ -39,6 +41,11 @@ export function validateApprovalPolicy(
   // -----------------------------
   // ENVIRONMENT CHECK
   // -----------------------------
+  if (!Array.isArray(artifacts.configurations)) {
+  throw new Error(
+    `configurations is not array. Got: ${JSON.stringify(artifacts.configurations)}`
+  );
+}
   const environmentMatch = artifacts.configurations.some((cfg) =>
     APPROVAL_POLICY.environments.includes(cfg.environment),
   );

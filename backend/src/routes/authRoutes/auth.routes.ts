@@ -25,7 +25,7 @@ router.post('/logout', apiRateLimit, authController.logout);
 
 // GET /api/auth/verify-email?token=...
 // verification route hamehsa GET huta he
-router.get('/verify-email', apiRateLimit, authController.verifyEmail);
+// router.get('/verify-email', apiRateLimit, authController.verifyEmail);
 
 // POST /api/auth/forgot-password - Strict rate limit
 router.post('/forgot-password', authRateLimit, authController.forgotPassword);

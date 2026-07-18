@@ -24,7 +24,7 @@ export const maintenanceWindowTool = tool(
   },
 
   {
-    name: 'maintenance_window_policy',
+    name: 'maintenance_window',
 
     description: `
 

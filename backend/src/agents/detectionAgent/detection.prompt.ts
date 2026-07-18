@@ -161,7 +161,8 @@ Return ONLY valid JSON:
     "detectedAt": string,
 
     "rootCause": null,
-    "fixApplied": null,
+    "fixSummary": null,
+    "executionStatus": null,
     "resolvedAt": null,
     "mttr": null
   },

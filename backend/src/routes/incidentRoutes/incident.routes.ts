@@ -2,7 +2,7 @@
 import { Router } from 'express';
 import { apiRateLimit } from '../../middlewares/rate-limit.middleware.js';
 import PaginationMiddleware from '../../middlewares/pagination.middleware.js';
-import { getIncidentsController, getIncidentByIdController } from '../../controllers/index.js';
+import { getIncidentsController, getIncidentByIdController, approveIncidentController, rejectIncidentController } from '../../controllers/index.js';
 
 // ================================================================
 // GET ALL INCIDENTS
@@ -27,9 +27,9 @@ router.get('/',  apiRateLimit, PaginationMiddleware, getIncidentsController);
 router.get('/:incidentId', apiRateLimit, getIncidentByIdController);
 
 // PATCH /api/incidents/:id/approve
-router.patch('/:incidentId/approve', apiRateLimit);
+router.patch('/:incidentId/approve', apiRateLimit, approveIncidentController);
 
 // PATCH /api/incidents/:id/reject
-router.patch('/:incidentId/reject', apiRateLimit);
+router.patch('/:incidentId/reject', apiRateLimit, rejectIncidentController);
 
 export default router;

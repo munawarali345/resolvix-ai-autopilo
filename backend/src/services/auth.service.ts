@@ -3,12 +3,9 @@
 
 import bcryptjs from 'bcryptjs';
 import { User } from '../models/index.js';
-import {
-  generateTokensService,
-  verifyRefreshTokenService,
-  generateEmailVerificationToken,
+import { generateTokensService, verifyRefreshTokenService,
 } from './token.service.js';
-import { sendVerificationEmail } from './email.service.js';
+// import { sendVerificationEmail } from './email.service.js';
 import { AuthResponse } from '../types/auth.type.js';
 import type { User as UserType } from '../types/user.type.js';
 import { Document } from 'mongoose';
@@ -30,6 +27,7 @@ type UserDocument = UserType & Document;
 
 // helper function for avoiding repeatation
 const saveRefreshToken = async (user: UserDocument, refreshToken: string) => {
+
   const hashedToken = await bcryptjs.hash(refreshToken, 10);
 
   user.refreshToken = hashedToken;
@@ -54,11 +52,11 @@ export const registerUserService = async (
   // 2. hash password
   const hashedPassword = await bcryptjs.hash(password, 10);
 
-  // 3. Generate email verification token
-  const verificationToken = generateEmailVerificationToken();
+  // // 3. Generate email verification token
+  // const verificationToken = generateEmailVerificationToken();
 
-  // 4. Expire after 1 hour
-  const verificationTokenExpires = new Date(Date.now() + 60 * 60 * 1000);
+  // // 4. Expire after 1 hour
+  // const verificationTokenExpires = new Date(Date.now() + 60 * 60 * 1000);
 
   // 4. CREATE USER
   const user = await User.create({
@@ -69,12 +67,12 @@ export const registerUserService = async (
 
     // email verification fields
     isVerified: false,
-    verificationToken,
-    verificationTokenExpires,
+    // verificationToken,
+    // verificationTokenExpires,
   });
 
   // 5. Send verification email
-  await sendVerificationEmail(user.email, verificationToken);
+  // await sendVerificationEmail(user.email, verificationToken);
 
   return {
     user: {
@@ -84,7 +82,8 @@ export const registerUserService = async (
       isVerified: user.isVerified || false,
     },
 
-    message: 'Please check your email for verification',
+    // message: 'Please check your email for verification registration',
+    message: 'Registration Successful',
   };
 };
 
@@ -95,14 +94,20 @@ export const loginUserService = async (
   email: string,
   password: string,
 ): Promise<AuthResponse> => {
+
   const user = await User.findOne({ email }).select('+password');
 
   if (!user) throw new Error('Invalid credentials');
 
   // Check if account is locked
   if (user.lockUntil && user.lockUntil > new Date()) {
-    throw new Error('Account temporarily locked.Try again in 15 minutes.');
+    throw new Error('Account temporarily locked. Try again in 15 minutes.');
   }
+
+  // // Check email verification first
+  // if (!user.isVerified) {
+  //   throw new Error('Please verify your email first');
+  // }
 
   const isMatch = await bcryptjs.compare(password, user.password);
 
@@ -113,24 +118,19 @@ export const loginUserService = async (
     // Lock account after 5 failed attempts
     if (user.loginAttempts >= 5) {
       user.lockUntil = new Date(Date.now() + 15 * 60 * 1000);
-    }
 
-    // Check email verification first
-    if (!user.isVerified) {
-      throw new Error('Please verify your email first');
+      await createAuditLog({
+        userId: user._id.toString(),
+
+        action: AuditAction.ACCOUNT_LOCKED,
+
+        metadata: {
+          attempts: user.loginAttempts,
+        },
+      });
     }
 
     await user.save();
-
-    await createAuditLog({
-      userId: user._id.toString(),
-
-      action: AuditAction.ACCOUNT_LOCKED,
-
-      metadata: {
-        attempts: user.loginAttempts,
-      },
-    });
 
     throw new Error('Invalid credentials');
   }
@@ -150,9 +150,10 @@ export const loginUserService = async (
   // Agar DB leak ho jaye to raw refresh token expose na ho
   await saveRefreshToken(user, refreshToken);
 
-  //  successfully login hu ne k bad log hu jaiga
+  // Successfully login hone ke baad audit log
   await createAuditLog({
     userId: user._id.toString(),
+
     action: AuditAction.LOGIN,
   });
 
@@ -213,6 +214,7 @@ export const refreshTokensService = async (refreshToken: string) => {
 export const logoutUserService = async (
   refreshToken: string,
 ): Promise<void> => {
+
   // Verify refresh token and get userId
   const decoded = verifyRefreshTokenService(refreshToken);
 
@@ -349,6 +351,7 @@ export const resetPasswordService = async (
   // 5. cleanup token fields
   user.resetPasswordToken = null;
   user.resetPasswordExpires = null;
+  user.refreshToken = null;
 
   // 6. save user
   await user.save();

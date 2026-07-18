@@ -31,6 +31,12 @@ export async function approvalRouterNode(
   // Safety Check
   // ------------------------------------------------
 
+  console.log("========== APPROVAL ROUTER ==========");
+console.log("Incident:", state.incident?._id);
+console.log("Approval Required:", state.riskValidatorResult?.approvalRequired);
+console.log("Decision:", state.riskValidatorResult?.decision);
+console.log("About to interrupt...");
+
   if (!state.riskValidatorResult) {
     throw new Error(
       'Risk Validator result is missing before approval routing.',

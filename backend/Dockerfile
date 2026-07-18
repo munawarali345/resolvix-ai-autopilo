@@ -1,15 +1,26 @@
-﻿FROM node:20-alpine
+﻿
+FROM node:20-alpine
 
 WORKDIR /app
 
-COPY package*.json pnpm-lock.yaml ./
+# Install pnpm
 RUN npm install -g pnpm
+
+# Workspace files
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+
+# Backend package.json
+COPY backend/package.json ./backend/
+
+# Install dependencies
 RUN pnpm install
 
+# Copy source code
 COPY . .
 
-RUN pnpm run build
+# Build backend only
+RUN pnpm --filter resolvix-ai-backend build
 
 EXPOSE 3001
 
-CMD ["pnpm", "start"]
+CMD ["pnpm", "--filter", "resolvix-ai-backend", "start"]

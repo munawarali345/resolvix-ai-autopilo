@@ -17,7 +17,6 @@
 import {
   HumanMessage,
   SystemMessage,
-  ToolMessage,
   BaseMessage,
 } from '@langchain/core/messages';
 
@@ -172,6 +171,9 @@ Follow your assigned skill and use available tools whenever required.
         response.content as string,
       );
 
+      console.log("========== PARSED RISK OUTPUT ==========");
+console.dir(parsedOutput, { depth: null });
+
       const validatedOutput = validateRiskValidatorOutput(parsedOutput);
 
       return {
@@ -194,12 +196,16 @@ Follow your assigned skill and use available tools whenever required.
 
       const result = await tool.invoke(toolCall);
 
-      // --------------------------------------------------------
-      // Skip ToolMessage and only store actual tool output.
-      // --------------------------------------------------------
-      if (result instanceof ToolMessage) {
-        throw new Error('Tool returned ToolMessage instead of actual output.');
-      }
+       let toolResult: unknown;
+
+       if (typeof result.content === "string") {
+
+                toolResult = JSON.parse(result.content);
+
+          } else {
+
+                toolResult = result.content;
+          }
 
       // =========================================================
       // Save the executed tool output into artifacts.
@@ -213,7 +219,7 @@ Follow your assigned skill and use available tools whenever required.
       // ---------------------------------------------------------
       if (toolCall.name === 'approval_policy') {
         artifacts.approvalPolicy =
-          result as RiskValidatorArtifacts['approvalPolicy'];
+          toolResult as RiskValidatorArtifacts['approvalPolicy'];
       }
 
       // ---------------------------------------------------------
@@ -221,7 +227,7 @@ Follow your assigned skill and use available tools whenever required.
       // ---------------------------------------------------------
       if (toolCall.name === 'maintenance_window') {
         artifacts.maintenanceWindow =
-          result as RiskValidatorArtifacts['maintenanceWindow'];
+          toolResult as RiskValidatorArtifacts['maintenanceWindow'];
       }
 
       // ---------------------------------------------------------
@@ -229,7 +235,7 @@ Follow your assigned skill and use available tools whenever required.
       // ---------------------------------------------------------
       if (toolCall.name === 'impact_assessment') {
         artifacts.impactAssessment =
-          result as RiskValidatorArtifacts['impactAssessment'];
+          toolResult as RiskValidatorArtifacts['impactAssessment'];
       }
 
       // ---------------------------------------------------------
@@ -237,19 +243,15 @@ Follow your assigned skill and use available tools whenever required.
       // ---------------------------------------------------------
       if (toolCall.name === 'missing_validation') {
         artifacts.missingValidation =
-          result as RiskValidatorArtifacts['missingValidation'];
+          toolResult as RiskValidatorArtifacts['missingValidation'];
       }
 
       if (!toolCall.id) {
         throw new Error('Tool call id is missing.');
       }
 
-      messages.push(
-        new ToolMessage({
-          tool_call_id: toolCall.id,
-          content: JSON.stringify(result),
-        }),
-      );
+      messages.push(result);
+
     }
   }
 

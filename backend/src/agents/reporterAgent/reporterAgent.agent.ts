@@ -214,12 +214,16 @@ Follow your assigned skill and use available tools whenever required.
 
       const result = await tool.invoke(toolCall);
 
-      // --------------------------------------------------------
-      // Skip ToolMessage and only store actual tool output.
-      // --------------------------------------------------------
-      if (result instanceof ToolMessage) {
-        throw new Error('Tool returned ToolMessage instead of actual output.');
-      }
+      let toolResult: unknown;
+
+       if (typeof result.content === "string") {
+
+                toolResult = JSON.parse(result.content);
+
+          } else {
+
+                toolResult = result.content;
+          }
 
       // =========================================================
       // Save the executed tool output into artifacts.
@@ -233,14 +237,14 @@ Follow your assigned skill and use available tools whenever required.
       // Save timeline.
       // ---------------------------------------------------------
       if (toolCall.name === 'timeline_tool') {
-        artifacts.timeline = result as ReporterArtifacts['timeline'];
+        artifacts.timeline = toolResult as ReporterArtifacts['timeline'];
       }
 
       // ---------------------------------------------------------
       // Save metrics
       // ---------------------------------------------------------
       if (toolCall.name === 'metrics_tool') {
-        artifacts.metrics = result as ReporterArtifacts['metrics'];
+        artifacts.metrics = toolResult as ReporterArtifacts['metrics'];
       }
 
       // ---------------------------------------------------------
@@ -248,7 +252,7 @@ Follow your assigned skill and use available tools whenever required.
       // ---------------------------------------------------------
       if (toolCall.name === 'report_formatter_tool') {
         artifacts.reportFormatter =
-          result as ReporterArtifacts['reportFormatter'];
+          toolResult as ReporterArtifacts['reportFormatter'];
       }
 
       if (!toolCall.id) {
@@ -256,11 +260,12 @@ Follow your assigned skill and use available tools whenever required.
       }
 
       messages.push(
-        new ToolMessage({
-          tool_call_id: toolCall.id,
-          content: JSON.stringify(result),
-        }),
-      );
+               new ToolMessage({
+                  tool_call_id: toolCall.id,
+                  content: JSON.stringify(toolResult),
+                }),
+             );
+
     }
   }
 

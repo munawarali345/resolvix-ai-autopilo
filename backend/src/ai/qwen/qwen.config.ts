@@ -22,7 +22,7 @@ export const QWEN_CONFIG = {
 
   topP: 0.8,
 
-  maxTokens: 1000,
+  maxTokens: 3000,
 
   // Request timeout (milliseconds)
   timeout: 30000,

@@ -67,12 +67,7 @@ export const detectionService = async (
       severity: aiResponse.incident.severity,
       status: 'open',
       detectedAt: new Date(aiResponse.incident.detectedAt),
-
-      // these will stay null initially
-      rootCause: null,
-      fixApplied: null,
-      resolvedAt: null,
-      mttr: null,
+      
     });
   }
 
@@ -109,6 +104,7 @@ export const detectionService = async (
   // ================================================================
   // STEP 4: AGENT EXECUTION LOG SAVE (audit trail)
   // ================================================================
+  
   await AgentExecutionModel.create({
     incidentId: savedIncident?._id?.toString() || 'no-incident',
 
@@ -140,7 +136,8 @@ export const detectionService = async (
     const workflowState = {
       logs, // raw logs from simulator
 
-      incident: savedIncident, // DB incident
+      // toObject() Mongoose Document ko convert kar deta hai plain JavaScript object me.
+      incident: savedIncident.toObject(), // DB incident
 
       detectionResult: {
         isIncident: aiResponse.isIncident,
@@ -178,6 +175,7 @@ export const detectionService = async (
         },
       },
     );
+    
   }
 
   // ================================================================

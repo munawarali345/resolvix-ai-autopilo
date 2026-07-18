@@ -75,8 +75,12 @@ export const fixAgentService = async (
   // Save execution log
   // ------------------------------------------------
 
+  console.log("===== FIX INCIDENT =====");
+console.log(state.incident);
+console.log("Incident _id:", state.incident._id);
   await AgentExecutionModel.create({
-    incidentId: state.incident._id?.toString(),
+
+    incidentId: state.incident._id?.toString() || 'no-incident',
 
     agentName: 'fix',
 
@@ -91,6 +95,7 @@ export const fixAgentService = async (
     startedAt: new Date(startTime),
 
     completedAt: new Date(),
+
   });
 
   // ------------------------------------------------
