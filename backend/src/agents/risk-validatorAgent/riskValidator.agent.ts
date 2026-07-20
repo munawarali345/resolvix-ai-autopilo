@@ -43,7 +43,7 @@ import { parseRiskValidatorResponse } from './riskValidator.parser.js';
 // validator
 import { validateRiskValidatorOutput } from './riskValidator.validation.js';
 
-import logger from '../../../lib/logger.js';
+import logger from '../../lib/logger.js';
 
 import { StructuredTool } from '@langchain/core/tools';
 

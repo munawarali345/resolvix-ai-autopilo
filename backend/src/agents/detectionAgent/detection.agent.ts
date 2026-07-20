@@ -16,7 +16,7 @@ import { parseDetectionResponse } from './detection.parser.js';
 
 import { validateDetectionOutput } from './detection.validator.js';
 
-import logger from '../../../lib/logger.js';
+import logger from '../../lib/logger.js';
 
 import {
   DetectionAgentInput,
