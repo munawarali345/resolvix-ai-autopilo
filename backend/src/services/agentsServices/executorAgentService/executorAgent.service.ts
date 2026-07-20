@@ -25,6 +25,10 @@ import { AgentExecutionModel } from '../../../models/agentExecution.model.js';
 
 import { IncidentModel } from '../../../models/incident.model.js';
 
+import { emitDashboardUpdate } from '../../../socket/dashboardEvents.socket.js';
+
+import { emitAgentStatusUpdate } from '../../../socket/agentStatus.events.socket.js';
+
 // ================================================================
 // ROOT CAUSE SERVICE
 // ================================================================
@@ -86,15 +90,15 @@ export const exectorAgentService = async (
   // Determine Incident Status
   // ------------------------------------------------
 
-  let incidentStatus: 'open' | 'in_progress' | 'resolved';
+  // let incidentStatus: 'open' | 'in_progress' | 'resolved';
 
-  if (aiResponse.execution.executionStatus === 'SUCCESS') {
-    incidentStatus = 'resolved';
-  } else if (aiResponse.execution.executionStatus === 'ROLLED_BACK') {
-    incidentStatus = 'open';
-  } else {
-    incidentStatus = 'in_progress';
-  }
+  // if (aiResponse.execution.executionStatus === 'SUCCESS') {
+  //   incidentStatus = 'resolved';
+  // } else if (aiResponse.execution.executionStatus === 'ROLLED_BACK') {
+  //   incidentStatus = 'open';
+  // } else {
+  //   incidentStatus = 'in_progress';
+  // }
 
   // ------------------------------------------------
   // Update Incident
@@ -108,20 +112,19 @@ export const exectorAgentService = async (
 
       executionStatus: aiResponse.execution.executionStatus,
 
-      status: incidentStatus,
-
-      resolvedAt: incidentStatus === 'resolved' ? new Date() : undefined,
-
       updatedAt: new Date(),
     },
   );
+
+  // Dashboard refresh
+  emitDashboardUpdate();
 
   // ------------------------------------------------
   // STEP 5
   // Save execution log
   // ------------------------------------------------
 
-  await AgentExecutionModel.create({
+  const execution = await AgentExecutionModel.create({
     incidentId: state.incident._id?.toString(),
 
     agentName: 'executor',
@@ -137,6 +140,23 @@ export const exectorAgentService = async (
     startedAt: new Date(startTime),
 
     completedAt: new Date(),
+  });
+
+  // agentExecution update on frontend
+  emitAgentStatusUpdate({
+    incidentId: execution.incidentId,
+
+    agentName: execution.agentName,
+
+    status: execution.status,
+
+    executionTime: execution.executionTime,
+
+    startedAt: execution.startedAt,
+
+    completedAt: execution.completedAt,
+
+    error: execution.error,
   });
 
   // ------------------------------------------------

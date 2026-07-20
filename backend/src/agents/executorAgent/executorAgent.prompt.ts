@@ -154,9 +154,23 @@ Do NOT include:
 
 The JSON must strictly follow the ExecutorOutput schema.
 
+executionStatus MUST be exactly one of:
+
+- SUCCESS
+- FAILED
+- PARTIAL_SUCCESS
+- ROLLED_BACK
+
+Do not return values like:
+completed
+done
+successful
+finished
+executed
+
 {
   "summary":"string",
-  "executionStatus":"completed",
+  "executionStatus":"SUCCESS",
   "executedCommands":[
     "string"
   ],
@@ -166,7 +180,7 @@ The JSON must strictly follow the ExecutorOutput schema.
     "payment-service"
   ],
   "confidence":97,
-  "executionDuration":"35 seconds"
+  "executionDuration":35000
 }
 
 Example:
@@ -191,10 +205,27 @@ Example:
 
   "confidence":97,
 
-  "executionDuration":35000 // Execution duration in milliseconds.
+  "executionDuration":35000 
 }
 
+executionDuration is measured in milliseconds.
+
+Do not change enum values.
+
+Use the exact values shown above.
+
+Return ONLY valid JSON.
+
+Do not include comments.
+
+Do not include trailing commas.
+
+Do not wrap the JSON inside markdown code fences.
+
+Do not add any explanation before or after the JSON.
+
 ---
+
 
 ## Safety Rules
 

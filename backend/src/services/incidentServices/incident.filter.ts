@@ -1,4 +1,3 @@
-
 // ================================================================
 // INCIDENT FILTER BUILDER
 // ================================================================
@@ -17,7 +16,7 @@ import { FilterQuery } from 'mongoose';
 
 import { IncidentDocument } from '../../models/incident.model.js';
 
-import { IncidentFilter} from '../../types/index.js';
+import { IncidentFilter } from '../../types/index.js';
 
 // ================================================================
 // INCIDENT FILTER BUILDER
@@ -26,7 +25,6 @@ import { IncidentFilter} from '../../types/index.js';
 export const buildIncidentFilter = (
   filters: IncidentFilter,
 ): FilterQuery<IncidentDocument> => {
-
   // ------------------------------------------------
   // MongoDB query object
   // ------------------------------------------------
@@ -38,9 +36,7 @@ export const buildIncidentFilter = (
   // ------------------------------------------------
 
   if (filters.severity) {
-
     query.severity = filters.severity;
-
   }
 
   // ------------------------------------------------
@@ -48,9 +44,7 @@ export const buildIncidentFilter = (
   // ------------------------------------------------
 
   if (filters.status) {
-
     query.status = filters.status;
-
   }
 
   // ------------------------------------------------
@@ -58,21 +52,15 @@ export const buildIncidentFilter = (
   // ------------------------------------------------
 
   if (filters.startDate || filters.endDate) {
-
     query.detectedAt = {};
 
     if (filters.startDate) {
-
       query.detectedAt.$gte = new Date(filters.startDate);
-
     }
 
     if (filters.endDate) {
-
       query.detectedAt.$lte = new Date(filters.endDate);
-
     }
-
   }
 
   // ------------------------------------------------
@@ -80,5 +68,4 @@ export const buildIncidentFilter = (
   // ------------------------------------------------
 
   return query;
-
 };

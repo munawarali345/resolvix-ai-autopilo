@@ -1,4 +1,3 @@
-
 // ================================================================
 // REJECT INCIDENT CONTROLLER
 // ================================================================
@@ -7,18 +6,16 @@
 //
 // ================================================================
 
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from 'express';
 
-import { rejectIncidentService } from "../../services/incidentServices/rejectIncident.service.js";
+import { rejectIncidentService } from '../../services/incidentServices/rejectIncident.service.js';
 
 export const rejectIncidentController = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-
   try {
-
     // ------------------------------------------------
     // STEP 1
     // Read Incident Id
@@ -39,17 +36,11 @@ export const rejectIncidentController = async (
     // ------------------------------------------------
 
     res.status(200).json({
-
       success: true,
 
-      message: "Incident rejected successfully.",
-
+      message: 'Incident rejected successfully.',
     });
-
   } catch (error) {
-
     next(error);
-
   }
-
 };

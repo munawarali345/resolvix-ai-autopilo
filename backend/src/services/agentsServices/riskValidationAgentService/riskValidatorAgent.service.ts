@@ -23,8 +23,10 @@ import { riskValidatorAgent } from '../../../agents/risk-validatorAgent/riskVali
 
 import { AgentExecutionModel } from '../../../models/agentExecution.model.js';
 
+import { emitAgentStatusUpdate } from '../../../socket/agentStatus.events.socket.js';
+
 // ================================================================
-// fix Agent SERVICE
+// risk agent SERVICE
 // ================================================================
 
 export const riskValidatorAgentService = async (
@@ -63,7 +65,6 @@ export const riskValidatorAgentService = async (
     currentStep: state.currentStep,
   };
 
-
   // ------------------------------------------------
   // STEP 4
   // Call Root Cause Agent
@@ -76,7 +77,7 @@ export const riskValidatorAgentService = async (
   // Save execution log
   // ------------------------------------------------
 
-  await AgentExecutionModel.create({
+  const execution = await AgentExecutionModel.create({
     incidentId: state.incident._id?.toString(),
 
     agentName: 'risk-validator',
@@ -92,6 +93,23 @@ export const riskValidatorAgentService = async (
     startedAt: new Date(startTime),
 
     completedAt: new Date(),
+  });
+
+  // agentExecution update on frontend
+  emitAgentStatusUpdate({
+    incidentId: execution.incidentId,
+
+    agentName: execution.agentName,
+
+    status: execution.status,
+
+    executionTime: execution.executionTime,
+
+    startedAt: execution.startedAt,
+
+    completedAt: execution.completedAt,
+
+    error: execution.error,
   });
 
   // ------------------------------------------------

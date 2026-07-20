@@ -55,30 +55,6 @@ export interface ApprovalState {
 }
 
 // ================================================================
-// Workflow Runtime Status
-// ================================================================
-
-export type WorkflowStatus =
-  | 'running'
-  | 'paused'
-  | 'completed'
-  | 'failed';
-
-// ================================================================
-// Pause Context
-// ================================================================
-
-export interface PauseState {
-  type: 'human-approval' | 'developer';
-
-  node: WorkflowStep;
-
-  reason: string;
-
-  createdAt: Date;
-}
-
-// ================================================================
 // Shared Workflow State Interface
 // ================================================================
 export interface WorkflowState {
@@ -121,11 +97,4 @@ export interface WorkflowState {
 
   // Workflow error
   error: string | null;
-
-  // Workflow lifecycle status
-  workflowStatus: WorkflowStatus;
-
-  // Current pause information
-  pauseState: PauseState | null;
-  
 }

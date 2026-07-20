@@ -1,4 +1,3 @@
-
 // ================================================================
 // DASHBOARD AGENT STATUS SERVICE
 // ================================================================
@@ -22,96 +21,48 @@
 
 import { AgentExecutionModel } from '../../models/agentExecution.model.js';
 
-
 // ================================================================
 // Dashboard Agent status
 // ================================================================
 
 export const getDashboardAgentSatatus = async () => {
+  const [agentExecutionSummary] = await AgentExecutionModel.aggregate([
+    {
+      $group: {
+        _id: null,
 
-const [agentExecutionSummary] = await AgentExecutionModel.aggregate([
-
-  {
-    $group: {
-
-      _id: null,
-
-      runningAgents: {
-
-        $sum: {
-
-          $cond: [
-
-            { $eq: ['$status', 'running'] },
-
-            1,
-
-            0,
-
-          ],
-
+        runningAgents: {
+          $sum: {
+            $cond: [{ $eq: ['$status', 'running'] }, 1, 0],
+          },
         },
 
-      },
-
-      successfulExecutions: {
-
-        $sum: {
-
-          $cond: [
-
-            { $eq: ['$status', 'success'] },
-
-            1,
-
-            0,
-
-          ],
-
+        successfulExecutions: {
+          $sum: {
+            $cond: [{ $eq: ['$status', 'success'] }, 1, 0],
+          },
         },
 
-      },
-
-      failedExecutions: {
-
-        $sum: {
-
-          $cond: [
-
-            { $eq: ['$status', 'failed'] },
-
-            1,
-
-            0,
-
-          ],
-
+        failedExecutions: {
+          $sum: {
+            $cond: [{ $eq: ['$status', 'failed'] }, 1, 0],
+          },
         },
-
       },
-
     },
+  ]);
 
-  },
+  // ------------------------------------------------------------
+  // Empty database handling
+  // ------------------------------------------------------------
 
-]);
+  const agentStatus = agentExecutionSummary ?? {
+    runningAgents: 0,
 
-// ------------------------------------------------------------
-// Empty database handling
-// ------------------------------------------------------------
+    successfulExecutions: 0,
 
-const agentStatus = agentExecutionSummary ?? {
+    failedExecutions: 0,
+  };
 
-  runningAgents: 0,
-
-  successfulExecutions: 0,
-
-  failedExecutions: 0,
-
+  return agentStatus;
 };
-
-
-   return agentStatus; 
-
-
-}

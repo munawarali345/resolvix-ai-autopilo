@@ -46,6 +46,8 @@ import { validateFixAgentOutput } from './fixAgent.validator.js';
 
 import { StructuredTool } from '@langchain/core/tools';
 
+import logger from '../../lib/logger.js';
+
 const qwenModel = createQwenLangChainModel();
 
 // ================================================================
@@ -165,19 +167,13 @@ Follow your assigned skill and use available tools whenever required.
     if (!response.tool_calls?.length) {
       continueExecution = false;
 
-      console.log("==============================");
-       console.log("FIX AGENT RAW RESPONSE");
-       console.log(response.content);
-       console.log("==============================");
+      logger.info('Fix Agent Raw Response', { response: response.content });
 
       const parsedOutput = parseFixResponse(response.content as string);
 
-      console.log("\n========== PARSED RESPONSE ==========");
-       console.log(JSON.stringify(parsedOutput, null, 2));
-       console.log("=====================================\n");
+      logger.debug('Parsed Fix Response', { data: parsedOutput });
 
       const validatedOutput = validateFixAgentOutput(parsedOutput);
-
 
       return {
         analysis: validatedOutput,
@@ -187,104 +183,146 @@ Follow your assigned skill and use available tools whenever required.
     }
 
     // --------------------------------------------------------
-    // Execute Tool Calls
+    // Execute Tool Calls (Parallel Execution)
     // --------------------------------------------------------
+    //
+    // Every tool requested by the LLM is independent.
+    //
+    // Instead of:
+    //
+    // Tool1 -> wait
+    // Tool2 -> wait
+    // Tool3 -> wait
+    //
+    // We execute all tools simultaneously.
+    //
+    // Promise.all waits until ALL tools complete,
+    // then returns every tool result together.
+    //
+    // This reduces overall agent latency while keeping
+    // the final behaviour exactly the same.
+    //
 
-    for (const toolCall of response.tool_calls) {
-      const tool = toolRegistry[toolCall.name as keyof typeof toolRegistry];
+    const toolResults = await Promise.all(
+      response.tool_calls.map(async (toolCall) => {
+        // --------------------------------------------------
+        // Get matching tool from registry.
+        // --------------------------------------------------
 
-      if (!tool) {
-        throw new Error(`Unknown Tool: ${toolCall.name}`);
-      }
+        const tool = toolRegistry[toolCall.name as keyof typeof toolRegistry];
 
-      const result = await tool.invoke(toolCall);
+        if (!tool) {
+          throw new Error(`Unknown Tool: ${toolCall.name}`);
+        }
 
-      let toolResult: unknown;
+        // --------------------------------------------------
+        // Execute tool.
+        //
+        // Every mapped callback runs immediately.
+        // Promise.all waits until every execution finishes.
+        // --------------------------------------------------
 
-       if (typeof result.content === "string") {
+        const result = await tool.invoke(toolCall);
 
-                toolResult = JSON.parse(result.content);
+        let toolResult: unknown;
 
-          } else {
+        if (typeof result.content === 'string') {
+          toolResult = JSON.parse(result.content);
+        } else {
+          toolResult = result.content;
+        }
 
-                toolResult = result.content;
-          }
+        // --------------------------------------------------
+        // Return both:
+        //
+        // 1. original toolCall
+        // 2. parsed tool result
+        //
+        // Artifact saving happens AFTER all tools finish.
+        // --------------------------------------------------
 
+        return {
+          toolCall,
 
-      // =========================================================
-      // Save the executed tool output into artifacts.
-      //
-      // Every tool produces a different type of output.
-      // We save that output so future agents can reuse it
-      // without executing the same tool again.
-      // =========================================================
+          toolResult,
+        };
+      }),
+    );
 
+    // =========================================================
+    // Save the executed tool output into artifacts.
+    //
+    // Every tool produces a different type of output.
+    // We save that output so future agents can reuse it
+    // without executing the same tool again.
+    // =========================================================
+
+    for (const { toolCall, toolResult } of toolResults) {
       // ---------------------------------------------------------
       // Save extracted ERROR logs.
       // ---------------------------------------------------------
       if (toolCall.name === 'search_fix_playbook') {
-           const playbookResult = toolResult as {
-              playbooks: FixAgentArtifacts['playbooks'];
-           };
+        const playbookResult = toolResult as {
+          playbooks: FixAgentArtifacts['playbooks'];
+        };
 
-          artifacts.playbooks = playbookResult.playbooks;
-        }
+        artifacts.playbooks = playbookResult.playbooks;
+      }
 
       // ---------------------------------------------------------
       // Save affected services discovered from logs.
       // ---------------------------------------------------------
       if (toolCall.name === 'search_runbook') {
-           const runbookResult = toolResult as {
-              runbooks: FixAgentArtifacts['runbooks'];
-           };
+        const runbookResult = toolResult as {
+          runbooks: FixAgentArtifacts['runbooks'];
+        };
 
-          artifacts.runbooks = runbookResult.runbooks;
-        }
+        artifacts.runbooks = runbookResult.runbooks;
+      }
 
       // ---------------------------------------------------------
       // Save grouped repeated log messages.
       // ---------------------------------------------------------
       if (toolCall.name === 'configuration_reader') {
-           const configResult = toolResult as {
-              configurations: FixAgentArtifacts['configurations'];
-           };
+        const configResult = toolResult as {
+          configurations: FixAgentArtifacts['configurations'];
+        };
 
-           artifacts.configurations = configResult.configurations;
-         }
+        artifacts.configurations = configResult.configurations;
+      }
 
       // ---------------------------------------------------------
       // Save generated incident timeline.
       // ---------------------------------------------------------
       if (toolCall.name === 'configuration_diff') {
-           const diffResult = toolResult as {
-              changes: FixAgentArtifacts['configurationChanges'];
-           };
+        const diffResult = toolResult as {
+          changes: FixAgentArtifacts['configurationChanges'];
+        };
 
-            artifacts.configurationChanges = diffResult.changes;
-         }
+        artifacts.configurationChanges = diffResult.changes;
+      }
 
       // ---------------------------------------------------------
       // Save inferred service dependency graph.
       // ---------------------------------------------------------
       if (toolCall.name === 'service_inventory') {
-          const inventoryResult = toolResult as {
-            services: FixAgentArtifacts['serviceInventory'];
-         };
+        const inventoryResult = toolResult as {
+          services: FixAgentArtifacts['serviceInventory'];
+        };
 
-             artifacts.serviceInventory = inventoryResult.services;
-         }
+        artifacts.serviceInventory = inventoryResult.services;
+      }
 
       if (!toolCall.id) {
         throw new Error('Tool call id is missing.');
       }
 
-     messages.push(
-         new ToolMessage({
-            tool_call_id: toolCall.id,
-            content: JSON.stringify(toolResult),
-          }),
-       );
-
+      messages.push(
+        new ToolMessage({
+          tool_call_id: toolCall.id,
+          content: JSON.stringify(toolResult),
+        }),
+      );
     }
   }
 

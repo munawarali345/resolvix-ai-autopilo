@@ -23,10 +23,7 @@ import { PaginationOptions } from '../../types/index.js';
 // GET REPORTS
 // ================================================================
 
-export const getReportsService = async (
-  pagination: PaginationOptions,
-) => {
-
+export const getReportsService = async (pagination: PaginationOptions) => {
   // ------------------------------------------------
   // STEP 1
   // Count total reports
@@ -43,9 +40,7 @@ export const getReportsService = async (
   const reports = await ReportModel.find()
 
     .sort({
-
       createdAt: -1,
-
     })
 
     .skip(pagination.skip)
@@ -60,7 +55,6 @@ export const getReportsService = async (
   // ------------------------------------------------
 
   const reportList = reports.map((report) => ({
-
     id: report._id,
 
     incidentId: report.incidentId,
@@ -74,7 +68,6 @@ export const getReportsService = async (
     confidence: report.confidence,
 
     createdAt: report.createdAt,
-
   }));
 
   // ------------------------------------------------
@@ -83,11 +76,9 @@ export const getReportsService = async (
   // ------------------------------------------------
 
   return {
-
     reports: reportList,
 
     pagination: {
-
       total: totalReports,
 
       page: pagination.page,
@@ -95,9 +86,6 @@ export const getReportsService = async (
       limit: pagination.limit,
 
       totalPages: Math.ceil(totalReports / pagination.limit),
-
     },
-
   };
-
 };

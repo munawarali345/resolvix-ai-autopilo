@@ -5,6 +5,15 @@ import React from 'react';
 // Import global CSS styles including Tailwind and shadcn variables
 import './globals.css';
 
+// Auth Provider
+import { AuthProvider } from '@/providers/AuthProvider';
+
+// socket provider
+import { SocketProvider } from '@/providers/SocketProvider';
+
+// query provider
+import { QueryProvider } from '@/providers/QueryClientProvider';
+
 // Export metadata for SEO and browser tab configuration
 export const metadata: Metadata = {
   title: 'Resolvix AI',
@@ -20,7 +29,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       {/* Body contains all child pages/components */}
-      <body>{children}</body>
+      <body
+        className="
+          min-h-screen
+          bg-[var(--background)]
+          text-[var(--text)]
+          antialiased
+        "
+      >
+        <AuthProvider>
+          <QueryProvider>
+            <SocketProvider>{children}</SocketProvider>
+          </QueryProvider>
+        </AuthProvider>
+      </body>
     </html>
   );
 }

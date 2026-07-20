@@ -23,7 +23,9 @@ export async function handlePerformanceCommand(
     !normalizedCommand.startsWith('top') &&
     !normalizedCommand.startsWith('ps aux') &&
     !normalizedCommand.startsWith('sar -r') &&
-    !normalizedCommand.startsWith('free -m')
+    !normalizedCommand.startsWith('free -m') &&
+    !normalizedCommand.startsWith('kubectl top pods') &&
+    !normalizedCommand.startsWith('enable-cache-mode')
   ) {
     return false;
   }
@@ -73,10 +75,27 @@ export async function handlePerformanceCommand(
   }
 
   // ------------------------------------------------
+  // top -o %CPU
+  // ------------------------------------------------
+
+  if (normalizedCommand.startsWith('top -o %cpu')) {
+    await delay(context.duration);
+
+    context.stdout = [
+      'PID    COMMAND              %CPU',
+      '2218   payment-service      68.4',
+      '3021   postgres             24.1',
+      '1854   redis-server          8.3',
+    ].join('\n');
+
+    return true;
+  }
+
+  // ------------------------------------------------
   // ps aux --sort=-%mem
   // ------------------------------------------------
 
-  if (normalizedCommand.startsWith('ps aux')) {
+  if (normalizedCommand.startsWith('ps aux --sort=-%mem')) {
     await delay(context.duration);
 
     context.stdout = [
@@ -87,6 +106,23 @@ export async function handlePerformanceCommand(
       'redis    1854   2.1    12.4   redis-server',
 
       'node     2218   5.8     7.9   payment-service',
+    ].join('\n');
+
+    return true;
+  }
+
+  // ------------------------------------------------
+  // ps aux --sort=-%cpu
+  // ------------------------------------------------
+
+  if (normalizedCommand.startsWith('ps aux --sort=-%cpu')) {
+    await delay(context.duration);
+
+    context.stdout = [
+      'USER      PID   %CPU   %MEM   COMMAND',
+      'node      2218   68.4    7.9   payment-service',
+      'postgres  3021   24.1   18.2   postgres',
+      'redis     1854    8.3   12.4   redis-server',
     ].join('\n');
 
     return true;
@@ -125,6 +161,38 @@ export async function handlePerformanceCommand(
       'Mem:          8192   4096   4096',
 
       'Swap:         2048      0   2048',
+    ].join('\n');
+
+    return true;
+  }
+
+  // ------------------------------------------------
+  // kubectl top pods
+  // ------------------------------------------------
+
+  if (normalizedCommand.startsWith('kubectl top pods')) {
+    await delay(context.duration);
+
+    context.stdout = [
+      'NAME                 CPU(cores)   MEMORY(bytes)',
+      'api-gateway          420m         512Mi',
+      'payment-service      180m         280Mi',
+      'user-service         95m          190Mi',
+    ].join('\n');
+
+    return true;
+  }
+
+  // ------------------------------------------------
+  // enable-cache-mode
+  // ------------------------------------------------
+
+  if (normalizedCommand.startsWith('enable-cache-mode')) {
+    await delay(context.duration);
+
+    context.stdout = [
+      'Cache mode enabled successfully.',
+      'Traffic will now be served from Redis cache.',
     ].join('\n');
 
     return true;

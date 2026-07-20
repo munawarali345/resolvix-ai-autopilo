@@ -1,5 +1,3 @@
-
-
 // ================================================================
 // DASHBOARD HEALTH METRICS SERVICE
 // ================================================================
@@ -25,59 +23,46 @@
 // se replace ho jayega.
 // ------------------------------------------------------------
 // ================================================================
-import { DashboardIncidentOverview } from "../../types/dashboardOverview.types.js";
-
+import { DashboardIncidentOverview } from '../../types/dashboardOverview.types.js';
 
 // ================================================================
 // Dashboard Agent status
 // ================================================================
 
-export const getDashboardHealthMetrics =  (
-      Overview: DashboardIncidentOverview,
+export const getDashboardHealthMetrics = (
+  Overview: DashboardIncidentOverview,
 ) => {
-  
-
-const systemHealth = Math.max(
-
+  const systemHealth = Math.max(
     0,
 
     100 -
+      Overview.criticalIncidents * 15 -
+      Overview.highIncidents * 8 -
+      Overview.openIncidents * 3,
+  );
 
-    Overview.criticalIncidents * 15 -
+  // ------------------------------------------------------------
+  // Incident Resolution Rate
+  //
+  // resolved / total
+  // ------------------------------------------------------------
 
-    Overview.highIncidents * 8 -
+  const resolvedRate =
+    Overview.totalIncidents === 0
+      ? 100
+      : Math.round(
+          (Overview.resolvedIncidents / Overview.totalIncidents) * 100,
+        );
 
-    Overview.openIncidents * 3,
+  // ------------------------------------------------------------
+  // Dashboard Health Object
+  // ------------------------------------------------------------
 
-);
+  const healthMetrics = {
+    systemHealth,
 
-// ------------------------------------------------------------
-// Incident Resolution Rate
-//
-// resolved / total
-// ------------------------------------------------------------
+    resolvedRate,
+  };
 
-const resolvedRate = Overview.totalIncidents === 0
-
-    ? 100
-
-    : Math.round(
-        (Overview.resolvedIncidents / Overview.totalIncidents) * 100,
-      );
-
-// ------------------------------------------------------------
-// Dashboard Health Object
-// ------------------------------------------------------------
-
-const healthMetrics = {
-
-  systemHealth,
-
-  resolvedRate,
-
+  return healthMetrics;
 };
-
-   return healthMetrics; 
-
-
-}

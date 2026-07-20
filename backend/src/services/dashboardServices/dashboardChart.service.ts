@@ -1,4 +1,3 @@
-
 // ================================================================
 // DASHBOARD CHART SERVICE
 // ================================================================
@@ -20,496 +19,361 @@
 //
 // ================================================================
 
-import { IncidentModel } from "../../models/incident.model.js";
-import { AgentExecutionModel } from "../../models/agentExecution.model.js";
-
+import { IncidentModel } from '../../models/incident.model.js';
+import { AgentExecutionModel } from '../../models/agentExecution.model.js';
 
 // ================================================================
 // Dashboard Charts
 // ================================================================
 
 export const getDashboardCharts = async () => {
-
-// ================================================================
-// STEP 1
-// Incident Trend (Daily Incident Count)
-// ================================================================
-//
-// Purpose:
-//
-// Daily basis par kitne incidents detect huye.
-//
-// Ye data frontend Line Chart me use hoga.
-//
-// ================================================================
-
-const incidentTrend = await IncidentModel.aggregate([
-
-  // ------------------------------------------------
+  // ================================================================
   // STEP 1
-  // Group incidents by date
-  // ------------------------------------------------
+  // Incident Trend (Daily Incident Count)
+  // ================================================================
+  //
+  // Purpose:
+  //
+  // Daily basis par kitne incidents detect huye.
+  //
+  // Ye data frontend Line Chart me use hoga.
+  //
+  // ================================================================
 
-  {
-    $group: {
+  const incidentTrend = await IncidentModel.aggregate([
+    // ------------------------------------------------
+    // STEP 1
+    // Group incidents by date
+    // ------------------------------------------------
 
-      _id: {
+    {
+      $group: {
+        _id: {
+          $dateToString: {
+            format: '%Y-%m-%d',
 
-        $dateToString: {
-
-          format: "%Y-%m-%d",
-
-          date: "$detectedAt",
-
+            date: '$detectedAt',
+          },
         },
 
+        incidents: {
+          $sum: 1,
+        },
       },
-
-      incidents: {
-
-        $sum: 1,
-
-      },
-
     },
 
-  },
+    // ------------------------------------------------
+    // STEP 2
+    // Sort by date
+    // ------------------------------------------------
 
-  // ------------------------------------------------
+    {
+      $sort: {
+        _id: 1,
+      },
+    },
+
+    // ------------------------------------------------
+    // STEP 3
+    // Rename fields for frontend
+    // ------------------------------------------------
+
+    {
+      $project: {
+        _id: 0,
+
+        date: '$_id',
+
+        incidents: 1,
+      },
+    },
+  ]);
+
+  // ================================================================
   // STEP 2
-  // Sort by date
-  // ------------------------------------------------
+  // Severity Distribution
+  // ================================================================
+  //
+  // Purpose:
+  //
+  // Count incidents by severity.
+  //
+  // Frontend will use this data
+  // for Pie / Donut chart.
+  //
+  // ================================================================
 
-  {
+  const severityDistribution = await IncidentModel.aggregate([
+    // ------------------------------------------------
+    // STEP 1
+    // Group incidents by severity
+    // ------------------------------------------------
 
-    $sort: {
+    {
+      $group: {
+        _id: '$severity', // Same severity wale saare incidents ek group me chale jayenge.
 
-      _id: 1,
+        count: {
+          // Har incident ko count karega
 
+          $sum: 1,
+        },
+      },
     },
 
-  },
+    // ----------------------------------------------------------------------------
+    // STEP 2
+    // Rename fields for frontend
+    // yaha hame mongo jo dega wo ni hume frontedn me jo show kerna he rename krenge
+    // -----------------------------------------------------------------------------
 
-  // ------------------------------------------------
+    {
+      $project: {
+        _id: 0,
+
+        severity: '$_id',
+
+        count: 1,
+      },
+    },
+  ]);
+
+  // ================================================================
   // STEP 3
-  // Rename fields for frontend
-  // ------------------------------------------------
+  // MTTR Trend
+  // ================================================================
+  //
+  // Purpose:
+  //
+  // Calculate average MTTR per day.
+  //
+  // Frontend will use this
+  // for Line Chart.
+  //
+  // ================================================================
+  const mttrTrend = await IncidentModel.aggregate([
+    // ------------------------------------------------
+    // STEP 1
+    // Only resolved incidents having MTTR
+    // ------------------------------------------------
 
-  {
+    {
+      $match: {
+        resolvedAt: { $ne: null },
 
-    $project: {
-
-      _id: 0,
-
-      date: "$_id",
-
-      incidents: 1,
-
-    },
-
-  },
-
-]);
-
-
-// ================================================================
-// STEP 2
-// Severity Distribution
-// ================================================================
-//
-// Purpose:
-//
-// Count incidents by severity.
-//
-// Frontend will use this data
-// for Pie / Donut chart.
-//
-// ================================================================
-
-const severityDistribution = await IncidentModel.aggregate([
-
-  // ------------------------------------------------
-  // STEP 1
-  // Group incidents by severity
-  // ------------------------------------------------
-
-  {
-    $group: {
-
-      _id: "$severity", // Same severity wale saare incidents ek group me chale jayenge.
-
-      count: { // Har incident ko count karega
-
-        $sum: 1,
-
+        mttr: { $ne: null },
       },
-
     },
 
-  },
+    // ------------------------------------------------
+    // STEP 2
+    // Group by resolved date
+    // ------------------------------------------------
 
-  // ----------------------------------------------------------------------------
-  // STEP 2
-  // Rename fields for frontend
-  // yaha hame mongo jo dega wo ni hume frontedn me jo show kerna he rename krenge 
-  // -----------------------------------------------------------------------------
+    {
+      $group: {
+        _id: {
+          $dateToString: {
+            format: '%Y-%m-%d',
 
-  {
-
-    $project: {
-
-      _id: 0,
-
-      severity: "$_id",
-
-      count: 1,
-
-    },
-
-  },
-
-]);
-
-
-// ================================================================
-// STEP 3
-// MTTR Trend
-// ================================================================
-//
-// Purpose:
-//
-// Calculate average MTTR per day.
-//
-// Frontend will use this
-// for Line Chart.
-//
-// ================================================================
-const mttrTrend = await IncidentModel.aggregate([
-
-  // ------------------------------------------------
-  // STEP 1
-  // Only resolved incidents having MTTR
-  // ------------------------------------------------
-
-  {
-
-    $match: {
-
-      resolvedAt: { $ne: null },
-
-      mttr: { $ne: null },
-
-    },
-
-  },
-
-  // ------------------------------------------------
-  // STEP 2
-  // Group by resolved date
-  // ------------------------------------------------
-
-  {
-
-    $group: {
-
-      _id: {
-
-        $dateToString: {
-
-          format: "%Y-%m-%d",
-
-          date: "$resolvedAt",
-
+            date: '$resolvedAt',
+          },
         },
 
+        averageMttr: {
+          $avg: '$mttr',
+        },
       },
-
-      averageMttr: {
-
-        $avg: "$mttr",
-
-      },
-
     },
 
-  },
+    // ------------------------------------------------
+    // STEP 3
+    // Sort by date
+    // ------------------------------------------------
 
-  // ------------------------------------------------
-  // STEP 3
-  // Sort by date
-  // ------------------------------------------------
-
-  {
-
-    $sort: {
-
-      _id: 1,
-
+    {
+      $sort: {
+        _id: 1,
+      },
     },
 
-  },
+    // ------------------------------------------------
+    // STEP 4
+    // Format response
+    // ------------------------------------------------
 
-  // ------------------------------------------------
+    {
+      $project: {
+        _id: 0,
+
+        date: '$_id',
+
+        averageMttr: {
+          $round: ['$averageMttr', 2],
+        },
+      },
+    },
+  ]);
+
+  // ================================================================
   // STEP 4
-  // Format response
-  // ------------------------------------------------
+  // Agent Status
+  // ================================================================
+  //
+  // Purpose:
+  //
+  // Count successful and failed executions
+  // for every AI agent.
+  //
+  // Frontend will use this data
+  // for Bar Chart.
+  //
+  // ================================================================
 
-  {
+  const agentStatus = await AgentExecutionModel.aggregate([
+    // ------------------------------------------------
+    // STEP 1
+    // Group by agent name + execution status
+    // ------------------------------------------------
 
-    $project: {
+    {
+      $group: {
+        _id: {
+          agentName: '$agentName',
 
-      _id: 0,
-
-      date: "$_id",
-
-      averageMttr: {
-
-        $round: ["$averageMttr", 2],
-
-      },
-
-    },
-
-  },
-
-]);
-
-
-
-// ================================================================
-// STEP 4
-// Agent Status
-// ================================================================
-//
-// Purpose:
-//
-// Count successful and failed executions
-// for every AI agent.
-//
-// Frontend will use this data
-// for Bar Chart.
-//
-// ================================================================
-
-const agentStatus = await AgentExecutionModel.aggregate([
-
-  // ------------------------------------------------
-  // STEP 1
-  // Group by agent name + execution status
-  // ------------------------------------------------
-
-  {
-
-    $group: {
-
-      _id: {
-
-        agentName: "$agentName",
-
-        status: "$status",
-
-      },
-
-      count: {
-
-        $sum: 1,
-
-      },
-
-    },
-
-  },
-
-  // ------------------------------------------------
-  // STEP 2
-  // Group again by agent
-  // ------------------------------------------------
-
-  {
-
-    $group: {
-
-      _id: "$_id.agentName",
-
-      executions: {
-
-        $push: {
-
-          status: "$_id.status",
-
-          count: "$count",
-
+          status: '$status',
         },
 
+        count: {
+          $sum: 1,
+        },
       },
-
     },
 
-  },
+    // ------------------------------------------------
+    // STEP 2
+    // Group again by agent
+    // ------------------------------------------------
 
-  // ------------------------------------------------
-  // STEP 3
-  // Format response for frontend
-  // ------------------------------------------------
+    {
+      $group: {
+        _id: '$_id.agentName',
 
-  {
+        executions: {
+          $push: {
+            status: '$_id.status',
 
-    $project: {
-
-      _id: 0,
-
-      agent: "$_id",
-
-      success: {
-
-        $ifNull: [
-
-          {
-
-            $first: {
-
-              $map: {
-
-                input: {
-
-                  $filter: {
-
-                    input: "$executions",
-
-                    as: "execution",
-
-                    cond: {
-
-                      $eq: ["$$execution.status", "success"],
-
-                    },
-
-                  },
-
-                },
-
-                as: "successExecution",
-
-                in: "$$successExecution.count",
-
-              },
-
-            },
-
+            count: '$count',
           },
-
-          0,
-
-        ],
-
+        },
       },
-
-      failed: {
-
-        $ifNull: [
-
-          {
-
-            $first: {
-
-              $map: {
-
-                input: {
-
-                  $filter: {
-
-                    input: "$executions",
-
-                    as: "execution",
-
-                    cond: {
-
-                      $eq: ["$$execution.status", "failed"],
-
-                    },
-
-                  },
-
-                },
-
-                as: "failedExecution",
-
-                in: "$$failedExecution.count",
-
-              },
-
-            },
-
-          },
-
-          0,
-
-        ],
-
-      },
-
-      running: {
-
-        $ifNull: [
-
-          {
-
-            $first: {
-
-              $map: {
-
-                input: {
-
-                  $filter: {
-
-                    input: "$executions",
-
-                    as: "execution",
-
-                    cond: {
-
-                      $eq: ["$$execution.status", "running"],
-
-                    },
-
-                  },
-
-                },
-
-                as: "runningExecution",
-
-                in: "$$runningExecution.count",
-
-              },
-
-            },
-
-          },
-
-          0,
-
-        ],
-
-      },
-
     },
 
-  },
+    // ------------------------------------------------
+    // STEP 3
+    // Format response for frontend
+    // ------------------------------------------------
 
-]);
+    {
+      $project: {
+        _id: 0,
 
+        agent: '$_id',
 
-return {
+        success: {
+          $ifNull: [
+            {
+              $first: {
+                $map: {
+                  input: {
+                    $filter: {
+                      input: '$executions',
 
-     incidentTrend,
+                      as: 'execution',
 
-     severityDistribution,
+                      cond: {
+                        $eq: ['$$execution.status', 'success'],
+                      },
+                    },
+                  },
 
-     mttrTrend,
+                  as: 'successExecution',
 
-     agentStatus,
+                  in: '$$successExecution.count',
+                },
+              },
+            },
 
+            0,
+          ],
+        },
+
+        failed: {
+          $ifNull: [
+            {
+              $first: {
+                $map: {
+                  input: {
+                    $filter: {
+                      input: '$executions',
+
+                      as: 'execution',
+
+                      cond: {
+                        $eq: ['$$execution.status', 'failed'],
+                      },
+                    },
+                  },
+
+                  as: 'failedExecution',
+
+                  in: '$$failedExecution.count',
+                },
+              },
+            },
+
+            0,
+          ],
+        },
+
+        running: {
+          $ifNull: [
+            {
+              $first: {
+                $map: {
+                  input: {
+                    $filter: {
+                      input: '$executions',
+
+                      as: 'execution',
+
+                      cond: {
+                        $eq: ['$$execution.status', 'running'],
+                      },
+                    },
+                  },
+
+                  as: 'runningExecution',
+
+                  in: '$$runningExecution.count',
+                },
+              },
+            },
+
+            0,
+          ],
+        },
+      },
+    },
+  ]);
+
+  return {
+    incidentTrend,
+
+    severityDistribution,
+
+    mttrTrend,
+
+    agentStatus,
   };
-
-
 };

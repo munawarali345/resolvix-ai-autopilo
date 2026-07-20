@@ -85,7 +85,6 @@ const toolRegistry = {
 export const logAnalyzerAgent = async (
   agentInput: LogAnalyzerAgentInput,
 ): Promise<LogAnalyzerExecutionResult> => {
-
   // Load Skill
   const skill = await loadSkill(
     'logAnalysisSkills',
@@ -153,7 +152,6 @@ Analyze the incident by following your assigned skill and use tools whenever req
   let continueExecution = true;
 
   while (continueExecution) {
-
     const response = await model.invoke(messages);
 
     messages.push(response);
@@ -163,7 +161,6 @@ Analyze the incident by following your assigned skill and use tools whenever req
     // --------------------------------------------------------
 
     if (!response.tool_calls?.length) {
-
       continueExecution = false;
 
       const parsedOutput = parseLogAnalyzerResponse(response.content as string);
@@ -178,38 +175,81 @@ Analyze the incident by following your assigned skill and use tools whenever req
     }
 
     // --------------------------------------------------------
-    // Execute Tool Calls
+    // Execute Tool Calls (Parallel Execution)
     // --------------------------------------------------------
+    //
+    // Every tool requested by the LLM is independent.
+    //
+    // Instead of:
+    //
+    // Tool1 -> wait
+    // Tool2 -> wait
+    // Tool3 -> wait
+    //
+    // We execute all tools simultaneously.
+    //
+    // Promise.all waits until ALL tools complete,
+    // then returns every tool result together.
+    //
+    // This reduces overall agent latency while keeping
+    // the final behaviour exactly the same.
+    //
 
-    for (const toolCall of response.tool_calls) {
-      const tool = toolRegistry[toolCall.name as keyof typeof toolRegistry];
+    const toolResults = await Promise.all(
+      response.tool_calls.map(async (toolCall) => {
+        // --------------------------------------------------
+        // Get matching tool from registry.
+        // --------------------------------------------------
 
-      if (!tool) {
-        throw new Error(`Unknown Tool: ${toolCall.name}`);
-      }
+        const tool = toolRegistry[toolCall.name as keyof typeof toolRegistry];
 
-      const result = await tool.invoke(toolCall);
+        if (!tool) {
+          throw new Error(`Unknown Tool: ${toolCall.name}`);
+        }
 
-      let toolResult: unknown;
+        // --------------------------------------------------
+        // Execute tool.
+        //
+        // Every mapped callback runs immediately.
+        // Promise.all waits until every execution finishes.
+        // --------------------------------------------------
 
-       if (typeof result.content === "string") {
+        const result = await tool.invoke(toolCall);
 
-                toolResult = JSON.parse(result.content);
+        let toolResult: unknown;
 
-          } else {
+        if (typeof result.content === 'string') {
+          toolResult = JSON.parse(result.content);
+        } else {
+          toolResult = result.content;
+        }
 
-                toolResult = result.content;
-          }
-    
+        // --------------------------------------------------
+        // Return both:
+        //
+        // 1. original toolCall
+        // 2. parsed tool result
+        //
+        // Artifact saving happens AFTER all tools finish.
+        // --------------------------------------------------
 
-      // =========================================================
-      // Save the executed tool output into artifacts.
-      //
-      // Every tool produces a different type of output.
-      // We save that output so future agents can reuse it
-      // without executing the same tool again.
-      // =========================================================
+        return {
+          toolCall,
 
+          toolResult,
+        };
+      }),
+    );
+
+    // =========================================================
+    // Save the executed tool output into artifacts.
+    //
+    // Every tool produces a different type of output.
+    // We save that output so future agents can reuse it
+    // without executing the same tool again.
+    // =========================================================
+
+    for (const { toolCall, toolResult } of toolResults) {
       // ---------------------------------------------------------
       // Save extracted ERROR logs.
       // ---------------------------------------------------------
@@ -221,14 +261,16 @@ Analyze the incident by following your assigned skill and use tools whenever req
       // Save affected services discovered from logs.
       // ---------------------------------------------------------
       if (toolCall.name === 'extract_affected_services') {
-        artifacts.affectedServices = toolResult as LogAnalysisArtifacts['affectedServices'];
+        artifacts.affectedServices =
+          toolResult as LogAnalysisArtifacts['affectedServices'];
       }
 
       // ---------------------------------------------------------
       // Save grouped repeated log messages.
       // ---------------------------------------------------------
       if (toolCall.name === 'group_logs') {
-        artifacts.groupedLogs = toolResult as LogAnalysisArtifacts['groupedLogs'];
+        artifacts.groupedLogs =
+          toolResult as LogAnalysisArtifacts['groupedLogs'];
       }
 
       // ---------------------------------------------------------
@@ -242,7 +284,8 @@ Analyze the incident by following your assigned skill and use tools whenever req
       // Save inferred service dependency graph.
       // ---------------------------------------------------------
       if (toolCall.name === 'dependency_mapper') {
-        artifacts.dependencyMap = toolResult as LogAnalysisArtifacts['dependencyMap'];
+        artifacts.dependencyMap =
+          toolResult as LogAnalysisArtifacts['dependencyMap'];
       }
 
       if (!toolCall.id) {
@@ -250,12 +293,11 @@ Analyze the incident by following your assigned skill and use tools whenever req
       }
 
       messages.push(
-               new ToolMessage({
-                  tool_call_id: toolCall.id,
-                  content: JSON.stringify(toolResult),
-                }),
-             );
-
+        new ToolMessage({
+          tool_call_id: toolCall.id,
+          content: JSON.stringify(toolResult),
+        }),
+      );
     }
   }
 

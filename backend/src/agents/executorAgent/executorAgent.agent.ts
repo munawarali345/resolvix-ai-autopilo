@@ -92,7 +92,7 @@ export const executorAgent = async (
 ): Promise<ExecutorExecutionResult> => {
   // Load Skill
   const skill = await loadSkill(
-    'exectutorAgentSkills',
+    'executorAgentSkills',
 
     'executorAgentSkill.md',
   );
@@ -221,14 +221,11 @@ Execute the approved remediation by following your assigned skill.
 
       let toolResult: unknown;
 
-       if (typeof result.content === "string") {
-
-                toolResult = JSON.parse(result.content);
-
-          } else {
-
-                toolResult = result.content;
-          }
+      if (typeof result.content === 'string') {
+        toolResult = JSON.parse(result.content);
+      } else {
+        toolResult = result.content;
+      }
 
       // =========================================================
       // Save the executed tool output into artifacts.
@@ -250,7 +247,8 @@ Execute the approved remediation by following your assigned skill.
       // Save execution status.
       // ---------------------------------------------------------
       if (toolCall.name === 'verification_Tool') {
-        artifacts.verification = toolResult as ExecutorArtifacts['verification'];
+        artifacts.verification =
+          toolResult as ExecutorArtifacts['verification'];
       }
 
       // ---------------------------------------------------------
@@ -272,7 +270,8 @@ Execute the approved remediation by following your assigned skill.
       // Save notification.
       // ---------------------------------------------------------
       if (toolCall.name === 'notification_Tool') {
-        artifacts.notification = toolResult as ExecutorArtifacts['notification'];
+        artifacts.notification =
+          toolResult as ExecutorArtifacts['notification'];
       }
 
       if (!toolCall.id) {
@@ -280,12 +279,11 @@ Execute the approved remediation by following your assigned skill.
       }
 
       messages.push(
-         new ToolMessage({
-            tool_call_id: toolCall.id,
-            content: JSON.stringify(toolResult),
-          }),
-       );
-
+        new ToolMessage({
+          tool_call_id: toolCall.id,
+          content: JSON.stringify(toolResult),
+        }),
+      );
     }
   }
 

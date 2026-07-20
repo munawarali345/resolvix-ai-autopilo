@@ -1,7 +1,7 @@
-
 import { Router } from 'express';
 
 import { apiRateLimit } from '../../middlewares/rate-limit.middleware.js';
+
 import PaginationMiddleware from '../../middlewares/pagination.middleware.js';
 
 import { getReportsController } from '../../controllers/reporterControllers/reports.controller.js';
@@ -15,21 +15,13 @@ const router: Router = Router();
 // GET /api/reports
 // ================================================================
 
-router.get(
-  '/',
-  apiRateLimit,
-  PaginationMiddleware,
-  getReportsController,
-);
+router.get('/', apiRateLimit, PaginationMiddleware, getReportsController);
 
 // ================================================================
 // GET REPORT DETAILS
 // GET /api/reports/:reportId
 // ================================================================
 
-router.get(
-  '/:reportId',
-  apiRateLimit,getReportByIdController
-);
+router.get('/:reportId', apiRateLimit, getReportByIdController);
 
 export default router;

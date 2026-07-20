@@ -25,6 +25,8 @@ import { AgentExecutionModel } from '../../../models/agentExecution.model.js';
 
 import { IncidentModel } from '../../../models/incident.model.js';
 
+import { emitAgentStatusUpdate } from '../../../socket/agentStatus.events.socket.js';
+
 // ================================================================
 // ROOT CAUSE SERVICE
 // ================================================================
@@ -96,7 +98,7 @@ export const rootCauseService = async (
   // Save execution log
   // ------------------------------------------------
 
-  await AgentExecutionModel.create({
+  const execution = await AgentExecutionModel.create({
     incidentId: state.incident._id?.toString(),
 
     agentName: 'root-cause',
@@ -112,6 +114,23 @@ export const rootCauseService = async (
     startedAt: new Date(startTime),
 
     completedAt: new Date(),
+  });
+
+  // agentExecution update on frontend
+  emitAgentStatusUpdate({
+    incidentId: execution.incidentId,
+
+    agentName: execution.agentName,
+
+    status: execution.status,
+
+    executionTime: execution.executionTime,
+
+    startedAt: execution.startedAt,
+
+    completedAt: execution.completedAt,
+
+    error: execution.error,
   });
 
   // ------------------------------------------------

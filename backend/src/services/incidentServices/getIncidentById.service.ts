@@ -1,4 +1,3 @@
-
 // ================================================================
 // GET INCIDENT DETAILS SERVICE
 // ================================================================
@@ -17,17 +16,14 @@
 //
 // ================================================================
 
-import { IncidentModel } from "../../models/incident.model.js";
-import { LogModel } from "../../models/log.model.js";
+import { IncidentModel } from '../../models/incident.model.js';
+import { LogModel } from '../../models/log.model.js';
 
 // ================================================================
 // GET INCIDENT DETAILS
 // ================================================================
 
-export const getIncidentDetailsService = async (
-  incidentId: string,
-) => {
-
+export const getIncidentDetailsService = async (incidentId: string) => {
   // ------------------------------------------------
   // STEP 1
   // Find incident
@@ -41,9 +37,7 @@ export const getIncidentDetailsService = async (
   // ------------------------------------------------
 
   if (!incident) {
-
     return null;
-
   }
 
   // ------------------------------------------------
@@ -52,28 +46,23 @@ export const getIncidentDetailsService = async (
   // ------------------------------------------------
 
   const logs = await LogModel.find({
-
     incidentId,
-
   })
 
     .sort({
-
       timestamp: -1,
-
     })
 
     .lean();
 
-   // -----------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------
   // STEP 4
   // Map incident
   // Remove unnecessary database fields
-  // yaha map isliye use ni hua he kun ki incident ek object he or logs ek arry he 
+  // yaha map isliye use ni hua he kun ki incident ek object he or logs ek arry he
   // ------------------------------------------------------------------------------
 
   const incidentResponse = {
-
     id: incident._id,
 
     title: incident.title,
@@ -95,7 +84,6 @@ export const getIncidentDetailsService = async (
     resolvedAt: incident.resolvedAt,
 
     mttr: incident.mttr,
-
   };
 
   // ------------------------------------------------
@@ -104,7 +92,6 @@ export const getIncidentDetailsService = async (
   // ------------------------------------------------
 
   const logsResponse = logs.map((log) => ({
-
     service: log.service,
 
     level: log.level,
@@ -112,7 +99,6 @@ export const getIncidentDetailsService = async (
     message: log.message,
 
     timestamp: log.timestamp,
-
   }));
 
   // ------------------------------------------------
@@ -121,11 +107,8 @@ export const getIncidentDetailsService = async (
   // ------------------------------------------------
 
   return {
-
     incident: incidentResponse,
 
     logs: logsResponse,
-
   };
-
 };

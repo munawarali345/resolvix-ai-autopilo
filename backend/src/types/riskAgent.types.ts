@@ -49,14 +49,30 @@ export interface RiskValidatorInput {
 // RISK LEVEL
 // ================================================================
 
-export type RiskLevel = 'low' | 'medium' | 'high' | 'critical' | 'LOW' | 'MEDIUM' | 'HIGH' |'CRITICAL';
+export type RiskLevel =
+  | 'low'
+  | 'medium'
+  | 'high'
+  | 'critical'
+  | 'LOW'
+  | 'MEDIUM'
+  | 'HIGH'
+  | 'CRITICAL';
 
 // ================================================================
 // FINAL DECISION
 // ================================================================
 
-export type RiskDecision = 'APPROVED' | 'REQUIRES_HUMAN_APPROVAL' | 'REJECTED' | 'APPROVAL_REQUIRED' |
-    'REQUIRES_APPROVAL'| 'approved' | 'approval_required' | 'requires_approval' | 'rejected';
+export type RiskDecision =
+  | 'APPROVED'
+  | 'REQUIRES_HUMAN_APPROVAL'
+  | 'REJECTED'
+  | 'APPROVAL_REQUIRED'
+  | 'REQUIRES_APPROVAL'
+  | 'approved'
+  | 'approval_required'
+  | 'requires_approval'
+  | 'rejected';
 
 // ================================================================
 // RISK VALIDATOR ARTIFACTS

@@ -27,8 +27,12 @@ import { IncidentModel } from '../../../models/incident.model.js';
 
 import { ReportModel } from '../../../models/report.model.js';
 
+import { emitDashboardUpdate } from '../../../socket/dashboardEvents.socket.js';
+
+import { emitAgentStatusUpdate } from '../../../socket/agentStatus.events.socket.js';
+
 // ================================================================
-// ROOT CAUSE SERVICE
+// Reporter agent SERVICE
 // ================================================================
 
 export const reporterService = async (
@@ -105,10 +109,26 @@ export const reporterService = async (
 
   const aiResponse = await reporterAgent(agentInput);
 
+  const executionStatus = state.executorAgentResult.executionStatus;
+
+  let incidentStatus: 'open' | 'in_progress' | 'resolved';
+
+  if (executionStatus === 'SUCCESS') {
+    incidentStatus = 'resolved';
+  } else if (executionStatus === 'ROLLED_BACK') {
+    incidentStatus = 'open';
+  } else {
+    incidentStatus = 'in_progress';
+  }
+
   await IncidentModel.findByIdAndUpdate(
     state.incident._id,
 
     {
+      status: incidentStatus,
+
+      resolvedAt: incidentStatus === 'resolved' ? new Date() : null,
+
       mttr: aiResponse.report.metrics.mttr,
 
       updatedAt: new Date(),
@@ -131,12 +151,15 @@ export const reporterService = async (
     metrics: aiResponse.report.metrics,
   });
 
+  // Dashboard refresh
+  emitDashboardUpdate();
+
   // ------------------------------------------------
   // STEP 6
   // Save execution log
   // ------------------------------------------------
 
-  await AgentExecutionModel.create({
+  const execution = await AgentExecutionModel.create({
     incidentId: state.incident._id?.toString(),
 
     agentName: 'reporter',
@@ -152,6 +175,23 @@ export const reporterService = async (
     startedAt: new Date(startTime),
 
     completedAt: new Date(),
+  });
+
+  // agentExecution update on frontend
+  emitAgentStatusUpdate({
+    incidentId: execution.incidentId,
+
+    agentName: execution.agentName,
+
+    status: execution.status,
+
+    executionTime: execution.executionTime,
+
+    startedAt: execution.startedAt,
+
+    completedAt: execution.completedAt,
+
+    error: execution.error,
   });
 
   // ------------------------------------------------

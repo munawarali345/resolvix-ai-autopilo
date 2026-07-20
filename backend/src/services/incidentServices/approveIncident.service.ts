@@ -16,11 +16,13 @@
 //
 // ================================================================
 
-import { Command } from "@langchain/langgraph";
+import { Command } from '@langchain/langgraph';
 
-import { IncidentModel } from "../../models/incident.model.js";
+import logger from '../../lib/logger.js';
 
-import { getWorkflow } from "../../langGraph/graph/workflow.graph.js";
+import { IncidentModel } from '../../models/incident.model.js';
+
+import { getWorkflow } from '../../langGraph/graph/workflow.graph.js';
 
 // ================================================================
 // APPROVE INCIDENT
@@ -29,7 +31,6 @@ import { getWorkflow } from "../../langGraph/graph/workflow.graph.js";
 export const approveIncidentService = async (
   incidentId: string,
 ): Promise<void> => {
-
   // ------------------------------------------------
   // STEP 1
   // Validate Incident
@@ -39,17 +40,15 @@ export const approveIncidentService = async (
   const incident = await IncidentModel.findById(incidentId);
 
   if (!incident) {
-
-    throw new Error("Incident not found.");
-
+    throw new Error('Incident not found.');
   }
 
-  if (incident.status === "resolved") {
-    throw new Error("Incident is already resolved.");
+  if (incident.status === 'resolved') {
+    throw new Error('Incident is already resolved.');
   }
 
-  if (incident.status === "rejected") {
-     throw new Error("Incident is already rejected.");
+  if (incident.status === 'rejected') {
+    throw new Error('Incident is already rejected.');
   }
 
   // ------------------------------------------------
@@ -65,38 +64,29 @@ export const approveIncidentService = async (
   // -------------------------------------------------------------------------------
   // STEP 3
   // Resume paused workflow
-  // Detection Service me bhi ye use hua tha 
+  // Detection Service me bhi ye use hua tha
   // bus input ka farq he
-  // detection k time workflow.invoke(workflowState) yani new workflow start kro 
+  // detection k time workflow.invoke(workflowState) yani new workflow start kro
   // -------------------------------------------------------------------------------
 
-  const result = await workflow.invoke( // yaha new ni bana re he jo puase tha wo resume jer re he 
+  const result = await workflow.invoke(
+    // yaha new ni bana re he jo puase tha wo resume jer re he
 
-       new Command({
+    new Command({
+      resume: {
+        approved: true,
+      },
+    }),
 
-           resume: {
+    {
+      configurable: {
+        thread_id: incidentId,
+      },
+    },
+  );
 
-              approved: true,
-
-            },
-
-         }),
-
-        {
-
-         configurable: {
-
-            thread_id: incidentId,
-
-          },
-
-       },
-
-     );
-
-     console.log(result);
+  logger.debug('Approve incident result', { data: result });
 };
-
 
 // Command
 // new Command({

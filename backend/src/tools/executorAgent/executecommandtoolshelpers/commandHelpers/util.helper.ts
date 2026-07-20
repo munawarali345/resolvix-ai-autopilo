@@ -139,3 +139,66 @@ export function getLogByResource(resourceName: string): FakeLog | undefined {
 
   return findLog(source);
 }
+
+// ================================================================
+// RESOLVE RESOURCE NAME
+// ================================================================
+
+export function resolveResourceName(name: string): string {
+  const normalized = name.trim().toLowerCase();
+
+  // ------------------------------------------------
+  // Database
+  // ------------------------------------------------
+
+  if (
+    normalized === 'db-pool' ||
+    normalized === 'postgres' ||
+    normalized === 'postgresql' ||
+    normalized === 'database'
+  ) {
+    return 'postgresql';
+  }
+
+  // ------------------------------------------------
+  // Authentication
+  // ------------------------------------------------
+
+  if (
+    normalized === 'auth' ||
+    normalized === 'auth-service' ||
+    normalized === 'authentication'
+  ) {
+    return 'authentication';
+  }
+
+  // ------------------------------------------------
+  // Cache
+  // ------------------------------------------------
+
+  if (normalized === 'redis' || normalized === 'cache') {
+    return 'redis';
+  }
+
+  // ------------------------------------------------
+  // API Gateway
+  // ------------------------------------------------
+
+  if (normalized === 'gateway') {
+    return 'api-gateway';
+  }
+
+  // ------------------------------------------------
+  // Network
+  // ------------------------------------------------
+
+  if (normalized === 'network') {
+    return 'network';
+  }
+
+  if (normalized === 'db-host') {
+    return 'postgresql';
+  }
+
+  return normalized;
+}

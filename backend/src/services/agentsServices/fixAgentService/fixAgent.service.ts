@@ -23,6 +23,8 @@ import { fixAgent } from '../../../agents/fixAgent/fixAgent.agent.js';
 
 import { AgentExecutionModel } from '../../../models/agentExecution.model.js';
 
+import { emitAgentStatusUpdate } from '../../../socket/agentStatus.events.socket.js';
+
 // ================================================================
 // fix Agent SERVICE
 // ================================================================
@@ -74,12 +76,7 @@ export const fixAgentService = async (
   // STEP 5
   // Save execution log
   // ------------------------------------------------
-
-  console.log("===== FIX INCIDENT =====");
-console.log(state.incident);
-console.log("Incident _id:", state.incident._id);
-  await AgentExecutionModel.create({
-
+  const execution = await AgentExecutionModel.create({
     incidentId: state.incident._id?.toString() || 'no-incident',
 
     agentName: 'fix',
@@ -95,7 +92,23 @@ console.log("Incident _id:", state.incident._id);
     startedAt: new Date(startTime),
 
     completedAt: new Date(),
+  });
 
+  // agentExecution update on frontend
+  emitAgentStatusUpdate({
+    incidentId: execution.incidentId,
+
+    agentName: execution.agentName,
+
+    status: execution.status,
+
+    executionTime: execution.executionTime,
+
+    startedAt: execution.startedAt,
+
+    completedAt: execution.completedAt,
+
+    error: execution.error,
   });
 
   // ------------------------------------------------

@@ -43,15 +43,15 @@ export const validateRiskValidatorOutput = (
   // ------------------------------------------------
 
   const allowedRiskLevels = [
-  'low',
-  'medium',
-  'high',
-  'critical',
-  'LOW',
-  'MEDIUM',
-  'HIGH',
-  'CRITICAL',
-] as const;
+    'low',
+    'medium',
+    'high',
+    'critical',
+    'LOW',
+    'MEDIUM',
+    'HIGH',
+    'CRITICAL',
+  ] as const;
 
   if (
     typeof output.riskLevel !== 'string' ||

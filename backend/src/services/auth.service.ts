@@ -3,7 +3,9 @@
 
 import bcryptjs from 'bcryptjs';
 import { User } from '../models/index.js';
-import { generateTokensService, verifyRefreshTokenService,
+import {
+  generateTokensService,
+  verifyRefreshTokenService,
 } from './token.service.js';
 // import { sendVerificationEmail } from './email.service.js';
 import { AuthResponse } from '../types/auth.type.js';
@@ -27,7 +29,6 @@ type UserDocument = UserType & Document;
 
 // helper function for avoiding repeatation
 const saveRefreshToken = async (user: UserDocument, refreshToken: string) => {
-
   const hashedToken = await bcryptjs.hash(refreshToken, 10);
 
   user.refreshToken = hashedToken;
@@ -94,7 +95,6 @@ export const loginUserService = async (
   email: string,
   password: string,
 ): Promise<AuthResponse> => {
-
   const user = await User.findOne({ email }).select('+password');
 
   if (!user) throw new Error('Invalid credentials');
@@ -214,7 +214,6 @@ export const refreshTokensService = async (refreshToken: string) => {
 export const logoutUserService = async (
   refreshToken: string,
 ): Promise<void> => {
-
   // Verify refresh token and get userId
   const decoded = verifyRefreshTokenService(refreshToken);
 

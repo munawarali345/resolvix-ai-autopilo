@@ -16,6 +16,8 @@ import { parseDetectionResponse } from './detection.parser.js';
 
 import { validateDetectionOutput } from './detection.validator.js';
 
+import logger from '../../../lib/logger.js';
+
 import {
   DetectionAgentInput,
   DetectionAgentOutput,
@@ -67,9 +69,7 @@ export const detectionAgent = async (
       },
     ]);
 
-    console.log("\n========== RAW QWEN RESPONSE ==========");
-    console.log(response.content);
-    console.log("=======================================\n");
+    logger.debug('Raw Qwen Response', { content: response.content });
 
     // ============================================================
     // STEP 3
@@ -78,10 +78,7 @@ export const detectionAgent = async (
 
     const parsedResponse = parseDetectionResponse(response.content);
 
-
-    console.log("\n========== PARSED RESPONSE ==========");
-    console.log(JSON.stringify(parsedResponse, null, 2));
-    console.log("=====================================\n");
+    logger.debug('Parsed Response', { data: parsedResponse });
 
     // ============================================================
     // STEP 4

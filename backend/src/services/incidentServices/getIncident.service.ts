@@ -1,4 +1,3 @@
-
 // ================================================================
 // GET INCIDENTS SERVICE
 // ================================================================
@@ -29,9 +28,8 @@ import { buildIncidentFilter } from './incident.filter.js';
 
 export const getIncidentsService = async (
   filters: IncidentFilter,
-  pagination: PaginationOptions
+  pagination: PaginationOptions,
 ) => {
-
   // ------------------------------------------------
   // STEP 1
   // Build MongoDB filter object
@@ -76,11 +74,9 @@ export const getIncidentsService = async (
   // ------------------------------------------------
 
   return {
-
     incidents,
 
     pagination: {
-
       total: totalIncidents,
 
       page: pagination.page,
@@ -88,9 +84,6 @@ export const getIncidentsService = async (
       limit: pagination.limit,
 
       totalPages: Math.ceil(totalIncidents / pagination.limit),
-
     },
-
   };
-
 };

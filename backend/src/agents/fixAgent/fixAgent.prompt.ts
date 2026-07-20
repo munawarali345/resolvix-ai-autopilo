@@ -148,6 +148,15 @@ Do NOT include:
 - Comments
 - Any text before or after the JSON
 
+estimatedTime MUST be exactly one of:
+
+- 5-10 minutes
+- 10-15 minutes
+- 15-30 minutes
+- 20-40 minutes
+
+Do not generate any other value.
+
 The JSON must strictly follow the FixAgentOutput schema.
 
 {

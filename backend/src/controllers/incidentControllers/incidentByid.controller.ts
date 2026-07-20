@@ -1,4 +1,3 @@
-
 // ================================================================
 // GET INCIDENT DETAILS CONTROLLER
 // ================================================================
@@ -16,9 +15,9 @@
 //
 // ================================================================
 
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from 'express';
 
-import { getIncidentDetailsService } from "../../services/incidentServices/getIncidentById.service.js";
+import { getIncidentDetailsService } from '../../services/incidentServices/getIncidentById.service.js';
 
 // ================================================================
 // GET INCIDENT DETAILS
@@ -26,17 +25,13 @@ import { getIncidentDetailsService } from "../../services/incidentServices/getIn
 // ================================================================
 
 export const getIncidentByIdController = async (
-
   req: Request,
 
   res: Response,
 
   next: NextFunction,
-
 ): Promise<void> => {
-
   try {
-
     // ------------------------------------------------
     // STEP 1
     // Read incident id
@@ -57,17 +52,13 @@ export const getIncidentByIdController = async (
     // ------------------------------------------------
 
     if (!incident) {
-
       res.status(404).json({
-
         success: false,
 
-        message: "Incident not found.",
-
+        message: 'Incident not found.',
       });
 
       return;
-
     }
 
     // ------------------------------------------------
@@ -76,19 +67,13 @@ export const getIncidentByIdController = async (
     // ------------------------------------------------
 
     res.status(200).json({
-
       success: true,
 
-      message: "Incident details fetched successfully.",
+      message: 'Incident details fetched successfully.',
 
       data: incident,
-
     });
-
   } catch (error) {
-
     next(error);
-
   }
-
 };

@@ -1,4 +1,3 @@
-
 // ================================================================
 // GET REPORT DETAILS SERVICE
 // ================================================================
@@ -22,10 +21,7 @@ import { ReportModel } from '../../models/report.model.js';
 // GET REPORT DETAILS
 // ================================================================
 
-export const getReportByIdService = async (
-  reportId: string,
-) => {
-
+export const getReportByIdService = async (reportId: string) => {
   // ------------------------------------------------
   // STEP 1
   // Find report
@@ -39,9 +35,7 @@ export const getReportByIdService = async (
   // ------------------------------------------------
 
   if (!report) {
-
     return null;
-
   }
 
   // ------------------------------------------------
@@ -51,7 +45,6 @@ export const getReportByIdService = async (
   // ------------------------------------------------
 
   const reportResponse = {
-
     id: report._id,
 
     incidentId: report.incidentId,
@@ -73,7 +66,6 @@ export const getReportByIdService = async (
     metrics: report.metrics,
 
     createdAt: report.createdAt,
-
   };
 
   // ------------------------------------------------
@@ -82,5 +74,4 @@ export const getReportByIdService = async (
   // ------------------------------------------------
 
   return reportResponse;
-
 };

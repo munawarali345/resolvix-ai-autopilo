@@ -86,17 +86,13 @@ Returns:
 // ================================================================
 
 export const notificationTool = tool(
-
-  async ({ executionStatus,affectedServices,incidentId}) => {
-
+  async ({ executionStatus, affectedServices, incidentId }) => {
     return sendNotification(
-
       incidentId,
 
       executionStatus,
 
       affectedServices,
-
     );
   },
 

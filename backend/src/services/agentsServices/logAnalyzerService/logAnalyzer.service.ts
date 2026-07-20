@@ -22,6 +22,8 @@ import { logAnalyzerAgent } from '../../../agents/log-analysisAgent/logAnalysis.
 
 import { AgentExecutionModel } from '../../../models/agentExecution.model.js';
 
+import { emitAgentStatusUpdate } from '../../../socket/agentStatus.events.socket.js';
+
 // ================================================================
 // LOG ANALYSIS SERVICE
 // ================================================================
@@ -64,7 +66,7 @@ export const logAnalysisService = async (
   // STEP 5: Save execution log
   // ------------------------------------------------
 
-  await AgentExecutionModel.create({
+  const execution = await AgentExecutionModel.create({
     incidentId: state.incident._id?.toString(),
 
     agentName: 'log-analysis',
@@ -80,6 +82,23 @@ export const logAnalysisService = async (
     startedAt: new Date(startTime),
 
     completedAt: new Date(),
+  });
+
+  // agentExecution update on frontend
+  emitAgentStatusUpdate({
+    incidentId: execution.incidentId,
+
+    agentName: execution.agentName,
+
+    status: execution.status,
+
+    executionTime: execution.executionTime,
+
+    startedAt: execution.startedAt,
+
+    completedAt: execution.completedAt,
+
+    error: execution.error,
   });
 
   // ------------------------------------------------

@@ -1,55 +1,213 @@
-/* Import Tailwind CSS base styles */
+/* @import "tailwindcss"; */
+
+/* Temporary globals for Tailwind v4 migration */
+
+/* html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  background: #ffffff;
+  color: #0f172a;
+  font-family: Arial, Helvetica, sans-serif;
+} */
+
+/* * {
+  box-sizing: border-box;
+} */
+
 @import 'tailwindcss';
 
-/* Import animation utilities for shadcn/ui components */
-@import 'tw-animate-css';
+/* ==========================================================
+   Resolvix AI Design System
+   Tailwind CSS v4
+   ========================================================== */
 
-/* Base styles applied to all elements */
-@layer base {
-  /* Light mode color variables */
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 47.4% 11.2%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 47.4% 11.2%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 47.4% 11.2%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 222.2 47.4% 11.2%;
-    --accent: 220 14.3% 95.9%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 220 14.3% 90%;
-    --input: 220 14.3% 90%;
-    --ring: 222.2 47.4% 11.2%;
-    --radius: 0.5rem;
-  }
+/* ---------------- Root Theme ---------------- */
 
-  /* Dark mode color variables override */
-  .dark {
-    --background: 222.2 47.4% 11.2%;
-    --foreground: 0 0% 100%;
-    --card: 222.2 47.4% 11.2%;
-    --card-foreground: 0 0% 100%;
-    --popover: 222.2 47.4% 11.2%;
-    --popover-foreground: 0 0% 100%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 222.2 47.4% 11.2%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 222.2 47.4% 11.2%;
-    --muted-foreground: 220 14.3% 95.9%;
-    --accent: 222.2 47.4% 11.2%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 222.2 47.4% 11.2%;
-    --input: 222.2 47.4% 11.2%;
-    --ring: 215 20.2% 65.1%;
-  }
+:root {
+  /* Typography */
+  font-family: Inter, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Colors */
+
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --surface-secondary: #f1f5f9;
+
+  --border: #e2e8f0;
+
+  --text: #0f172a;
+  --text-secondary: #64748b;
+
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+
+  --shadow: 0 1px 2px rgba(15, 23, 42, 0.05), 0 8px 24px rgba(15, 23, 42, 0.06);
+
+  --radius: 16px;
+}
+
+/* ---------------- Base ---------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+
+  background: var(--background);
+
+  color: var(--text);
+
+  font-family: inherit;
+
+  text-rendering: optimizeLegibility;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------------- Typography ---------------- */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+
+  color: var(--text);
+
+  font-weight: 700;
+
+  line-height: 1.2;
+}
+
+p {
+  margin: 0;
+
+  color: var(--text-secondary);
+}
+
+/* ---------------- Links ---------------- */
+
+a {
+  color: inherit;
+
+  text-decoration: none;
+}
+
+/* ---------------- Images ---------------- */
+
+img {
+  display: block;
+
+  max-width: 100%;
+}
+
+/* ---------------- Form Controls ---------------- */
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+input,
+textarea,
+select {
+  border: 1px solid var(--border);
+
+  background: white;
+
+  color: var(--text);
+
+  border-radius: 12px;
+
+  outline: none;
+
+  transition: 0.2s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--primary);
+
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* ---------------- Selection ---------------- */
+
+::selection {
+  background: rgba(37, 99, 235, 0.15);
+}
+
+/* ---------------- Scrollbar ---------------- */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ---------------- Utility Classes ---------------- */
+
+.surface {
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius);
+
+  box-shadow: var(--shadow);
+}
+
+.surface-secondary {
+  background: var(--surface-secondary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
 }

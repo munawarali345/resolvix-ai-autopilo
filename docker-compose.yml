@@ -3,11 +3,17 @@
 services:
   mongodb:
     image: mongo:7.0
+
     container_name: resolvix-mongodb
+
+    restart: unless-stopped
+
     environment:
       MONGO_INITDB_DATABASE: resolvix-ai
+
     ports:
       - '27017:27017'
+
     volumes:
       - mongodb_data:/data/db
 
@@ -15,13 +21,17 @@ services:
     build:
       context: .
       dockerfile: backend/Dockerfile
+
+    restart: unless-stopped
+
     container_name: resolvix-backend
-    environment:
-      NODE_ENV: development
-      PORT: 3001
-      MONGODB_URI: mongodb://mongodb:27017/resolvix-ai
+
+    env_file:
+      - backend/.env.production
+
     ports:
-      - '3001:3001'
+      - '5000:5000'
+
     depends_on:
       - mongodb
 
@@ -29,9 +39,14 @@ services:
     build:
       context: .
       dockerfile: frontend/Dockerfile
+
+    restart: unless-stopped
+
     container_name: resolvix-frontend
-    environment:
-      NEXT_PUBLIC_API_URL: http://localhost:3001/api
+
+    env_file:
+      - frontend/.env.production
+
     ports:
       - '3000:3000'
     depends_on:

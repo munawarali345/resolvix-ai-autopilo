@@ -36,11 +36,11 @@ const envSchema = z.object({
 
   REFRESH_TOKEN_EXPIRY: z.string().default('7d'),
 
-  EMAIL_USER: z.string().email(),
+  EMAIL_USER: z.string().email().optional(),
 
-  EMAIL_PASS: z.string().min(1),
+  EMAIL_PASS: z.string().optional(),
 
-  CLIENT_URL: z.string().url(),
+  CLIENT_URL: z.string().url().optional(),
 
   // ========================
   // Qwen Cloud

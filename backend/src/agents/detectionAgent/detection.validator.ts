@@ -14,8 +14,6 @@ import { DetectionAgentOutput } from '../../types/detectionAgent.type.js';
 // ================================================================
 const allowedSeverity = ['critical', 'high', 'medium', 'low'] as const;
 
-
-
 // ================================================================
 // Validate Detection Agent Output
 // ================================================================
@@ -130,26 +128,23 @@ export const validateDetectionOutput = (
       throw new Error('Detection Agent: Invalid incident status');
     }
 
-   // --------------------------
-   // detectedAt
-   // Must be valid Date
-   // --------------------------
-   if (!(output.incident.detectedAt instanceof Date)) {
+    // --------------------------
+    // detectedAt
+    // Must be valid Date
+    // --------------------------
+    if (!(output.incident.detectedAt instanceof Date)) {
       throw new Error('Detection Agent: Invalid detectedAt');
-   }
+    }
 
-   if (Number.isNaN(output.incident.detectedAt.getTime())) {
+    if (Number.isNaN(output.incident.detectedAt.getTime())) {
       throw new Error('Detection Agent: Invalid detectedAt');
-
-   }
-
+    }
   }
-  
+
   // ------------------------------------------------
   // Step 10
   // Sab validation pass ho gayi
   // Safe object return karo
   // ------------------------------------------------
-  return output
-
+  return output;
 };

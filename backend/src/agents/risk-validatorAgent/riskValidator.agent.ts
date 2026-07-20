@@ -18,6 +18,7 @@ import {
   HumanMessage,
   SystemMessage,
   BaseMessage,
+  ToolMessage,
 } from '@langchain/core/messages';
 
 import { createQwenLangChainModel } from '../../ai/qwen/qwen.langchain.js';
@@ -41,6 +42,8 @@ import { parseRiskValidatorResponse } from './riskValidator.parser.js';
 
 // validator
 import { validateRiskValidatorOutput } from './riskValidator.validation.js';
+
+import logger from '../../../lib/logger.js';
 
 import { StructuredTool } from '@langchain/core/tools';
 
@@ -171,8 +174,7 @@ Follow your assigned skill and use available tools whenever required.
         response.content as string,
       );
 
-      console.log("========== PARSED RISK OUTPUT ==========");
-console.dir(parsedOutput, { depth: null });
+      logger.debug('Parsed Risk Output', { data: parsedOutput });
 
       const validatedOutput = validateRiskValidatorOutput(parsedOutput);
 
@@ -184,36 +186,81 @@ console.dir(parsedOutput, { depth: null });
     }
 
     // --------------------------------------------------------
-    // Execute Tool Calls
+    // Execute Tool Calls (Parallel Execution)
     // --------------------------------------------------------
+    //
+    // Every tool requested by the LLM is independent.
+    //
+    // Instead of:
+    //
+    // Tool1 -> wait
+    // Tool2 -> wait
+    // Tool3 -> wait
+    //
+    // We execute all tools simultaneously.
+    //
+    // Promise.all waits until ALL tools complete,
+    // then returns every tool result together.
+    //
+    // This reduces overall agent latency while keeping
+    // the final behaviour exactly the same.
+    //
 
-    for (const toolCall of response.tool_calls) {
-      const tool = toolRegistry[toolCall.name as keyof typeof toolRegistry];
+    const toolResults = await Promise.all(
+      response.tool_calls.map(async (toolCall) => {
+        // --------------------------------------------------
+        // Get matching tool from registry.
+        // --------------------------------------------------
 
-      if (!tool) {
-        throw new Error(`Unknown Tool: ${toolCall.name}`);
-      }
+        const tool = toolRegistry[toolCall.name as keyof typeof toolRegistry];
 
-      const result = await tool.invoke(toolCall);
+        if (!tool) {
+          throw new Error(`Unknown Tool: ${toolCall.name}`);
+        }
 
-       let toolResult: unknown;
+        // --------------------------------------------------
+        // Execute tool.
+        //
+        // Every mapped callback runs immediately.
+        // Promise.all waits until every execution finishes.
+        // --------------------------------------------------
 
-       if (typeof result.content === "string") {
+        const result = await tool.invoke(toolCall);
 
-                toolResult = JSON.parse(result.content);
+        let toolResult: unknown;
 
-          } else {
+        if (typeof result.content === 'string') {
+          toolResult = JSON.parse(result.content);
+        } else {
+          toolResult = result.content;
+        }
 
-                toolResult = result.content;
-          }
+        // --------------------------------------------------
+        // Return both:
+        //
+        // 1. original toolCall
+        // 2. parsed tool result
+        //
+        // Artifact saving happens AFTER all tools finish.
+        // --------------------------------------------------
 
-      // =========================================================
-      // Save the executed tool output into artifacts.
-      //
-      // Every tool produces a different type of output.
-      // We save that output so future agents can reuse it
-      // without executing the same tool again.
-      // =========================================================
+        return {
+          toolCall,
+
+          toolResult,
+        };
+      }),
+    );
+
+    // =========================================================
+    // Save the executed tool output into artifacts.
+    //
+    // Every tool produces a different type of output.
+    // We save that output so future agents can reuse it
+    // without executing the same tool again.
+    // =========================================================
+
+    for (const { toolCall, toolResult } of toolResults) {
       // ---------------------------------------------------------
       // Save approval policy result
       // ---------------------------------------------------------
@@ -250,8 +297,12 @@ console.dir(parsedOutput, { depth: null });
         throw new Error('Tool call id is missing.');
       }
 
-      messages.push(result);
-
+      messages.push(
+        new ToolMessage({
+          tool_call_id: toolCall.id,
+          content: JSON.stringify(toolResult),
+        }),
+      );
     }
   }
 

@@ -14,6 +14,7 @@ import {
   agentRoutes,
   notificationRoutes,
   reporterRoutes,
+  userRoutes,
 } from './routes/index.js';
 
 const app: Express = express();
@@ -48,9 +49,11 @@ app.use('/api/dashboard', dashboardRoutes);
 
 app.use('/api/agents', agentRoutes);
 
-app.use('/api/notification', notificationRoutes)
+app.use('/api/notification', notificationRoutes);
 
 app.use('/api/reports', reporterRoutes);
+
+app.use('/api/user', userRoutes);
 
 // Error handling
 app.use(notFound);

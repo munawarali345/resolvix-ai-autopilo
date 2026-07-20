@@ -48,7 +48,7 @@ const TimelineToolSchema = z.object({
 
       status: z.enum(['open', 'in_progress', 'resolved', 'rejected']),
 
-      detectedAt: z.date(),
+      detectedAt: z.string().datetime(), // ISO string accept karega
     })
     .passthrough(),
 

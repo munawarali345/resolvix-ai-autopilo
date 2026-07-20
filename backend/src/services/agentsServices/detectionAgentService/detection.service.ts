@@ -31,6 +31,10 @@ import { DetectionServiceOutput } from '../../../types/detectionService.type.js'
 
 import { getWorkflow } from '../../../langGraph/graph/workflow.graph.js';
 
+import { emitDashboardUpdate } from '../../../socket/dashboardEvents.socket.js';
+
+import { emitAgentStatusUpdate } from '../../../socket/agentStatus.events.socket.js';
+
 // ================================================================
 // DETECTION SERVICE FUNCTION
 // ================================================================
@@ -67,7 +71,6 @@ export const detectionService = async (
       severity: aiResponse.incident.severity,
       status: 'open',
       detectedAt: new Date(aiResponse.incident.detectedAt),
-      
     });
   }
 
@@ -101,11 +104,14 @@ export const detectionService = async (
     );
   }
 
+  // Dashboard refresh
+  emitDashboardUpdate();
+
   // ================================================================
   // STEP 4: AGENT EXECUTION LOG SAVE (audit trail)
   // ================================================================
-  
-  await AgentExecutionModel.create({
+
+  const execution = await AgentExecutionModel.create({
     incidentId: savedIncident?._id?.toString() || 'no-incident',
 
     agentName: 'detection',
@@ -124,6 +130,23 @@ export const detectionService = async (
     startedAt: new Date(startTime),
 
     completedAt: new Date(),
+  });
+
+  // agentExecution update on frontend
+  emitAgentStatusUpdate({
+    incidentId: execution.incidentId,
+
+    agentName: execution.agentName,
+
+    status: execution.status,
+
+    executionTime: execution.executionTime,
+
+    startedAt: execution.startedAt,
+
+    completedAt: execution.completedAt,
+
+    error: execution.error,
   });
 
   // ================================================================
@@ -175,7 +198,6 @@ export const detectionService = async (
         },
       },
     );
-    
   }
 
   // ================================================================

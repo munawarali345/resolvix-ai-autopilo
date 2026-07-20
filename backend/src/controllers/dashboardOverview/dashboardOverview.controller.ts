@@ -1,4 +1,3 @@
-
 // ================================================================
 // DASHBOARD OVERVIEW CONTROLLER
 // ================================================================
@@ -28,7 +27,6 @@ export const dashboardOverviewController = async (
   res: Response,
   next: NextFunction,
 ) => {
-
   try {
     // ------------------------------------------------
     // STEP 1
@@ -47,11 +45,7 @@ export const dashboardOverviewController = async (
       message: 'Dashboard overview fetched successfully.',
       data: dashboard,
     });
-
   } catch (error) {
-
     next(error);
-    
   }
-
 };

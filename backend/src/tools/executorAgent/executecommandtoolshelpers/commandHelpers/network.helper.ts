@@ -20,7 +20,7 @@ export async function handleNetworkCommand(
   if (
     !normalizedCommand.startsWith('ping') &&
     !normalizedCommand.startsWith('netstat -rn') &&
-    !normalizedCommand.startsWith('iptables -l')
+    !normalizedCommand.startsWith('iptables -L')
   ) {
     return false;
   }
@@ -85,7 +85,7 @@ export async function handleNetworkCommand(
   // Firewall Rules
   // ------------------------------------------------
 
-  if (normalizedCommand.startsWith('iptables -l')) {
+  if (normalizedCommand.startsWith('iptables -L')) {
     await delay(context.duration);
 
     context.stdout = [

@@ -31,7 +31,10 @@ router.post('/memory-leak', apiRateLimit, simulateMemoryLeakController);
 router.post('/api-500-error', apiRateLimit, simulateApi500ErrorController);
 
 // Deployment failure simulation
-router.post('/deployment-failure',apiRateLimit,simulateDeploymentFailureController,
+router.post(
+  '/deployment-failure',
+  apiRateLimit,
+  simulateDeploymentFailureController,
 );
 
 // CPU spike simulation

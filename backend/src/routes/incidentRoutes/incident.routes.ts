@@ -1,8 +1,13 @@
-
 import { Router } from 'express';
 import { apiRateLimit } from '../../middlewares/rate-limit.middleware.js';
 import PaginationMiddleware from '../../middlewares/pagination.middleware.js';
-import { getIncidentsController, getIncidentByIdController, approveIncidentController, rejectIncidentController } from '../../controllers/index.js';
+import {
+  getIncidentsController,
+  getIncidentByIdController,
+  approveIncidentController,
+  rejectIncidentController,
+  developerResumeController,
+} from '../../controllers/index.js';
 
 // ================================================================
 // GET ALL INCIDENTS
@@ -21,7 +26,7 @@ import { getIncidentsController, getIncidentByIdController, approveIncidentContr
 const router: Router = Router();
 
 // GET /api/incidents
-router.get('/',  apiRateLimit, PaginationMiddleware, getIncidentsController);
+router.get('/', apiRateLimit, PaginationMiddleware, getIncidentsController);
 
 // GET /api/incidents/:id
 router.get('/:incidentId', apiRateLimit, getIncidentByIdController);
@@ -31,5 +36,7 @@ router.patch('/:incidentId/approve', apiRateLimit, approveIncidentController);
 
 // PATCH /api/incidents/:id/reject
 router.patch('/:incidentId/reject', apiRateLimit, rejectIncidentController);
+
+router.patch('/:threadId/resume', apiRateLimit, developerResumeController);
 
 export default router;

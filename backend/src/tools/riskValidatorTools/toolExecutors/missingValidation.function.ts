@@ -22,7 +22,6 @@ import {
 export function findMissingValidation(
   input: RiskToolInput,
 ): MissingValidationOutput {
-
   const { recommendation, artifacts } = input;
 
   const missingChecks: string[] = [];

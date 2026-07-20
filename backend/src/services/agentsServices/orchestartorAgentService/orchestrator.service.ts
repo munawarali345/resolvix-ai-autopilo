@@ -21,6 +21,8 @@ import { orchestratorAgent } from '../../../agents/orchestratorAgent/orchestrato
 
 import { AgentExecutionModel } from '../../../models/agentExecution.model.js';
 
+import { emitAgentStatusUpdate } from '../../../socket/agentStatus.events.socket.js';
+
 // main function
 export const orchestratorService = async (
   updatedState: WorkflowState,
@@ -57,7 +59,7 @@ export const orchestratorService = async (
   // ------------------------------------------------
   // STEP 5: Save execution log (audit trail)
   // ------------------------------------------------
-  await AgentExecutionModel.create({
+  const execution = await AgentExecutionModel.create({
     incidentId: updatedState.incident?._id?.toString() || 'no-incident',
 
     agentName: 'orchestrator',
@@ -73,6 +75,23 @@ export const orchestratorService = async (
     startedAt: new Date(startTime),
 
     completedAt: new Date(),
+  });
+
+  // agentExecution update on frontend
+  emitAgentStatusUpdate({
+    incidentId: execution.incidentId,
+
+    agentName: execution.agentName,
+
+    status: execution.status,
+
+    executionTime: execution.executionTime,
+
+    startedAt: execution.startedAt,
+
+    completedAt: execution.completedAt,
+
+    error: execution.error,
   });
 
   // ------------------------------------------------

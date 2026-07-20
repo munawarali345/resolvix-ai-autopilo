@@ -4,6 +4,7 @@
 
 import 'dotenv/config';
 import app from './app.js';
+import logger from './lib/logger.js';
 import { connectDB } from './config/db.js';
 import { initializeWorkflow } from './langGraph/graph/workflow.graph.js';
 
@@ -28,10 +29,10 @@ const startServer = async () => {
 
     // Step 4: Start server AFTER create server
     httpServer.listen(Port, () => {
-      console.log(`Server is running on Port ${Port}`);
+      logger.info(`Server is running on Port ${Port}`);
     });
   } catch (error) {
-    console.error('Failed to start server:', error);
+    logger.error('Failed to start server', { error });
 
     process.exit(1);
   }

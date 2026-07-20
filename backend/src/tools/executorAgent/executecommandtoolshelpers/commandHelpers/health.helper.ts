@@ -23,6 +23,7 @@ export async function handleHealthCommand(
     !normalizedCommand.includes('rollout status') &&
     !normalizedCommand.includes('get pods') &&
     !normalizedCommand.includes('describe pod') &&
+    !normalizedCommand.includes('get svc') &&
     !normalizedCommand.startsWith('curl')
   ) {
     return false;
@@ -94,6 +95,23 @@ export async function handleHealthCommand(
     }
 
     // --------------------------------------------
+    // Get Services
+    // --------------------------------------------
+
+    if (normalizedCommand.includes('get svc')) {
+      await delay(context.duration);
+
+      context.stdout = [
+        'NAME              TYPE        CLUSTER-IP',
+        'api-gateway       ClusterIP  10.96.0.10',
+        'payment-service   ClusterIP  10.96.0.20',
+        'user-service      ClusterIP  10.96.0.30',
+      ].join('\n');
+
+      return true;
+    }
+
+    // --------------------------------------------
     // Describe Pod
     // --------------------------------------------
 
@@ -142,15 +160,37 @@ export async function handleHealthCommand(
   // Curl Health Endpoint
   // ------------------------------------------------
 
-  if (normalizedCommand.startsWith('curl')) {
+  // ------------------------------------------------
+  // Auth Health Endpoint
+  // ------------------------------------------------
+
+  if (normalizedCommand.includes('/auth/health')) {
+    await delay(context.duration);
+
+    context.stdout = JSON.stringify(
+      {
+        service: 'authentication',
+        status: 'UP',
+        jwt: 'UP',
+      },
+      null,
+      2,
+    );
+
+    return true;
+  }
+
+  // ------------------------------------------------
+  // Generic Health Endpoint
+  // ------------------------------------------------
+
+  if (normalizedCommand.includes('/health')) {
     await delay(context.duration);
 
     context.stdout = JSON.stringify(
       {
         status: 'UP',
-
         database: 'UP',
-
         cache: 'UP',
       },
       null,

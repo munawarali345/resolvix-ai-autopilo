@@ -1,4 +1,3 @@
-
 // ================================================================
 // GET REPORTS CONTROLLER
 // ================================================================
@@ -17,9 +16,7 @@ export const getReportsController = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-
   try {
-
     // ------------------------------------------------
     // STEP 1
     // Get pagination from middleware
@@ -40,19 +37,13 @@ export const getReportsController = async (
     // ------------------------------------------------
 
     res.status(200).json({
-
       success: true,
 
       message: 'Reports fetched successfully.',
 
       data: reports,
-
     });
-
   } catch (error) {
-
     next(error);
-
   }
-
 };

@@ -18,13 +18,11 @@ export type Incident = {
   updatedAt?: Date;
 };
 
-
 // ================================================================
 // INCIDENT FILTER TYPES
 // ================================================================
 
 export interface IncidentFilter {
-
   severity?: IncidentSeverity;
 
   status?: IncidentStatus;
@@ -33,8 +31,7 @@ export interface IncidentFilter {
 
   endDate?: Date;
 
-  sort?: "createdAt" | "severity" | "status" | "detectedAt";
+  sort?: 'createdAt' | 'severity' | 'status' | 'detectedAt';
 
-  order?: "asc" | "desc";
-
+  order?: 'asc' | 'desc';
 }

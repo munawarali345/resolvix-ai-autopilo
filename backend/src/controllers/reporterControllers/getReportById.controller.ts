@@ -1,11 +1,10 @@
-
 // ================================================================
 // GET REPORT DETAILS CONTROLLER
 // ================================================================
 
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from 'express';
 
-import { getReportByIdService } from "../../services/reportServices/getReportById.service.js";
+import { getReportByIdService } from '../../services/reportServices/getReportById.service.js';
 
 // ================================================================
 // GET REPORT DETAILS
@@ -17,15 +16,13 @@ export const getReportByIdController = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-
   try {
-
     // ------------------------------------------------
     // STEP 1
     // Get report id from route params
     // ------------------------------------------------
 
-    const  reportId  = req.params.reportId;
+    const reportId = req.params.reportId;
 
     // ------------------------------------------------
     // STEP 2
@@ -40,17 +37,13 @@ export const getReportByIdController = async (
     // ------------------------------------------------
 
     if (!report) {
-
       res.status(404).json({
-
         success: false,
 
-        message: "Report not found.",
-
+        message: 'Report not found.',
       });
 
       return;
-
     }
 
     // ------------------------------------------------
@@ -59,21 +52,15 @@ export const getReportByIdController = async (
     // ------------------------------------------------
 
     res.status(200).json({
-
       success: true,
 
-      message: "Report fetched successfully.",
+      message: 'Report fetched successfully.',
 
       data: report,
-
     });
-
   } catch (error) {
-
     next(error);
-
   }
-
 };
 
 export default getReportByIdController;

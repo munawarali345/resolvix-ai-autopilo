@@ -12,6 +12,8 @@ export { default as dashboardRoutes } from './dashboardRoutes/dashboard.routes.j
 
 export { default as agentRoutes } from './agentStatusRoutes/agent.routes.js';
 
-export { default as notificationRoutes } from "./notificationRoutes/notification.routes.js";
+export { default as notificationRoutes } from './notificationRoutes/notification.routes.js';
 
-export { default as reporterRoutes } from "./reporterRoutes/reports.routes.js";
+export { default as reporterRoutes } from './reporterRoutes/reports.routes.js';
+
+export { default as userRoutes } from './userRoutes/user.routes.js';

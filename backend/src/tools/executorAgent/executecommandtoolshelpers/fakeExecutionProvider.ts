@@ -45,7 +45,7 @@ export async function fakeExecutionProvider(
 
   const executionId = randomUUID();
 
-  const duration = Math.floor(Math.random() * 1500) + 500;
+  const duration = Math.floor(Math.random() * 200) + 100;
 
   const context: ExecutionContext = {
     success: true,

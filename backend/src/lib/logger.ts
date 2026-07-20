@@ -13,7 +13,7 @@
 import winston from 'winston';
 
 // Create logger with configuration
-//Ye logger object aage hum log messages bhejne ke liye use karenge (info, warn, error)
+// Ye logger object aage hum log messages bhejne ke liye use karenge (info, warn, error)
 const logger = winston.createLogger({
   // Log level: info means log info and above (info, warn, error)
   // Ye info aur us se upar ke logs (warn, error) capture karega

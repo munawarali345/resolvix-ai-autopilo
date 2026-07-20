@@ -442,6 +442,33 @@ export const infrastructure = {
       updatedAt: new Date(),
       version: 1,
     },
+    {
+      id: 'svc-14',
+      service: 'database',
+      name: 'db-pool',
+      status: 'running',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      version: 1,
+    },
+    {
+      id: 'svc-15',
+      service: 'authentication',
+      name: 'auth-service',
+      status: 'running',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      version: 1,
+    },
+    {
+      id: 'svc-16',
+      service: 'system',
+      name: 'network',
+      status: 'running',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      version: 1,
+    },
   ],
 
   databases: <FakeDatabase[]>[
@@ -600,6 +627,33 @@ export const infrastructure = {
       entries: [
         '[INFO] System boot completed.',
         '[INFO] All services healthy.',
+      ],
+      updatedAt: new Date(),
+    },
+    {
+      id: 'log-14',
+      source: 'database',
+      entries: [
+        '[INFO] Database connection pool service initialized.',
+        '[INFO] db-pool service is running.',
+      ],
+      updatedAt: new Date(),
+    },
+    {
+      id: 'log-15',
+      source: 'authentication',
+      entries: [
+        '[INFO] Authentication service started.',
+        '[INFO] auth-service is healthy.',
+      ],
+      updatedAt: new Date(),
+    },
+    {
+      id: 'log-16',
+      source: 'system',
+      entries: [
+        '[INFO] Network service initialized.',
+        '[INFO] Network connectivity verified.',
       ],
       updatedAt: new Date(),
     },

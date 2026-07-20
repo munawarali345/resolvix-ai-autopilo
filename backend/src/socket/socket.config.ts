@@ -17,6 +17,8 @@ import { Express } from 'express';
 
 import { setSocketServer } from './socket.server.js';
 
+import logger from '../lib/logger.js';
+
 // ================================================================
 // CREATE HTTP SERVER
 // ================================================================
@@ -41,10 +43,10 @@ export function createHttpServer(app: Express) {
 
   // Connection events ye callback he
   io.on('connection', (socket) => {
-    console.log(`Socket Connected: ${socket.id}`);
+    logger.info(`Socket Connected: ${socket.id}`);
 
     socket.on('disconnect', () => {
-      console.log(`Socket Disconnected: ${socket.id}`);
+      logger.info(`Socket Disconnected: ${socket.id}`);
     });
   });
 

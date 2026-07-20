@@ -18,6 +18,8 @@
 
 import { interrupt } from '@langchain/langgraph';
 
+import logger from '../../lib/logger.js';
+
 import { WorkflowState } from '../../types/index.js';
 
 // ================================================================
@@ -31,11 +33,11 @@ export async function approvalRouterNode(
   // Safety Check
   // ------------------------------------------------
 
-  console.log("========== APPROVAL ROUTER ==========");
-console.log("Incident:", state.incident?._id);
-console.log("Approval Required:", state.riskValidatorResult?.approvalRequired);
-console.log("Decision:", state.riskValidatorResult?.decision);
-console.log("About to interrupt...");
+  logger.info('Approval Router', {
+    incidentId: state.incident?._id,
+    approvalRequired: state.riskValidatorResult?.approvalRequired,
+    decision: state.riskValidatorResult?.decision,
+  });
 
   if (!state.riskValidatorResult) {
     throw new Error(
@@ -57,34 +59,30 @@ console.log("About to interrupt...");
   // ------------------------------------------------
 
   if (state.riskValidatorResult.approvalRequired) {
+    // ------------------------------------------------
+    // Pause workflow and wait for human decision.
+    //
+    // interrupt() workflow ko yahin pause karega.
+    //
+    // Jab admin Approve/Reject karega,
+    // LangGraph isi line par dobara resume hoga.
+    //
+    // interrupt() ka return value wahi data hoga
+    // jo hum resume() ke through bhejenge.
+    //
+    // ------------------------------------------------
 
-  // ------------------------------------------------
-  // Pause workflow and wait for human decision.
-  //
-  // interrupt() workflow ko yahin pause karega.
-  //
-  // Jab admin Approve/Reject karega,
-  // LangGraph isi line par dobara resume hoga.
-  //
-  // interrupt() ka return value wahi data hoga
-  // jo hum resume() ke through bhejenge.
-  //
-  // ------------------------------------------------
+    const approvalDecision = interrupt({
+      incidentId: state.incident?._id,
 
-   const approvalDecision = interrupt({
+      reason: state.riskValidatorResult.reason,
 
-     incidentId: state.incident?._id,
+      riskLevel: state.riskValidatorResult.riskLevel,
 
-     reason: state.riskValidatorResult.reason,
+      riskScore: state.riskValidatorResult.riskScore,
+    });
 
-     riskLevel: state.riskValidatorResult.riskLevel,
-
-     riskScore: state.riskValidatorResult.riskScore,
-
-  });
-
-
-  // ------------------------------------------------
+    // ------------------------------------------------
     // Safety Check
     //
     // Resume hone ke baad approvalDecision milni chahiye.
@@ -94,7 +92,7 @@ console.log("About to interrupt...");
     // ------------------------------------------------
 
     if (!approvalDecision) {
-       throw new Error("Approval decision was not received.");
+      throw new Error('Approval decision was not received.');
     }
 
     // ------------------------------------------------
@@ -104,19 +102,13 @@ console.log("About to interrupt...");
     //
     // Execution node kabhi nahi chalega.
     // ------------------------------------------------
- 
-     if (!approvalDecision.approved) {
 
-       return {};
-       
-     }
+    if (!approvalDecision.approved) {
+      return {};
+    }
+  }
 
- }
-
-
-  // ------------------------------------------------
-  // Continue Workflow
-  // ------------------------------------------------
+  // Approval required hi nahi thi
 
   return {};
 }

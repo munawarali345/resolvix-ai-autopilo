@@ -15,7 +15,7 @@ export const LOG_SERVICES = [
   'logging',
   'analytics-engine',
   'system',
-] as const;
+] as const; //as const lagane se TypeScript is array ko readonly bana deta hai aur har value ko literal type maan leta hai.
 
 // Type automatically constant se ban jayegi
 export type logService = (typeof LOG_SERVICES)[number];

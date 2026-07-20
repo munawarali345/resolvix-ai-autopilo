@@ -4,29 +4,21 @@
 // Ye normal import nahi hai.
 // Hum sirf TypeScript ko bol rahe hain:
 // Express ke original types load karo.
-import "express-serve-static-core";
+import 'express-serve-static-core';
 
-
-  declare global {
-
+declare global {
   namespace Express {
-
     interface Request {
-
       pagination: {
         page: number;
         limit: number;
         skip: number;
       };
-
     }
-
   }
-
 }
 
 export {};
-
 
 // .d.ts ka matlab?
 
@@ -57,7 +49,6 @@ export {};
 // Bas.
 
 // express ko extand ker rahe hain
-
 
 // declare module "express-serve-static-core" {
 

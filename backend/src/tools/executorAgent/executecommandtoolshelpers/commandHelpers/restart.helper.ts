@@ -6,6 +6,7 @@ import {
   findService,
   findDatabase,
   findCache,
+  resolveResourceName,
 } from './util.helper.js';
 
 // ================================================================
@@ -129,41 +130,16 @@ export async function handleRestartCommand(
   ) {
     const parts = command.trim().split(/\s+/);
 
-    const serviceName = normalizedCommand.startsWith('systemctl')
+    const rawServiceName = normalizedCommand.startsWith('systemctl')
       ? parts[2]
       : parts[1];
 
-    if (!serviceName) {
+    const serviceName = resolveResourceName(rawServiceName);
+
+    if (!rawServiceName) {
       context.success = false;
       context.exitCode = 1;
       context.stderr = 'Service name is required.';
-
-      return true;
-    }
-
-    // ---------------- Service ----------------
-
-    const service = findService(serviceName);
-
-    if (service) {
-      service.status = 'restarting';
-      service.updatedAt = new Date();
-
-      await delay(context.duration);
-
-      service.status = 'running';
-      service.updatedAt = new Date();
-
-      if (service.version !== undefined) {
-        service.version++;
-      }
-
-      context.stdout = [
-        `Stopping ${service.name}.service...`,
-        `${service.name}.service stopped.`,
-        `Starting ${service.name}.service...`,
-        `${service.name}.service is now active (running).`,
-      ].join('\n');
 
       return true;
     }
@@ -212,6 +188,33 @@ export async function handleRestartCommand(
         `${cache.name} stopped.`,
         `Starting ${cache.name}...`,
         `${cache.name} started successfully.`,
+      ].join('\n');
+
+      return true;
+    }
+
+    // ---------------- Service ----------------
+
+    const service = findService(serviceName);
+
+    if (service) {
+      service.status = 'restarting';
+      service.updatedAt = new Date();
+
+      await delay(context.duration);
+
+      service.status = 'running';
+      service.updatedAt = new Date();
+
+      if (service.version !== undefined) {
+        service.version++;
+      }
+
+      context.stdout = [
+        `Stopping ${service.name}.service...`,
+        `${service.name}.service stopped.`,
+        `Starting ${service.name}.service...`,
+        `${service.name}.service is now active (running).`,
       ].join('\n');
 
       return true;

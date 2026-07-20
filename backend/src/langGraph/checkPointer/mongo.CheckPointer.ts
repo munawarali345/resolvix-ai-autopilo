@@ -29,7 +29,7 @@ const client = new MongoClient(env.MONGO_URI);
 
 // ============================================================================
 // Checkpointer
-// ye singleton he measn server me ek he checkpointer banega har req per ni 
+// ye singleton he measn server me ek he checkpointer banega har req per ni
 // ============================================================================
 
 let checkpointer: MongoDBSaver | null = null;
@@ -39,36 +39,28 @@ let checkpointer: MongoDBSaver | null = null;
 // ================================================================
 
 export async function createMongoCheckpointer() {
+  if (checkpointer) {
+    // yaha check kr re he k pehle se bana hua he to yahi se return
 
-  if (checkpointer) { // yaha check kr re he k pehle se bana hua he to yahi se return
-    
     return checkpointer;
-
   }
 
-  await client.connect(); // yaha Mongo connect hu raha he 
-
+  await client.connect(); // yaha Mongo connect hu raha he
 
   // Yahin actual LangGraph connect hota hai MongoDB se.
-  // 
+  //
   checkpointer = new MongoDBSaver({
-
     client,
-
   });
-
 
   await checkpointer.setup(); // Ye first time collections banata hai.
 
-
   return checkpointer; // yaha Ab Graph compile hoga
-
 }
 
 // graph.compile({
 //    checkpointer
 // })
-
 
 // Ab actual flow dekho
 

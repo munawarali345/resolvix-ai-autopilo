@@ -1,4 +1,3 @@
-
 // ================================================================
 // APPROVE INCIDENT CONTROLLER
 // ================================================================
@@ -13,18 +12,16 @@
 //
 // ================================================================
 
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from 'express';
 
-import { approveIncidentService } from "../../services/incidentServices/approveIncident.service.js";
+import { approveIncidentService } from '../../services/incidentServices/approveIncident.service.js';
 
 export const approveIncidentController = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-
   try {
-
     // ------------------------------------------------
     // STEP 1
     // Read Incident Id
@@ -45,17 +42,11 @@ export const approveIncidentController = async (
     // ------------------------------------------------
 
     res.status(200).json({
-
       success: true,
 
-      message: "Incident approved successfully.",
-
+      message: 'Incident approved successfully.',
     });
-
   } catch (error) {
-
     next(error);
-
   }
-
 };

@@ -1,8 +1,21 @@
 # Project Status - Resolvix AI Autopilot
 
-## Completed Features (Demo Ready)
+## Project Statistics
 
-### ✅ Multi-Agent Workflow (7 Agents)
+| Metric               | Count | Location                                          |
+| -------------------- | ----- | ------------------------------------------------- |
+| **Agents**           | 7     | `backend/src/agents/`                             |
+| **Skills**           | 6     | `backend/src/skills/`                             |
+| **Tools**            | 19    | `backend/src/tools/`                              |
+| **Playbooks**        | 56    | `backend/src/data/playbookData/playbooks.data.ts` |
+| **Database Models**  | 6     | `backend/src/models/`                             |
+| **Services**         | 15+   | `backend/src/services/`                           |
+| **Controllers**      | 12+   | `backend/src/controllers/`                        |
+| **API Route Groups** | 7     | `backend/src/routes/`                             |
+
+## Completed Features (✅ Demo Ready)
+
+### 1. Multi-Agent Workflow (7 Agents)
 
 | Agent          | File                                                    | Status      |
 | -------------- | ------------------------------------------------------- | ----------- |
@@ -14,7 +27,7 @@
 | Executor       | `src/langGraph/nodes/executor.node.ts`                  | ✅ Complete |
 | Reporter       | `src/langGraph/nodes/reporter.node.ts`                  | ✅ Complete |
 
-### ✅ Skill-Based Agents (4 Skills)
+### 2. Skill-Based Agents (6 Skills)
 
 | Skill                    | File                                                      | Status      |
 | ------------------------ | --------------------------------------------------------- | ----------- |
@@ -22,10 +35,12 @@
 | Fix Recommendation Skill | `src/skills/fixAgentSkills/fixRecommendationSkill.md`     | ✅ Complete |
 | Validate Risk Skill      | `src/skills/riskValidationSkill/validateRiskSkill.md`     | ✅ Complete |
 | Trace Dependencies Skill | `src/skills/rootCauseAgentSkills/traceDepandencySkill.md` | ✅ Complete |
+| Reporter Agent Skill     | `src/skills/reportAgentSkills/reporterAgentSkill.md`      | ✅ Complete |
+| Executor Agent Skill     | `src/skills/executorAgentSkills/executorAgentSkill.md`    | ✅ Complete |
 
-### ✅ Tool Infrastructure (14 Tools)
+### 3. Tool Infrastructure (19 Tools)
 
-**Fix Agent Tools (5):**
+#### Fix Agent Tools (5)
 
 ```
 src/tools/fixAgentTools/
@@ -43,7 +58,7 @@ src/tools/fixAgentTools/
     └── serviceInventoryToolWrapper.ts ✅
 ```
 
-**Log Analyzer Tools (5):**
+#### Log Analyzer Tools (5)
 
 ```
 src/tools/logAnalyzerAgentTools/
@@ -61,7 +76,7 @@ src/tools/logAnalyzerAgentTools/
     └── dependencyMapperToolWrapper.ts ✅
 ```
 
-**Risk Validator Tools (4):**
+#### Risk Validator Tools (4)
 
 ```
 src/tools/riskValidatorTools/
@@ -77,7 +92,37 @@ src/tools/riskValidatorTools/
     └── missingValidationToolWrapper.ts ✅
 ```
 
-### ✅ Knowledge Base
+#### Executor Agent Tools (4)
+
+```
+src/tools/executorAgent/
+├── toolExecutors/
+│   ├── executeCommand.function.ts ✅
+│   ├── verifyExecution.function.ts ✅
+│   ├── rollback.function.ts ✅
+│   └── notification.function.ts ✅
+└── toolWrappers/
+    ├── executeCommandToolWrapper.ts ✅
+    ├── verifyExecutionToolWrapper.ts ✅
+    ├── rollbackToolWrapper.ts ✅
+    └── notificationToolWrapper.ts ✅
+```
+
+#### Reporter Agent Tools (3)
+
+```
+src/tools/reportAgennt/
+├── toolExecutors/
+│   ├── reportFormatter.function.ts ✅
+│   ├── calculateMetrics.function.ts ✅
+│   └── buildTimeline.function.ts ✅
+└── toolWrappers/
+    ├── reportFormatterToolWrapper.ts ✅
+    ├── metricsToolWrapper.ts ✅
+    └── timelineToolWrapper.ts ✅
+```
+
+### 4. Knowledge Base
 
 | File                                            | Description              | Status      |
 | ----------------------------------------------- | ------------------------ | ----------- |
@@ -87,9 +132,18 @@ src/tools/riskValidatorTools/
 | `src/data/playbookData/configuration.data.ts`   | Config data              | ✅ Complete |
 | `src/data/playbookData/configDiff.data.ts`      | Config changes           | ✅ Complete |
 
-Categories: Database, Memory, API, Deployment, CPU
+#### Playbook Categories
 
-### ✅ AI Integration
+| Category            | Count | Playbook IDs Range |
+| ------------------- | ----- | ------------------ |
+| Database Failures   | 15    | PB-001 to PB-015   |
+| Memory Leaks        | 10    | PB-016 to PB-025   |
+| API 500 Errors      | 11    | PB-026 to PB-036   |
+| Deployment Failures | 10    | PB-037 to PB-046   |
+| CPU Spikes          | 10    | PB-047 to PB-056   |
+| System Issues       | 1     | PB-057             |
+
+### 5. AI Integration
 
 | File                            | Purpose           | Status      |
 | ------------------------------- | ----------------- | ----------- |
@@ -97,24 +151,60 @@ Categories: Database, Memory, API, Deployment, CPU
 | `src/ai/qwen/qwen.langchain.ts` | LangChain wrapper | ✅ Working  |
 | `src/ai/qwen/qwen.config.ts`    | Configuration     | ✅ Complete |
 
-### ✅ Services & Controllers
+### 6. Services & Controllers
 
-| File                                               | Purpose             | Status      |
-| -------------------------------------------------- | ------------------- | ----------- |
-| `src/services/incidentSimulatorServices/*.ts`      | Incident generators | ✅ Complete |
-| `src/controllers/incidentSimulatorController/*.ts` | API endpoints       | ✅ Complete |
-| `src/routes/incident-simulation.routes.ts`         | Simulation routes   | ✅ Complete |
+| Category                 | Count | Location                                  |
+| ------------------------ | ----- | ----------------------------------------- |
+| Agent Services           | 7     | `src/services/agentsServices/`            |
+| Simulation Services      | 5     | `src/services/incidentSimulatorServices/` |
+| Incident Services        | 5     | `src/services/incidentServices/`          |
+| Dashboard Services       | 5     | `src/services/dashboardServices/`         |
+| Report Services          | 2     | `src/services/reportServices/`            |
+| Agent Execution Services | 3     | `src/services/agentExecutionServices/`    |
+| Controllers              | 12+   | `src/controllers/`                        |
+
+### 7. Database Models
+
+| Model          | File                      | Fields                                          |
+| -------------- | ------------------------- | ----------------------------------------------- |
+| User           | `user.model.ts`           | email, password, role                           |
+| Incident       | `incident.model.ts`       | title, description, severity, status, rootCause |
+| Log            | `log.model.ts`            | timestamp, level, message, metadata             |
+| Report         | `report.model.ts`         | content, metadata                               |
+| AgentExecution | `agentExecution.model.ts` | agentName, status, output                       |
+| Audit          | `audit.model.ts`          | action, userId, timestamp                       |
 
 ## Demo Instructions
 
-### 1. Start Backend
+### 1. Start Services (Docker)
 
 ```bash
+# Option A: Docker (Recommended)
+docker-compose up -d
+
+# Option B: Local Development
 pnpm dev:backend
-# Server: http://localhost:5000
+pnpm dev:frontend
 ```
 
-### 2. Trigger Incident
+### 2. Backend Service
+
+```bash
+# Backend runs on
+http://localhost:5000
+
+# Health check
+curl http://localhost:5000/health
+```
+
+### 3. Frontend Service
+
+```bash
+# Frontend runs on
+http://localhost:3000
+```
+
+### 4. Trigger Incident Simulation
 
 ```bash
 # Database Failure
@@ -124,10 +214,16 @@ curl -X POST http://localhost:5000/api/simulate/db-failure
 curl -X POST http://localhost:5000/api/simulate/memory-leak
 
 # API 500 Error
-curl -X POST http://localhost:5000/api/simulate/api-500
+curl -X POST http://localhost:5000/api/simulate/api-500-error
+
+# Deployment Failure
+curl -X POST http://localhost:5000/api/simulate/deployment-failure
+
+# CPU Spike
+curl -X POST http://localhost:5000/api/simulate/cpu-spike
 ```
 
-### 3. Workflow Execution Flow
+### 5. Workflow Execution Flow
 
 ```
 Incident → Orchestrator → Log Analysis → Root Cause → Fix Agent → Risk Validator → Executor → Reporter
@@ -137,21 +233,27 @@ Incident → Orchestrator → Log Analysis → Root Cause → Fix Agent → Risk
 
 - Mock data for demo purposes
 - No persistent database (in-memory only)
-- Commands not actually executed
+- Commands not actually executed (simulated execution)
+- WebSocket events limited to agent status updates
 
-## Documentation
+## Documentation Files
 
 | File                | Description                      |
 | ------------------- | -------------------------------- |
 | `README.md`         | Project overview and quick start |
 | `ARCHITECTURE.md`   | System architecture details      |
 | `PROJECT_STATUS.md` | This file - feature status       |
+| `SETUP.md`          | Setup instructions               |
 
 ## Tech Stack Summary
 
-| Layer    | Technology                         |
-| -------- | ---------------------------------- |
-| Backend  | Express.js + TypeScript            |
-| AI       | LangChain + LangGraph + Qwen Cloud |
-| Database | MongoDB (Mongoose)                 |
-| Frontend | Next.js 15 + Tailwind CSS          |
+| Layer     | Technology                           |
+| --------- | ------------------------------------ |
+| Backend   | Express.js + TypeScript + ESM        |
+| AI        | LangChain + LangGraph + Qwen Cloud   |
+| Database  | MongoDB (Mongoose)                   |
+| Frontend  | Next.js 15 + Tailwind CSS + React 19 |
+| State     | Zustand + React Query                |
+| UI        | shadcn/ui                            |
+| Charts    | Recharts                             |
+| Real-time | Socket.IO                            |

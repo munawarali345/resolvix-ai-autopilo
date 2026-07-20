@@ -1,5 +1,5 @@
 // ================================================================
-// fix AGENT
+// reporter AGENT
 // ================================================================
 //
 // Purpose:
@@ -216,14 +216,11 @@ Follow your assigned skill and use available tools whenever required.
 
       let toolResult: unknown;
 
-       if (typeof result.content === "string") {
-
-                toolResult = JSON.parse(result.content);
-
-          } else {
-
-                toolResult = result.content;
-          }
+      if (typeof result.content === 'string') {
+        toolResult = JSON.parse(result.content);
+      } else {
+        toolResult = result.content;
+      }
 
       // =========================================================
       // Save the executed tool output into artifacts.
@@ -260,12 +257,11 @@ Follow your assigned skill and use available tools whenever required.
       }
 
       messages.push(
-               new ToolMessage({
-                  tool_call_id: toolCall.id,
-                  content: JSON.stringify(toolResult),
-                }),
-             );
-
+        new ToolMessage({
+          tool_call_id: toolCall.id,
+          content: JSON.stringify(toolResult),
+        }),
+      );
     }
   }
 

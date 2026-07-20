@@ -1,4 +1,3 @@
-
 // incidents controllers exports
 
 // get incidents export
@@ -10,3 +9,5 @@ export * from './incidentByid.controller.js';
 export * from './approveIncident.controller.js';
 
 export * from './rejectIncident.controller.js';
+
+export * from './developerResume.controller.js';

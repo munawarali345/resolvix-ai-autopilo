@@ -29,13 +29,10 @@ import { QWEN_CONFIG } from './qwen.config.js';
 // Create Qwen LangChain Chat Model
 // ================================================================
 export const createQwenLangChainModel = (): ChatOpenAI => {
-
   return new ChatOpenAI({
-
     model: QWEN_CONFIG.model,
 
     apiKey: QWEN_CONFIG.apiKey,
-    
 
     configuration: {
       baseURL: QWEN_CONFIG.baseUrl,
@@ -44,7 +41,5 @@ export const createQwenLangChainModel = (): ChatOpenAI => {
     temperature: QWEN_CONFIG.temperature,
 
     maxTokens: QWEN_CONFIG.maxTokens,
-
   });
-
 };

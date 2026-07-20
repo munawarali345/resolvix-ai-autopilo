@@ -1,4 +1,3 @@
-
 export interface DashboardIncidentOverview {
   totalIncidents: number;
   openIncidents: number;

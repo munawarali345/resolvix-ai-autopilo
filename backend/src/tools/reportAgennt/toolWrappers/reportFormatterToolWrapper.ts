@@ -19,7 +19,12 @@
 import { tool } from '@langchain/core/tools';
 import { z } from 'zod';
 
-import { formatReport } from '../toolExecutors/reportFormatter.function.js';
+import {
+  formatReport,
+  ReportFormatterInput,
+} from '../toolExecutors/reportFormatter.function.js';
+
+import { ReporterToolInput } from '../../../types/index.js';
 
 // ================================================================
 // TOOL INPUT SCHEMA
@@ -36,7 +41,7 @@ const ReportFormatterToolSchema = z.object({
 
       status: z.enum(['open', 'in_progress', 'resolved', 'rejected']),
 
-      detectedAt: z.date(),
+      detectedAt: z.string().datetime(),
     })
     .passthrough(),
 
@@ -44,7 +49,7 @@ const ReportFormatterToolSchema = z.object({
 
   timeline: z.array(
     z.object({
-      timestamp: z.date(),
+      timestamp: z.string().datetime(),
 
       event: z.string(),
 
@@ -106,8 +111,22 @@ The formatted report is consumed by the export tool.
 // ================================================================
 
 export const reportFormatterTool = tool(
-  async (input) => {
-    return formatReport(input);
+  async (input: ReporterToolInput) => {
+    const formattedInput: ReportFormatterInput = {
+      ...input,
+
+      incident: {
+        ...input.incident,
+        detectedAt: new Date(input.incident.detectedAt),
+      },
+
+      timeline: input.timeline.map((item) => ({
+        ...item,
+        timestamp: new Date(item.timestamp),
+      })),
+    };
+
+    return formatReport(formattedInput);
   },
 
   metadata,

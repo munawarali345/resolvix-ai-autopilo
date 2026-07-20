@@ -13,7 +13,7 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY backend/package.json ./backend/
 
 # Install dependencies
-RUN pnpm install
+RUN pnpm install --frozen-lockfile
 
 # Copy source code
 COPY . .
@@ -21,6 +21,9 @@ COPY . .
 # Build backend only
 RUN pnpm --filter resolvix-ai-backend build
 
-EXPOSE 3001
+EXPOSE 5000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+CMD wget --no-verbose --tries=1 --spider http://localhost:5000/health || exit 1
 
 CMD ["pnpm", "--filter", "resolvix-ai-backend", "start"]

@@ -24,6 +24,8 @@ export const getExecutionsByIncidentIdService = async (incidentId: string) => {
 
   // Frontend ke liye required fields map karo
   const agentStatus = executions.map((execution) => ({
+    id: execution._id,
+    incidentId: execution.incidentId,
     agentName: execution.agentName,
     status: execution.status,
     executionTime: execution.executionTime,

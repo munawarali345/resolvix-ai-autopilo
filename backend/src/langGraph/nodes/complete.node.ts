@@ -1,4 +1,3 @@
-
 // ================================================================
 // COMPLETE NODE
 // ================================================================
@@ -20,9 +19,9 @@
 //
 // ================================================================
 
-import { WorkflowState } from "../../types/index.js";
+import { WorkflowState } from '../../types/index.js';
 
-import { updateWorkflowStep } from "../../utils/workflowState.util.js";
+import { updateWorkflowStep } from '../../utils/workflowState.util.js';
 
 // ================================================================
 // COMPLETE NODE
@@ -31,12 +30,7 @@ import { updateWorkflowStep } from "../../utils/workflowState.util.js";
 export const completeNode = async (
   state: WorkflowState,
 ): Promise<WorkflowState> => {
-
-  const updatedState = updateWorkflowStep(
-    state,
-    "completed",
-  );
+  const updatedState = updateWorkflowStep(state, 'completed');
 
   return updatedState;
-
 };

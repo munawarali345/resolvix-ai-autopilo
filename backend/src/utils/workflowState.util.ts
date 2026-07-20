@@ -148,15 +148,15 @@ export const setexecutorAgentExecution = (
   result: ExecutorExecutionResult,
 ): GraphState => {
   // Filhal jo incident status state me hai, usi ko default maan lo
-  let incidentStatus = state.incident!.status; // defult status
+  // let incidentStatus = state.incident!.status; // defult status
 
-  if (result.execution.executionStatus === 'SUCCESS') {
-    incidentStatus = 'resolved';
-  } else if (result.execution.executionStatus === 'ROLLED_BACK') {
-    incidentStatus = 'open';
-  } else {
-    incidentStatus = 'in_progress';
-  }
+  // if (result.execution.executionStatus === 'SUCCESS') {
+  //   incidentStatus = 'resolved';
+  // } else if (result.execution.executionStatus === 'ROLLED_BACK') {
+  //   incidentStatus = 'open';
+  // } else {
+  //   incidentStatus = 'in_progress';
+  // }
 
   return {
     ...state,
@@ -171,11 +171,6 @@ export const setexecutorAgentExecution = (
       fixSummary: result.execution.summary,
 
       executionStatus: result.execution.executionStatus,
-
-      status: incidentStatus,
-
-      resolvedAt:
-        incidentStatus === 'resolved' ? new Date() : state.incident!.resolvedAt,
     },
   };
 };
@@ -187,6 +182,18 @@ export const setReporterExecution = (
   state: GraphState,
   result: ReporterExecutionResult,
 ): GraphState => {
+  let incidentStatus = state.incident!.status;
+
+  const executionStatus = state.executorAgentResult!.executionStatus;
+
+  if (executionStatus === 'SUCCESS') {
+    incidentStatus = 'resolved';
+  } else if (executionStatus === 'ROLLED_BACK') {
+    incidentStatus = 'open';
+  } else {
+    incidentStatus = 'in_progress';
+  }
+
   return {
     ...state,
 
@@ -196,6 +203,11 @@ export const setReporterExecution = (
 
     incident: {
       ...state.incident!,
+
+      status: incidentStatus,
+
+      resolvedAt:
+        incidentStatus === 'resolved' ? new Date() : state.incident!.resolvedAt,
 
       mttr: result.report.metrics.mttr,
     },
