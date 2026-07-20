@@ -35,6 +35,9 @@ import { useApproveIncident } from '@/hooks/useApproveIncident';
 
 import { useRejectIncident } from '@/hooks/useRejectIncident';
 
+import AdminGuard from "@/components/guards/AdminGuard"
+
+
 // ================================================================
 // TYPES
 // ================================================================
@@ -65,6 +68,8 @@ export default function IncidentActions({ incidentId }: IncidentActionsProps) {
   } = useRejectIncident();
 
   return (
+
+    <AdminGuard>
     <Card>
       <CardHeader>
         <CardTitle>Incident Actions</CardTitle>
@@ -78,6 +83,8 @@ export default function IncidentActions({ incidentId }: IncidentActionsProps) {
             </AlertDescription>
           </Alert>
         )}
+
+
 
         <div className="flex gap-3">
           <Button
@@ -95,7 +102,12 @@ export default function IncidentActions({ incidentId }: IncidentActionsProps) {
             {approving ? 'Approving...' : 'Approve Incident'}
           </Button>
         </div>
+
+        
+
       </CardContent>
     </Card>
+
+    </AdminGuard>
   );
 }
